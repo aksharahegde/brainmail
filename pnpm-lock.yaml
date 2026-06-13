@@ -109,6 +109,9 @@ importers:
       '@brainmail/db':
         specifier: workspace:*
         version: link:../packages/db
+      drizzle-orm:
+        specifier: ^0.44.5
+        version: 0.44.7(@cloudflare/workers-types@4.20260612.1)
     devDependencies:
       typescript:
         specifier: ^5.9.3

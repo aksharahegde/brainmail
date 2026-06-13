@@ -37,6 +37,20 @@ pnpm db:generate         # regenerate SQL after schema changes
 
 Schema and ORM models live in [`packages/db`](packages/db/) (Drizzle ORM).
 
+### Authentication (Google OAuth)
+
+```bash
+cp workers/.dev.vars.example workers/.dev.vars
+cp .env.local.example .env.local
+pnpm db:migrate
+```
+
+Configure Google OAuth credentials with redirect URI:
+
+`http://localhost:3000/api/v1/auth/google/callback`
+
+Then run `pnpm workers:dev` and `pnpm dev`, and open `/login`.
+
 ### Cloudflare setup
 
 ```bash

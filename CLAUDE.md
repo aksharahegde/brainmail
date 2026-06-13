@@ -50,6 +50,13 @@ pnpm db:migrate && pnpm db:seed     # local D1 schema + demo data
 pnpm db:generate                    # after schema edits in packages/db
 ```
 
+Copy `workers/.dev.vars.example` → `workers/.dev.vars` and set Google OAuth + session secrets before testing auth.
+
+```bash
+# Google OAuth redirect URI (local)
+# http://localhost:3000/api/v1/auth/google/callback
+```
+
 ---
 
 ## Architecture
@@ -96,4 +103,4 @@ scripts/       Infra provision/deploy scripts
 
 ## Phase Docs
 
-Implementation is phased — see [`docs/phases/`](docs/phases/). Phase 0 (frontend bootstrap), Phase 1 (Cloudflare infra), and Phase 2 (D1 schema + ORM) are complete.
+Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–2 are complete. Phase 3 adds Google OAuth auth.

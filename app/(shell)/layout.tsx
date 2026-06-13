@@ -1,9 +1,23 @@
-import { AppShell } from '@/components/layout/app-shell';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function ShellLayout({
+import { AppShell } from '@/components/layout/app-shell';
+import { getCurrentUserServer } from '@/lib/auth/server';
+
+export default async function ShellLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AppShell>{children}</AppShell>;
+  const cookieStore = await cookies();
+  if (!cookieStore.get('brainmail_session')) {
+    redirect('/login');
+  }
+
+  const user = await getCurrentUserServer();
+  if (!user) {
+    redirect('/login');
+  }
+
+  return <AppShell user={user}>{children}</AppShell>;
 }
