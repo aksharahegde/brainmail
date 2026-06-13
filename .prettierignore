@@ -3,3 +3,5 @@ node_modules
 pnpm-lock.yaml
 out
 build
+workers/worker-configuration.d.ts
+workers/.wrangler/**

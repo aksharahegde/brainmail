@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  ci:
+  web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,3 +19,17 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm format:check
       - run: pnpm build
+
+  workers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @brainmail/workers typecheck
+      - run: pnpm --filter @brainmail/workers exec wrangler types --check
+      - run: pnpm --filter @brainmail/workers exec wrangler deploy --dry-run
