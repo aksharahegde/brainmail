@@ -1,0 +1,6 @@
+# Copy to .dev.vars for local worker development.
+# Do not commit real secrets.
+
+# Optional third-party API keys (Phase 3+)
+# GOOGLE_CLIENT_ID=
+# GOOGLE_CLIENT_SECRET=

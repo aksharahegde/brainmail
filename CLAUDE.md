@@ -6,27 +6,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **BrainMail** (codenamed "AI Email OS") is an AI-native email platform that treats email as structured data rather than messages. Users connect Gmail, then interact with their email via chat, analytics dashboards, AI-generated collections, and natural-language automations.
 
-Full product specification: `docs/base-spec.md`
-
-This is a greenfield project. No build commands exist yet.
+Full product specification: [`docs/spec.md`](docs/spec.md)
 
 ---
 
-## Planned Tech Stack
+## Tech Stack
 
-| Layer            | Technology                        |
-| ---------------- | --------------------------------- |
-| Frontend         | Flutter                           |
-| Backend / API    | Cloudflare Workers                |
-| Database         | Cloudflare D1 (SQLite-compatible) |
-| File Storage     | Cloudflare R2                     |
-| Vector Search    | Cloudflare Vectorize              |
-| Async Processing | Cloudflare Queues                 |
-| On-device AI     | Workers AI                        |
-| Model Routing    | Cloudflare AI Gateway             |
-| Email Source     | Gmail API (OAuth)                 |
+| Layer            | Technology                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| Frontend         | Next.js 16, TypeScript, Tailwind, shadcn/ui, Zustand, TanStack Query/Table, Recharts |
+| Backend / API    | Cloudflare Workers (`workers/`)                                                      |
+| Database         | Cloudflare D1 (SQLite-compatible)                                                    |
+| File Storage     | Cloudflare R2                                                                        |
+| Vector Search    | Cloudflare Vectorize                                                                 |
+| Async Processing | Cloudflare Queues                                                                    |
+| On-device AI     | Workers AI via AI Gateway                                                            |
+| Email Source     | Gmail API (OAuth, Phase 3+)                                                          |
 
-Flutter handles only UI, auth, chat interface, and chart/dashboard rendering — **no AI processing on the client**.
+---
+
+## Commands
+
+### Frontend
+
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000
+pnpm build
+pnpm lint
+pnpm typecheck
+pnpm format:check
+```
+
+### Workers
+
+```bash
+pnpm workers:dev                    # http://localhost:8787/health
+pnpm infra:provision staging        # create D1/R2/Vectorize/Queues
+pnpm workers:deploy:staging
+pnpm --filter @brainmail/workers typecheck
+pnpm infra:types                    # wrangler types
+```
 
 ---
 
@@ -37,39 +57,40 @@ Flutter handles only UI, auth, chat interface, and chart/dashboard rendering —
 Emails flow through these stages after Gmail sync:
 
 1. **Store raw email** — headers, metadata, body, attachments (R2)
-2. **Categorize** — classify into one of ~13 categories (Invoice, Receipt, Travel, Newsletter, etc.)
+2. **Categorize** — classify into categories (Invoice, Receipt, Travel, etc.)
 3. **Extract entities** — Person, Company, Invoice, Flight, Hotel, Order, Subscription, Meeting, Task
 4. **Embed** — generate vectors for semantic search and RAG
 5. **Evaluate collections** — assign email to AI-managed semantic groups
 6. **Evaluate automations** — trigger matching user-defined automation rules
 
-Async stages (extraction, classification, automation) run via **Cloudflare Queues**.
+Async stages run via **Cloudflare Queues** (`workers/wrangler.jsonc`).
 
 ### AI Agent Architecture
 
-A **Router Agent** classifies user intent, then delegates to:
+A **Router Agent** classifies user intent, then delegates to Search, Analytics, Automation, and Action agents. AI queries **structured extracted data**, not raw email bodies.
 
-- **Search Agent** — semantic retrieval, Gmail search, vector search
-- **Analytics Agent** — SQL queries, aggregations, chart/report generation
-- **Automation Agent** — creates automation rules and triggers
-- **Action Agent** — executes email mutations (delete, archive, label, filter creation, export)
+### Core Design Rules
 
-The key design principle: AI queries **structured extracted data** rather than raw email bodies to avoid repeated LLM calls on unstructured content.
-
-### Data Model (D1)
-
-Core tables: `users`, `emails`, `invoices`, `collections`, `automations`, `filters`, `audit_logs`
-
-Structured entities extracted per email: `invoices`, `receipts`, `subscriptions`, `travel`
-
-Every destructive action (delete, bulk archive, unsubscribe) must be previewed, confirmed, and written to the audit log before execution.
+- **Safety before automation**: destructive actions require `Intent → Preview → Confirm → Execute → Audit`.
+- **Gmail filters** must use Gmail-compatible query syntax.
+- **AI Memory**: user classification corrections persist and influence future classifications.
 
 ---
 
-## Core Design Rules
+## Repository Layout
 
-- **Safety before automation**: destructive actions require `Intent → Preview → Confirm → Execute → Audit` flow.
-- **AI queries structured data**: extracted structured records, not raw email text.
-- **Every insight is actionable**: AI chat responses can produce email actions, filter creation, exports, etc.
-- **Gmail filters must be Gmail-compatible query syntax** (e.g., `from:(manning.com)`).
-- **AI Memory**: user corrections to classifications (e.g., "Stripe emails belong to Startup") must persist and influence future classifications.
+```
+app/           Next.js App Router
+components/    UI + layout shell
+features/      Domain UI modules
+workers/       Cloudflare Worker API
+server/        Future server actions
+docs/          Product + phase specs
+scripts/       Infra provision/deploy scripts
+```
+
+---
+
+## Phase Docs
+
+Implementation is phased — see [`docs/phases/`](docs/phases/). Phase 0 (frontend bootstrap) and Phase 1 (Cloudflare infra) are complete.

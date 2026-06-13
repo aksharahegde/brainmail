@@ -1,0 +1,354 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "brainmail-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+  },
+  "vars": {
+    "ENVIRONMENT": "local",
+    "AI_GATEWAY_ID": "default",
+  },
+  "ai": {
+    "binding": "AI",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "brainmail-db",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ATTACHMENTS",
+      "bucket_name": "brainmail-attachments",
+    },
+  ],
+  "vectorize": [
+    {
+      "binding": "EMBEDDINGS",
+      "index_name": "brainmail-embeddings",
+    },
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "EMAIL_INGESTION_QUEUE",
+        "queue": "brainmail-email-ingestion",
+      },
+      {
+        "binding": "CLASSIFICATION_QUEUE",
+        "queue": "brainmail-classification",
+      },
+      {
+        "binding": "ENTITY_EXTRACTION_QUEUE",
+        "queue": "brainmail-entity-extraction",
+      },
+      {
+        "binding": "ATTACHMENT_PROCESSING_QUEUE",
+        "queue": "brainmail-attachment-processing",
+      },
+      {
+        "binding": "EMBEDDING_GENERATION_QUEUE",
+        "queue": "brainmail-embedding-generation",
+      },
+      {
+        "binding": "AUTOMATION_EXECUTION_QUEUE",
+        "queue": "brainmail-automation-execution",
+      },
+      {
+        "binding": "INSIGHT_GENERATION_QUEUE",
+        "queue": "brainmail-insight-generation",
+      },
+    ],
+    "consumers": [
+      {
+        "queue": "brainmail-email-ingestion",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+      {
+        "queue": "brainmail-classification",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+      {
+        "queue": "brainmail-entity-extraction",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+      {
+        "queue": "brainmail-attachment-processing",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+      {
+        "queue": "brainmail-embedding-generation",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+      {
+        "queue": "brainmail-automation-execution",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+      {
+        "queue": "brainmail-insight-generation",
+        "max_batch_size": 10,
+        "max_batch_timeout": 30,
+        "max_retries": 3,
+        "dead_letter_queue": "brainmail-dead-letter",
+      },
+    ],
+  },
+  "triggers": {
+    "crons": ["0 */6 * * *", "0 2 * * *"],
+  },
+  "env": {
+    "staging": {
+      "name": "brainmail-api-staging",
+      "ai": {
+        "binding": "AI",
+      },
+      "vars": {
+        "ENVIRONMENT": "staging",
+        "AI_GATEWAY_ID": "default",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "brainmail-db-staging",
+          "database_id": "266a42b0-4531-45c7-ac9b-ad5326a4807a",
+        },
+      ],
+      "r2_buckets": [
+        {
+          "binding": "ATTACHMENTS",
+          "bucket_name": "brainmail-attachments-staging",
+        },
+      ],
+      "vectorize": [
+        {
+          "binding": "EMBEDDINGS",
+          "index_name": "brainmail-embeddings-staging",
+        },
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "EMAIL_INGESTION_QUEUE",
+            "queue": "brainmail-email-ingestion-staging",
+          },
+          {
+            "binding": "CLASSIFICATION_QUEUE",
+            "queue": "brainmail-classification-staging",
+          },
+          {
+            "binding": "ENTITY_EXTRACTION_QUEUE",
+            "queue": "brainmail-entity-extraction-staging",
+          },
+          {
+            "binding": "ATTACHMENT_PROCESSING_QUEUE",
+            "queue": "brainmail-attachment-processing-staging",
+          },
+          {
+            "binding": "EMBEDDING_GENERATION_QUEUE",
+            "queue": "brainmail-embedding-generation-staging",
+          },
+          {
+            "binding": "AUTOMATION_EXECUTION_QUEUE",
+            "queue": "brainmail-automation-execution-staging",
+          },
+          {
+            "binding": "INSIGHT_GENERATION_QUEUE",
+            "queue": "brainmail-insight-generation-staging",
+          },
+        ],
+        "consumers": [
+          {
+            "queue": "brainmail-email-ingestion-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+          {
+            "queue": "brainmail-classification-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+          {
+            "queue": "brainmail-entity-extraction-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+          {
+            "queue": "brainmail-attachment-processing-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+          {
+            "queue": "brainmail-embedding-generation-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+          {
+            "queue": "brainmail-automation-execution-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+          {
+            "queue": "brainmail-insight-generation-staging",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-staging",
+          },
+        ],
+      },
+      "triggers": {
+        "crons": ["0 */6 * * *", "0 2 * * *"],
+      },
+    },
+    "production": {
+      "name": "brainmail-api-production",
+      "ai": {
+        "binding": "AI",
+      },
+      "vars": {
+        "ENVIRONMENT": "production",
+        "AI_GATEWAY_ID": "default",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "brainmail-db-production",
+          "database_id": "REPLACE_D1_PRODUCTION",
+        },
+      ],
+      "r2_buckets": [
+        {
+          "binding": "ATTACHMENTS",
+          "bucket_name": "brainmail-attachments-production",
+        },
+      ],
+      "vectorize": [
+        {
+          "binding": "EMBEDDINGS",
+          "index_name": "brainmail-embeddings-production",
+        },
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "EMAIL_INGESTION_QUEUE",
+            "queue": "brainmail-email-ingestion-production",
+          },
+          {
+            "binding": "CLASSIFICATION_QUEUE",
+            "queue": "brainmail-classification-production",
+          },
+          {
+            "binding": "ENTITY_EXTRACTION_QUEUE",
+            "queue": "brainmail-entity-extraction-production",
+          },
+          {
+            "binding": "ATTACHMENT_PROCESSING_QUEUE",
+            "queue": "brainmail-attachment-processing-production",
+          },
+          {
+            "binding": "EMBEDDING_GENERATION_QUEUE",
+            "queue": "brainmail-embedding-generation-production",
+          },
+          {
+            "binding": "AUTOMATION_EXECUTION_QUEUE",
+            "queue": "brainmail-automation-execution-production",
+          },
+          {
+            "binding": "INSIGHT_GENERATION_QUEUE",
+            "queue": "brainmail-insight-generation-production",
+          },
+        ],
+        "consumers": [
+          {
+            "queue": "brainmail-email-ingestion-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+          {
+            "queue": "brainmail-classification-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+          {
+            "queue": "brainmail-entity-extraction-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+          {
+            "queue": "brainmail-attachment-processing-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+          {
+            "queue": "brainmail-embedding-generation-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+          {
+            "queue": "brainmail-automation-execution-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+          {
+            "queue": "brainmail-insight-generation-production",
+            "max_batch_size": 10,
+            "max_batch_timeout": 30,
+            "max_retries": 3,
+            "dead_letter_queue": "brainmail-dead-letter-production",
+          },
+        ],
+      },
+      "triggers": {
+        "crons": ["0 */6 * * *", "0 2 * * *"],
+      },
+    },
+  },
+}
