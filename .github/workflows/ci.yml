@@ -30,6 +30,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @brainmail/db typecheck
       - run: pnpm --filter @brainmail/workers typecheck
       - run: pnpm --filter @brainmail/workers exec wrangler types --check
       - run: pnpm --filter @brainmail/workers exec wrangler deploy --dry-run

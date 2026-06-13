@@ -14,7 +14,12 @@
     "workers:deploy:staging": "pnpm --filter @brainmail/workers deploy:staging",
     "workers:deploy:production": "pnpm --filter @brainmail/workers deploy:production",
     "infra:provision": "bash scripts/provision-cloudflare.sh",
-    "infra:types": "pnpm --filter @brainmail/workers types"
+    "infra:types": "pnpm --filter @brainmail/workers types",
+    "db:generate": "pnpm --filter @brainmail/db generate",
+    "db:migrate": "bash scripts/migrate-database.sh local",
+    "db:migrate:staging": "bash scripts/migrate-database.sh staging",
+    "db:seed": "bash scripts/seed-database.sh local",
+    "db:seed:staging": "bash scripts/seed-database.sh staging"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

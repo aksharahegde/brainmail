@@ -46,6 +46,8 @@ pnpm infra:provision staging        # create D1/R2/Vectorize/Queues
 pnpm workers:deploy:staging
 pnpm --filter @brainmail/workers typecheck
 pnpm infra:types                    # wrangler types
+pnpm db:migrate && pnpm db:seed     # local D1 schema + demo data
+pnpm db:generate                    # after schema edits in packages/db
 ```
 
 ---
@@ -84,6 +86,7 @@ app/           Next.js App Router
 components/    UI + layout shell
 features/      Domain UI modules
 workers/       Cloudflare Worker API
+packages/db/   Drizzle ORM schema + D1 migrations + seed
 server/        Future server actions
 docs/          Product + phase specs
 scripts/       Infra provision/deploy scripts
@@ -93,4 +96,4 @@ scripts/       Infra provision/deploy scripts
 
 ## Phase Docs
 
-Implementation is phased — see [`docs/phases/`](docs/phases/). Phase 0 (frontend bootstrap) and Phase 1 (Cloudflare infra) are complete.
+Implementation is phased — see [`docs/phases/`](docs/phases/). Phase 0 (frontend bootstrap), Phase 1 (Cloudflare infra), and Phase 2 (D1 schema + ORM) are complete.
