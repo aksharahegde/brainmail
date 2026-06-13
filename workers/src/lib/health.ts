@@ -1,3 +1,5 @@
+import { getDatabaseHealth } from './db-health';
+
 type BindingCheck = {
   name: string;
   present: boolean;
@@ -40,15 +42,18 @@ export function getBindingChecks(env: Env): BindingCheck[] {
   ];
 }
 
-export function healthPayload(env: Env) {
+export async function buildHealthPayload(env: Env) {
   const bindings = getBindingChecks(env);
-  const ok = bindings.every((binding) => binding.present);
+  const bindingsOk = bindings.every((binding) => binding.present);
+  const database = await getDatabaseHealth(env);
+  const ok = bindingsOk && database.ready;
 
   return {
     ok,
     service: 'brainmail-api',
     environment: env.ENVIRONMENT ?? 'local',
     bindings,
+    database,
     timestamp: new Date().toISOString(),
   };
 }

@@ -1,4 +1,4 @@
-import { healthPayload } from './lib/health';
+import { buildHealthPayload } from './lib/health';
 import { handleQueueBatch } from './queues/handler';
 import { handleScheduled } from './scheduled/handler';
 
@@ -7,7 +7,7 @@ const worker = {
     const url = new URL(request.url);
 
     if (url.pathname === '/health') {
-      const payload = healthPayload(env);
+      const payload = await buildHealthPayload(env);
       return Response.json(payload, {
         status: payload.ok ? 200 : 503,
       });

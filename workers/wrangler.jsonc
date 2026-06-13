@@ -19,6 +19,7 @@
       "binding": "DB",
       "database_name": "brainmail-db",
       "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "../packages/db/migrations",
     },
   ],
   "r2_buckets": [
@@ -134,6 +135,7 @@
           "binding": "DB",
           "database_name": "brainmail-db-staging",
           "database_id": "266a42b0-4531-45c7-ac9b-ad5326a4807a",
+          "migrations_dir": "../packages/db/migrations",
         },
       ],
       "r2_buckets": [
@@ -249,6 +251,7 @@
           "binding": "DB",
           "database_name": "brainmail-db-production",
           "database_id": "REPLACE_D1_PRODUCTION",
+          "migrations_dir": "../packages/db/migrations",
         },
       ],
       "r2_buckets": [

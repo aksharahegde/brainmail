@@ -25,6 +25,18 @@ pnpm workers:dev
 
 Open [http://localhost:8787/health](http://localhost:8787/health).
 
+### Database (D1)
+
+```bash
+pnpm db:migrate          # apply migrations locally
+pnpm db:seed             # load demo seed data locally
+pnpm db:migrate:staging  # apply migrations to staging D1
+pnpm db:seed:staging     # seed staging D1
+pnpm db:generate         # regenerate SQL after schema changes
+```
+
+Schema and ORM models live in [`packages/db`](packages/db/) (Drizzle ORM).
+
 ### Cloudflare setup
 
 ```bash
@@ -45,6 +57,8 @@ Staging health check: `https://brainmail-api-staging.akshara-dt.workers.dev/heal
 | `pnpm workers:deploy:staging`    | Deploy API worker to staging                      |
 | `pnpm workers:deploy:production` | Deploy API worker to production                   |
 | `pnpm infra:provision`           | Provision Cloudflare resources (default: staging) |
+| `pnpm db:migrate`                | Apply D1 migrations locally                       |
+| `pnpm db:seed`                   | Seed local D1 with demo data                      |
 | `pnpm infra:types`               | Regenerate Worker binding types                   |
 | `pnpm lint`                      | ESLint                                            |
 | `pnpm typecheck`                 | TypeScript check (frontend)                       |

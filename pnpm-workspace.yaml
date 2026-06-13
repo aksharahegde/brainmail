@@ -1,6 +1,7 @@
 packages:
   - .
   - workers
+  - packages/*
 
 allowBuilds:
   esbuild: true
