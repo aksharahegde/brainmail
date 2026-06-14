@@ -1,3 +1,5 @@
+import { runScheduledReportRefresh } from '../reports/service';
+
 const CRON_GMAIL_SYNC = '0 */6 * * *';
 const CRON_DAILY_MAINTENANCE = '0 2 * * *';
 
@@ -31,5 +33,13 @@ export async function handleScheduled(
       type: 'daily_maintenance_placeholder',
       scheduledAt: new Date().toISOString(),
     });
+
+    const refreshedReports = await runScheduledReportRefresh(env);
+    console.log(
+      JSON.stringify({
+        event: 'scheduled_reports_refreshed',
+        count: refreshedReports,
+      }),
+    );
   }
 }

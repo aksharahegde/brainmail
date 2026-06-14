@@ -4,6 +4,7 @@ import {
   collections,
   dashboards,
   emails,
+  reports,
   workspaceEntities,
   workspaces,
 } from '@brainmail/db/schema';
@@ -117,6 +118,7 @@ export async function getWorkspaceDetail(
     entityCountRow,
     collectionCountRow,
     dashboardCountRow,
+    reportCountRow,
     recentEmails,
     recentArtifacts,
   ] = await Promise.all([
@@ -154,6 +156,15 @@ export async function getWorkspaceDetail(
         and(
           eq(dashboards.userId, userId),
           eq(dashboards.workspaceId, workspaceId),
+        ),
+      ),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(reports)
+      .where(
+        and(
+          eq(reports.userId, userId),
+          eq(reports.workspaceId, workspaceId),
         ),
       ),
     db
@@ -200,6 +211,7 @@ export async function getWorkspaceDetail(
       entities: entityCountRow[0]?.count ?? 0,
       collections: collectionCountRow[0]?.count ?? 0,
       dashboards: dashboardCountRow[0]?.count ?? 0,
+      reports: reportCountRow[0]?.count ?? 0,
     },
     recentEmails,
     recentArtifacts,
