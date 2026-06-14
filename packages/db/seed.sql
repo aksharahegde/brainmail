@@ -89,6 +89,38 @@ VALUES
     'active'
   );
 
+INSERT OR IGNORE INTO dashboards (
+  id,
+  user_id,
+  workspace_id,
+  name,
+  template_key,
+  definition,
+  refreshed_at,
+  updated_at
+)
+VALUES
+  (
+    'dashboard_ai_expenses_001',
+    'user_demo_001',
+    'finance',
+    'AI Expenses',
+    'ai_expenses',
+    '{"templateKey":"ai_expenses","blocks":[]}',
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'dashboard_subscriptions_001',
+    'user_demo_001',
+    'finance',
+    'Subscriptions',
+    'subscriptions',
+    '{"templateKey":"subscriptions","blocks":[]}',
+    datetime('now'),
+    datetime('now')
+  );
+
 INSERT OR IGNORE INTO chat_sessions (id, user_id, title)
 VALUES ('chat_session_001', 'user_demo_001', 'Welcome');
 

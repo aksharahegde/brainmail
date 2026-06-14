@@ -43,6 +43,12 @@ import {
   handleCollectionSuggestions,
   handleCollectionsList,
 } from './collections';
+import {
+  handleDashboardCreate,
+  handleDashboardRoutes,
+  handleDashboardTemplates,
+  handleDashboardsList,
+} from './dashboards';
 
 export async function handleApiRequest(
   request: Request,
@@ -180,6 +186,32 @@ export async function handleApiRequest(
   const collectionMatch = pathname.match(/^\/api\/v1\/collections\/([^/]+)$/);
   if (collectionMatch) {
     return handleCollectionRoutes(request, env, collectionMatch[1]);
+  }
+
+  if (pathname === '/api/v1/dashboards/templates') {
+    return handleDashboardTemplates(request);
+  }
+
+  if (pathname === '/api/v1/dashboards') {
+    if (request.method === 'GET') {
+      return handleDashboardsList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleDashboardCreate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const dashboardRefreshMatch = pathname.match(
+    /^\/api\/v1\/dashboards\/([^/]+)\/refresh$/,
+  );
+  if (dashboardRefreshMatch) {
+    return handleDashboardRoutes(request, env, dashboardRefreshMatch[1]);
+  }
+
+  const dashboardMatch = pathname.match(/^\/api\/v1\/dashboards\/([^/]+)$/);
+  if (dashboardMatch) {
+    return handleDashboardRoutes(request, env, dashboardMatch[1]);
   }
 
   if (pathname === '/api/v1/chat') {
