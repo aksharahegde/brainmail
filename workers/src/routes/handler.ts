@@ -106,12 +106,7 @@ export async function handleApiRequest(
   }
 
   const startedAt = Date.now();
-  const response = await dispatchApiRequest(
-    request,
-    env,
-    pathname,
-    sessionUser,
-  );
+  const response = await dispatchApiRequest(request, env, pathname);
   const durationMs = Date.now() - startedAt;
 
   try {
