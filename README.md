@@ -55,6 +55,10 @@ Then run `pnpm workers:dev` and `pnpm dev`, and open `/login`.
 
 After connecting Gmail in workspace settings, BrainMail queues an initial import of recent messages. Sync status is visible on the settings page. Optional push notifications require configuring `GMAIL_PUBSUB_TOPIC` in `workers/.dev.vars` and Google Cloud Pub/Sub.
 
+### Email processing (Phase 5)
+
+Imported emails move through ingestion, classification, entity extraction, attachment processing, and embedding generation via Cloudflare Queues. Processed results appear on the workspace Activity page.
+
 ### Cloudflare setup
 
 ```bash
