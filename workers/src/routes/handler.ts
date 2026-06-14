@@ -49,6 +49,12 @@ import {
   handleDashboardTemplates,
   handleDashboardsList,
 } from './dashboards';
+import {
+  handleReportGenerate,
+  handleReportRoutes,
+  handleReportTypes,
+  handleReportsList,
+} from './reports';
 
 export async function handleApiRequest(
   request: Request,
@@ -212,6 +218,32 @@ export async function handleApiRequest(
   const dashboardMatch = pathname.match(/^\/api\/v1\/dashboards\/([^/]+)$/);
   if (dashboardMatch) {
     return handleDashboardRoutes(request, env, dashboardMatch[1]);
+  }
+
+  if (pathname === '/api/v1/reports/types') {
+    return handleReportTypes(request);
+  }
+
+  if (pathname === '/api/v1/reports') {
+    if (request.method === 'GET') {
+      return handleReportsList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleReportGenerate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const reportRefreshMatch = pathname.match(
+    /^\/api\/v1\/reports\/([^/]+)\/refresh$/,
+  );
+  if (reportRefreshMatch) {
+    return handleReportRoutes(request, env, reportRefreshMatch[1]);
+  }
+
+  const reportMatch = pathname.match(/^\/api\/v1\/reports\/([^/]+)$/);
+  if (reportMatch) {
+    return handleReportRoutes(request, env, reportMatch[1]);
   }
 
   if (pathname === '/api/v1/chat') {

@@ -37,9 +37,13 @@ export const reports = sqliteTable('reports', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull(),
   workspaceId: text('workspace_id'),
+  name: text('name'),
   reportType: text('report_type'),
+  schedule: text('schedule').default('manual'),
   definition: text('definition', { mode: 'json' }).$type<
     Record<string, unknown>
   >(),
   createdAt: text('created_at').default(sql`(datetime('now'))`),
+  updatedAt: text('updated_at').default(sql`(datetime('now'))`),
+  refreshedAt: text('refreshed_at'),
 });

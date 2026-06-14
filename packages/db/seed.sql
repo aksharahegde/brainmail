@@ -121,6 +121,52 @@ VALUES
     datetime('now')
   );
 
+INSERT OR IGNORE INTO reports (
+  id,
+  user_id,
+  workspace_id,
+  name,
+  report_type,
+  schedule,
+  definition,
+  refreshed_at,
+  updated_at
+)
+VALUES
+  (
+    'report_monthly_expense_001',
+    'user_demo_001',
+    'finance',
+    'Monthly Expense Report',
+    'monthly_expense',
+    'monthly',
+    '{"reportType":"monthly_expense","blocks":[]}',
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'report_subscription_audit_001',
+    'user_demo_001',
+    'finance',
+    'Subscription Audit',
+    'subscription_audit',
+    'monthly',
+    '{"reportType":"subscription_audit","blocks":[]}',
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'report_weekly_founder_001',
+    'user_demo_001',
+    'startup',
+    'Weekly Founder Report',
+    'weekly_founder',
+    'weekly',
+    '{"reportType":"weekly_founder","blocks":[]}',
+    datetime('now'),
+    datetime('now')
+  );
+
 INSERT OR IGNORE INTO chat_sessions (id, user_id, title)
 VALUES ('chat_session_001', 'user_demo_001', 'Welcome');
 
