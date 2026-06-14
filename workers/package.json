@@ -16,6 +16,7 @@
     "wrangler": "^4.24.0"
   },
   "dependencies": {
-    "@brainmail/db": "workspace:*"
+    "@brainmail/db": "workspace:*",
+    "drizzle-orm": "^0.44.5"
   }
 }

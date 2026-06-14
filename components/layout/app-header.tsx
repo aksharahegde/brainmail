@@ -1,8 +1,10 @@
 'use client';
 
+import { UserMenu } from '@/components/auth/user-menu';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import type { AuthUser } from '@/lib/auth/api';
 
-export function AppHeader() {
+export function AppHeader({ user }: { user: AuthUser }) {
   return (
     <header
       data-testid="layout-header"
@@ -12,6 +14,7 @@ export function AppHeader() {
       <div className="text-sm font-medium text-muted-foreground">
         AI Email OS
       </div>
+      <UserMenu email={user.email} name={user.name} />
     </header>
   );
 }

@@ -8,6 +8,13 @@
       "when": 1781381723792,
       "tag": "0000_easy_electro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1781382224325,
+      "tag": "0001_wandering_slayback",
+      "breakpoints": true
     }
   ]
 }

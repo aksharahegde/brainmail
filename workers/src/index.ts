@@ -1,4 +1,5 @@
 import { buildHealthPayload } from './lib/health';
+import { handleApiRequest } from './routes/handler';
 import { handleQueueBatch } from './queues/handler';
 import { handleScheduled } from './scheduled/handler';
 
@@ -14,13 +15,7 @@ const worker = {
     }
 
     if (url.pathname === '/api/v1' || url.pathname.startsWith('/api/v1/')) {
-      return Response.json(
-        {
-          success: false,
-          error: 'API not implemented yet',
-        },
-        { status: 501 },
-      );
+      return handleApiRequest(request, env);
     }
 
     return Response.json({ error: 'Not found' }, { status: 404 });
