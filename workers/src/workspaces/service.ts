@@ -14,6 +14,7 @@ import { and, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
 import { createId } from '../lib/crypto';
 import { countWorkspaceContacts } from '../crm/service';
 import { countWorkspaceSubscriptions } from '../subscriptions/service';
+import { countWorkspaceAutomations } from '../automations/service';
 import {
   getWorkspaceContext,
   getWorkspaceEmailCategories,
@@ -125,6 +126,7 @@ export async function getWorkspaceDetail(
     insightCountRow,
     subscriptionCount,
     contactCount,
+    automationCount,
     recentEmails,
     recentArtifacts,
   ] = await Promise.all([
@@ -178,6 +180,7 @@ export async function getWorkspaceDetail(
       ),
     countWorkspaceSubscriptions(env, userId, workspaceId),
     countWorkspaceContacts(env, userId, workspaceId),
+    countWorkspaceAutomations(env, userId, workspaceId),
     db
       .select({
         id: emails.id,
@@ -226,6 +229,7 @@ export async function getWorkspaceDetail(
       insights: insightCountRow[0]?.count ?? 0,
       subscriptions: subscriptionCount,
       contacts: contactCount,
+      automations: automationCount,
     },
     recentEmails,
     recentArtifacts,

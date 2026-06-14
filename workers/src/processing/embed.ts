@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm';
 
 import { createId } from '../lib/crypto';
 import { evaluateEmailCollections } from '../collections/evaluate';
+import { evaluateEmailAutomations } from '../automations/service';
 import { generateEmbedding } from './ai';
 import { buildEmailEmbeddingInput } from './ingest';
 import { getEmailById, updateEmailProcessingState } from './state';
@@ -74,6 +75,11 @@ export async function processEmailEmbedding(
   });
 
   await evaluateEmailCollections(env, {
+    userId: message.userId,
+    emailId: message.emailId,
+  });
+
+  await evaluateEmailAutomations(env, {
     userId: message.userId,
     emailId: message.emailId,
   });

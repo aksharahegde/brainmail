@@ -33,6 +33,11 @@ export async function handleScheduled(
       type: 'generate_daily_insights',
       scheduledAt: new Date().toISOString(),
     });
+    await env.AUTOMATION_EXECUTION_QUEUE.send({
+      type: 'run_scheduled_automations',
+      schedule: 'daily',
+      scheduledAt: new Date().toISOString(),
+    });
 
     const refreshedReports = await runScheduledReportRefresh(env);
     console.log(
