@@ -30,6 +30,11 @@ export const WORKSPACE_NAV = [
     testId: 'workspace-nav-dashboards',
   },
   { slug: 'reports', label: 'Reports', testId: 'workspace-nav-reports' },
+  {
+    slug: 'subscriptions',
+    label: 'Subscriptions',
+    testId: 'workspace-nav-subscriptions',
+  },
   { slug: 'contacts', label: 'Contacts', testId: 'workspace-nav-contacts' },
   { slug: 'insights', label: 'Insights', testId: 'workspace-nav-insights' },
   {

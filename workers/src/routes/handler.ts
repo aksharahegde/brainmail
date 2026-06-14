@@ -60,6 +60,10 @@ import {
   handleInsightsGenerate,
   handleInsightsList,
 } from './insights';
+import {
+  handleSubscriptionRoutes,
+  handleSubscriptionsList,
+} from './subscriptions';
 
 export async function handleApiRequest(
   request: Request,
@@ -263,6 +267,24 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/briefing') {
     return handleBriefing(request, env);
+  }
+
+  if (pathname === '/api/v1/subscriptions') {
+    return handleSubscriptionsList(request, env);
+  }
+
+  const subscriptionIgnoreMatch = pathname.match(
+    /^\/api\/v1\/subscriptions\/([^/]+)\/ignore$/,
+  );
+  if (subscriptionIgnoreMatch) {
+    return handleSubscriptionRoutes(request, env, subscriptionIgnoreMatch[1]);
+  }
+
+  const subscriptionMatch = pathname.match(
+    /^\/api\/v1\/subscriptions\/([^/]+)$/,
+  );
+  if (subscriptionMatch) {
+    return handleSubscriptionRoutes(request, env, subscriptionMatch[1]);
   }
 
   if (pathname === '/api/v1/chat') {
