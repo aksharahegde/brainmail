@@ -44,15 +44,21 @@ async function apiFetch<T>(
   return (await response.json()) as ApiResponse<T>;
 }
 
-export async function listProcessedEmails(query?: string): Promise<{
+export async function listProcessedEmails(input?: {
+  query?: string;
+  workspaceId?: string;
+}): Promise<{
   emails: ProcessedEmailSummary[];
   page: number;
   pageSize: number;
   total: number;
 }> {
   const params = new URLSearchParams();
-  if (query) {
-    params.set('q', query);
+  if (input?.query) {
+    params.set('q', input.query);
+  }
+  if (input?.workspaceId) {
+    params.set('workspaceId', input.workspaceId);
   }
 
   const suffix = params.toString() ? `?${params.toString()}` : '';

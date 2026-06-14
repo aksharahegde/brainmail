@@ -1,5 +1,6 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -21,6 +22,7 @@ import {
   WORKSPACE_NAV,
   workspacePath,
 } from '@/lib/navigation';
+import { listWorkspaces } from '@/lib/workspaces/api';
 import { cn } from '@/lib/utils';
 
 function getWorkspaceIdFromPath(pathname: string) {
@@ -31,6 +33,17 @@ function getWorkspaceIdFromPath(pathname: string) {
 export function AppSidebar() {
   const pathname = usePathname();
   const activeWorkspaceId = getWorkspaceIdFromPath(pathname);
+
+  const { data } = useQuery({
+    queryKey: ['workspaces'],
+    queryFn: listWorkspaces,
+  });
+
+  const workspaceItems =
+    data?.workspaces.map((workspace) => ({
+      id: workspace.id,
+      name: workspace.name ?? workspace.id,
+    })) ?? WORKSPACES;
 
   return (
     <Sidebar data-testid="layout-sidebar" collapsible="icon">
@@ -47,7 +60,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Workspaces</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {WORKSPACES.map((workspace) => (
+              {workspaceItems.map((workspace) => (
                 <SidebarMenuItem key={workspace.id}>
                   <SidebarMenuButton
                     isActive={activeWorkspaceId === workspace.id}
