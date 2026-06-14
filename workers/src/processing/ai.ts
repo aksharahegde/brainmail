@@ -106,6 +106,48 @@ function heuristicEntities(input: {
     }
   }
 
+  if (input.category === 'subscription') {
+    const amountMatch = `${input.subject ?? ''} ${input.bodyText ?? ''}`.match(
+      /\$\s?(\d+(?:\.\d{2})?)/,
+    );
+    entities.push({
+      entityType: 'subscription',
+      confidence: 0.68,
+      data: {
+        vendor: senderName,
+        amount: amountMatch ? Number(amountMatch[1]) : null,
+        currency: 'USD',
+        status: 'active',
+      },
+    });
+  }
+
+  if (
+    input.category === 'flight' ||
+    input.category === 'hotel' ||
+    input.category === 'travel'
+  ) {
+    const destinationMatch =
+      `${input.subject ?? ''} ${input.bodyText ?? ''}`.match(
+        /to\s+([A-Za-z][A-Za-z\s]{1,30})/i,
+      );
+    entities.push({
+      entityType: input.category === 'hotel' ? 'hotel' : 'flight',
+      confidence: 0.66,
+      data: {
+        destination: destinationMatch?.[1]?.trim() ?? null,
+        flight:
+          input.category === 'flight'
+            ? (input.subject ?? 'Flight itinerary')
+            : null,
+        hotel:
+          input.category === 'hotel'
+            ? (input.subject ?? 'Hotel booking')
+            : null,
+      },
+    });
+  }
+
   return entities;
 }
 
