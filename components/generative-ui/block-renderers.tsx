@@ -599,9 +599,16 @@ export function ConfirmationBlock({ data }: BlockProps) {
 
 export function InsightCardBlock({ data }: BlockProps) {
   const payload = asRecord(data.payload);
+  const title =
+    asString(data.title) ||
+    asString(payload.title, asString(data.insightType, 'Insight'));
+  const message = asString(payload.message) || asString(payload.summary);
 
   return (
-    <BlockShell title={asString(data.insightType, 'Insight')}>
+    <BlockShell title={title}>
+      {message ? (
+        <p className="mb-3 text-sm text-muted-foreground">{message}</p>
+      ) : null}
       {Object.keys(payload).length > 0 ? (
         <pre className="overflow-x-auto rounded-md bg-muted/40 p-3 text-xs">
           {JSON.stringify(payload, null, 2)}

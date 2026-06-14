@@ -30,7 +30,7 @@ export async function handleScheduled(
       type: 'renew_watches',
     });
     await env.INSIGHT_GENERATION_QUEUE.send({
-      type: 'daily_maintenance_placeholder',
+      type: 'generate_daily_insights',
       scheduledAt: new Date().toISOString(),
     });
 

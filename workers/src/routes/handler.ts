@@ -55,6 +55,11 @@ import {
   handleReportTypes,
   handleReportsList,
 } from './reports';
+import {
+  handleBriefing,
+  handleInsightsGenerate,
+  handleInsightsList,
+} from './insights';
 
 export async function handleApiRequest(
   request: Request,
@@ -244,6 +249,20 @@ export async function handleApiRequest(
   const reportMatch = pathname.match(/^\/api\/v1\/reports\/([^/]+)$/);
   if (reportMatch) {
     return handleReportRoutes(request, env, reportMatch[1]);
+  }
+
+  if (pathname === '/api/v1/insights') {
+    if (request.method === 'GET') {
+      return handleInsightsList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleInsightsGenerate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  if (pathname === '/api/v1/briefing') {
+    return handleBriefing(request, env);
   }
 
   if (pathname === '/api/v1/chat') {

@@ -4,6 +4,7 @@ import {
   collections,
   dashboards,
   emails,
+  insights,
   reports,
   workspaceEntities,
   workspaces,
@@ -119,6 +120,7 @@ export async function getWorkspaceDetail(
     collectionCountRow,
     dashboardCountRow,
     reportCountRow,
+    insightCountRow,
     recentEmails,
     recentArtifacts,
   ] = await Promise.all([
@@ -165,6 +167,12 @@ export async function getWorkspaceDetail(
         and(eq(reports.userId, userId), eq(reports.workspaceId, workspaceId)),
       ),
     db
+      .select({ count: sql<number>`count(*)` })
+      .from(insights)
+      .where(
+        and(eq(insights.userId, userId), eq(insights.workspaceId, workspaceId)),
+      ),
+    db
       .select({
         id: emails.id,
         subject: emails.subject,
@@ -209,6 +217,7 @@ export async function getWorkspaceDetail(
       collections: collectionCountRow[0]?.count ?? 0,
       dashboards: dashboardCountRow[0]?.count ?? 0,
       reports: reportCountRow[0]?.count ?? 0,
+      insights: insightCountRow[0]?.count ?? 0,
     },
     recentEmails,
     recentArtifacts,
