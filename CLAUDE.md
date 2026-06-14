@@ -70,8 +70,9 @@ Emails flow through these stages after Gmail sync:
 3. **Extract entities** — Person, Company, Invoice, Flight, Hotel, Order, Subscription, Meeting, Task
 4. **Materialize knowledge graph** — upsert companies, contacts, finance/travel records, and relationship edges
 5. **Embed** — generate vectors for semantic search and RAG
-6. **Evaluate collections** — assign email to AI-managed semantic groups
-7. **Evaluate automations** — trigger matching user-defined automation rules
+6. **Agent orchestration** — router delegates to specialized agents that execute tools and return generative UI blocks
+7. **Evaluate collections** — assign email to AI-managed semantic groups
+8. **Evaluate automations** — trigger matching user-defined automation rules
 
 Async stages run via **Cloudflare Queues** (`workers/wrangler.jsonc`).
 
@@ -104,4 +105,4 @@ scripts/       Infra provision/deploy scripts
 
 ## Phase Docs
 
-Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–6 are complete. Phase 7 adds global search with keyword, vector, and hybrid retrieval.
+Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–7 are complete. Phase 8 adds the AI agent runtime.

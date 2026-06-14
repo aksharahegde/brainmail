@@ -15,6 +15,13 @@ import { handleEntitiesList, handleEntityDetail } from './entities';
 import { handleContactsList, handleContactDetail } from './contacts';
 import { handleGraph } from './graph';
 import { handleGlobalSearch } from './search';
+import {
+  handleAgentToolsList,
+  handleChatMessage,
+  handleChatSessionCreate,
+  handleChatSessionDetail,
+  handleChatSessionsList,
+} from './chat';
 
 export async function handleApiRequest(
   request: Request,
@@ -97,6 +104,29 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/search') {
     return handleGlobalSearch(request, env);
+  }
+
+  if (pathname === '/api/v1/chat') {
+    return handleChatMessage(request, env);
+  }
+
+  if (pathname === '/api/v1/chat/sessions') {
+    return handleChatSessionsList(request, env);
+  }
+
+  if (pathname === '/api/v1/chat/session') {
+    return handleChatSessionCreate(request, env);
+  }
+
+  const chatSessionMatch = pathname.match(
+    /^\/api\/v1\/chat\/session\/([^/]+)$/,
+  );
+  if (chatSessionMatch) {
+    return handleChatSessionDetail(request, env, chatSessionMatch[1]);
+  }
+
+  if (pathname === '/api/v1/agents/tools') {
+    return handleAgentToolsList(request, env);
   }
 
   return errorResponse('Not found', 404);
