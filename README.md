@@ -63,6 +63,10 @@ Imported emails move through ingestion, classification, entity extraction, attac
 
 Extracted entities are materialized into companies, contacts, invoices, receipts, subscriptions, trips, and relationship edges. Browse the entity explorer and relationship graph on the workspace Contacts page. APIs: `GET /api/v1/entities`, `GET /api/v1/contacts`, `GET /api/v1/graph`.
 
+### Search (Phase 7)
+
+Global search combines keyword retrieval across emails, entities, contacts, vendors, workspaces, and artifacts with Vectorize semantic email search. Use `GET /api/v1/search?q=...&mode=hybrid` from the app header search panel.
+
 ### Cloudflare setup
 
 ```bash
