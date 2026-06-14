@@ -210,6 +210,104 @@ VALUES
     'subscription',
     'completed',
     datetime('now', '-5 days')
+  ),
+  (
+    'email_crm_investor_001',
+    'source_demo_001',
+    'user_demo_001',
+    'Series A follow-up',
+    'alex@northbridge.vc',
+    'work',
+    'completed',
+    datetime('now', '-4 days')
+  ),
+  (
+    'email_crm_customer_001',
+    'source_demo_001',
+    'user_demo_001',
+    'Enterprise pilot check-in',
+    'sarah@acmecorp.com',
+    'work',
+    'completed',
+    datetime('now', '-22 days')
+  ),
+  (
+    'email_crm_partner_001',
+    'source_demo_001',
+    'user_demo_001',
+    'Integration partnership',
+    'jordan@launchpad.io',
+    'meeting',
+    'completed',
+    datetime('now', '-16 days')
+  );
+
+INSERT OR IGNORE INTO contacts (
+  id,
+  user_id,
+  name,
+  email,
+  first_seen,
+  last_seen,
+  interaction_count
+)
+VALUES
+  (
+    'contact_investor_001',
+    'user_demo_001',
+    'Alex Chen',
+    'alex@northbridge.vc',
+    datetime('now', '-90 days'),
+    datetime('now', '-4 days'),
+    14
+  ),
+  (
+    'contact_customer_001',
+    'user_demo_001',
+    'Sarah Miller',
+    'sarah@acmecorp.com',
+    datetime('now', '-120 days'),
+    datetime('now', '-22 days'),
+    18
+  ),
+  (
+    'contact_partner_001',
+    'user_demo_001',
+    'Jordan Lee',
+    'jordan@launchpad.io',
+    datetime('now', '-60 days'),
+    datetime('now', '-16 days'),
+    9
+  );
+
+INSERT OR IGNORE INTO relationships (
+  id,
+  user_id,
+  contact_id,
+  relationship_score,
+  last_interaction
+)
+VALUES
+  (
+    'relationship_investor_001',
+    'user_demo_001',
+    'contact_investor_001',
+    0.82,
+    datetime('now', '-4 days')
+  ),
+  (
+    'relationship_customer_001',
+    'user_demo_001',
+    'contact_customer_001',
+    0.74,
+    datetime('now', '-22 days')
+  ),
+  (
+    'relationship_partner_001',
+    'user_demo_001',
+    'contact_partner_001',
+    0.58,
+    datetime('now', '-16 days')
   );
 
 INSERT OR IGNORE INTO subscriptions (
