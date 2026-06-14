@@ -117,10 +117,7 @@ export async function listGmailSyncStatusForUser(
   }));
 }
 
-export async function findGmailAccountByEmail(
-  env: Env,
-  emailAddress: string,
-) {
+export async function findGmailAccountByEmail(env: Env, emailAddress: string) {
   const db = createDb(env.DB);
   const rows = await db
     .select()
@@ -134,8 +131,5 @@ export async function findGmailAccountByEmail(
 
 export async function listGmailAccountsForSync(env: Env) {
   const db = createDb(env.DB);
-  return db
-    .select()
-    .from(accounts)
-    .where(eq(accounts.provider, 'gmail'));
+  return db.select().from(accounts).where(eq(accounts.provider, 'gmail'));
 }

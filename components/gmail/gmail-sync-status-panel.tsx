@@ -24,7 +24,9 @@ export function GmailSyncStatusPanel() {
     queryFn: getGmailSyncStatus,
     refetchInterval: (query) => {
       const rows = query.state.data ?? [];
-      return rows.some((row) => row.status === 'pending' || row.status === 'syncing')
+      return rows.some(
+        (row) => row.status === 'pending' || row.status === 'syncing',
+      )
         ? 3000
         : false;
     },
@@ -99,7 +101,9 @@ export function GmailSyncStatusPanel() {
                     : ''}
                 </p>
                 {account.lastError ? (
-                  <p className="text-xs text-destructive">{account.lastError}</p>
+                  <p className="text-xs text-destructive">
+                    {account.lastError}
+                  </p>
                 ) : null}
               </div>
               <div data-testid="gmail-sync-trigger-submit">

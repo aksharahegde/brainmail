@@ -1,5 +1,10 @@
 import { createDb } from '@brainmail/db';
-import { accounts, gmailSyncStates, oauthStates, users } from '@brainmail/db/schema';
+import {
+  accounts,
+  gmailSyncStates,
+  oauthStates,
+  users,
+} from '@brainmail/db/schema';
 import { and, eq } from 'drizzle-orm';
 
 import {

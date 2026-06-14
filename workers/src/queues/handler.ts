@@ -3,18 +3,14 @@ import { listGmailAccountsForSync } from '../lib/gmail/sync-state';
 import { syncGmailAccount } from '../lib/gmail/sync';
 import { renewExpiringGmailWatches } from '../lib/gmail/watch';
 
-function isGmailSyncMessage(
-  body: unknown,
-): body is GmailSyncQueueMessage {
+function isGmailSyncMessage(body: unknown): body is GmailSyncQueueMessage {
   if (!body || typeof body !== 'object' || !('type' in body)) {
     return false;
   }
 
   const type = (body as { type?: string }).type;
   return (
-    type === 'sync_account' ||
-    type === 'sync_all' ||
-    type === 'renew_watches'
+    type === 'sync_account' || type === 'sync_all' || type === 'renew_watches'
   );
 }
 
@@ -37,23 +33,13 @@ export async function handleQueueBatch(
 
       if (isGmailSyncMessage(body)) {
         if (body.type === 'sync_account') {
-          await syncGmailAccount(
-            env,
-            body.accountId,
-            body.userId,
-            body.mode,
-          );
+          await syncGmailAccount(env, body.accountId, body.userId, body.mode);
         }
 
         if (body.type === 'sync_all') {
           const accounts = await listGmailAccountsForSync(env);
           for (const account of accounts) {
-            await syncGmailAccount(
-              env,
-              account.id,
-              account.userId,
-              body.mode,
-            );
+            await syncGmailAccount(env, account.id, account.userId, body.mode);
           }
         }
 

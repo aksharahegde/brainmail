@@ -12,10 +12,7 @@ import {
   listGmailMessages,
   parseRecipientList,
 } from './client';
-import {
-  ensureGmailSyncState,
-  updateGmailSyncState,
-} from './sync-state';
+import { ensureGmailSyncState, updateGmailSyncState } from './sync-state';
 import { getValidAccessToken } from './tokens';
 import type { GmailSyncMode } from './types';
 import { setupGmailWatch } from './watch';
@@ -266,12 +263,7 @@ export async function syncGmailAccount(
       syncState.historyId &&
       syncState.initialSyncComplete
     ) {
-      await runIncrementalSync(
-        env,
-        account,
-        accessToken,
-        syncState.historyId,
-      );
+      await runIncrementalSync(env, account, accessToken, syncState.historyId);
       return;
     }
 

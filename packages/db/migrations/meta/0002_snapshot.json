@@ -197,9 +197,7 @@
       "indexes": {
         "oauth_states_state_unique": {
           "name": "oauth_states_state_unique",
-          "columns": [
-            "state"
-          ],
+          "columns": ["state"],
           "isUnique": true
         }
       },
@@ -259,9 +257,7 @@
       "indexes": {
         "sessions_token_hash_unique": {
           "name": "sessions_token_hash_unique",
-          "columns": [
-            "token_hash"
-          ],
+          "columns": ["token_hash"],
           "isUnique": true
         }
       },
@@ -366,9 +362,7 @@
       "indexes": {
         "gmail_sync_states_account_id_unique": {
           "name": "gmail_sync_states_account_id_unique",
-          "columns": [
-            "account_id"
-          ],
+          "columns": ["account_id"],
           "isUnique": true
         }
       },
@@ -1264,10 +1258,7 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "collection_members_collection_id_entity_id_pk": {
-          "columns": [
-            "collection_id",
-            "entity_id"
-          ],
+          "columns": ["collection_id", "entity_id"],
           "name": "collection_members_collection_id_entity_id_pk"
         }
       },
@@ -1455,10 +1446,7 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "workspace_entities_workspace_id_entity_id_pk": {
-          "columns": [
-            "workspace_id",
-            "entity_id"
-          ],
+          "columns": ["workspace_id", "entity_id"],
           "name": "workspace_entities_workspace_id_entity_id_pk"
         }
       },

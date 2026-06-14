@@ -26,7 +26,9 @@ function getTokenExpiresAt(expiresIn?: number): string | undefined {
   return new Date(Date.now() + expiresIn * 1000).toISOString();
 }
 
-function readTokenExpiresAt(metadata: AccountRecord['metadata']): string | null {
+function readTokenExpiresAt(
+  metadata: AccountRecord['metadata'],
+): string | null {
   if (
     metadata &&
     typeof metadata === 'object' &&
