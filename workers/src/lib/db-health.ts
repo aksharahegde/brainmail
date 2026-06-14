@@ -20,7 +20,7 @@ export async function getDatabaseHealth(env: Env): Promise<DatabaseHealth> {
     ).first<{ count: number }>();
 
     const tableCount = Number(tableCountRow?.count ?? 0);
-    const ready = tableCount >= 34;
+    const ready = tableCount >= 36;
 
     if (!ready) {
       return { ready: false, tableCount, seeded: false };

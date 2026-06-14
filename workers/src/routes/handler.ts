@@ -75,6 +75,17 @@ import { handleExportCreate } from './export';
 import { handleAccountDelete, handleAccountDeletePreview } from './account';
 import { enforceRateLimit } from '../lib/rate-limit';
 import { resolveSessionUser } from '../lib/session';
+import { recordRequestTiming } from '../ops/telemetry';
+import { handleOpsMetrics, handleOpsStatus } from './ops';
+
+function withResponseTimingHeader(
+  headers: Headers,
+  durationMs: number,
+): Headers {
+  const nextHeaders = new Headers(headers);
+  nextHeaders.set('X-Response-Time', `${durationMs}ms`);
+  return nextHeaders;
+}
 
 export async function handleApiRequest(
   request: Request,
@@ -94,6 +105,34 @@ export async function handleApiRequest(
     return rateLimitResponse;
   }
 
+  const startedAt = Date.now();
+  const response = await dispatchApiRequest(request, env, pathname);
+  const durationMs = Date.now() - startedAt;
+
+  try {
+    await recordRequestTiming(env, {
+      pathname,
+      method: request.method,
+      status: response.status,
+      durationMs,
+      userId: sessionUser?.id,
+    });
+  } catch {
+    // Telemetry should never break API responses.
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: withResponseTimingHeader(response.headers, durationMs),
+  });
+}
+
+async function dispatchApiRequest(
+  request: Request,
+  env: Env,
+  pathname: string,
+): Promise<Response> {
   if (pathname === '/api/v1/auth/login') {
     return handleAuthLogin(request, env);
   }
@@ -428,6 +467,14 @@ export async function handleApiRequest(
       return handleAccountDelete(request, env);
     }
     return errorResponse('Method not allowed', 405);
+  }
+
+  if (pathname === '/api/v1/ops/status') {
+    return handleOpsStatus(request, env);
+  }
+
+  if (pathname === '/api/v1/ops/metrics') {
+    return handleOpsMetrics(request, env);
   }
 
   return errorResponse('Not found', 404);

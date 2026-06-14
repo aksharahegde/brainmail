@@ -81,6 +81,19 @@ pnpm workers:deploy:staging
 
 Staging health check: `https://brainmail-api-staging.akshara-dt.workers.dev/health`
 
+## Production launch (Phase 21)
+
+```bash
+pnpm db:backup:production
+pnpm db:migrate:production
+pnpm workers:deploy:production
+pnpm release:verify:production
+```
+
+Launch checklist: [`docs/launch-checklist.md`](docs/launch-checklist.md)
+
+System status and ops metrics are available in workspace settings after deploy.
+
 ## Scripts
 
 | Script                           | Description                                       |
@@ -93,6 +106,10 @@ Staging health check: `https://brainmail-api-staging.akshara-dt.workers.dev/heal
 | `pnpm infra:provision`           | Provision Cloudflare resources (default: staging) |
 | `pnpm db:migrate`                | Apply D1 migrations locally                       |
 | `pnpm db:seed`                   | Seed local D1 with demo data                      |
+| `pnpm db:backup:staging`         | Export staging D1 backup SQL                      |
+| `pnpm db:backup:production`      | Export production D1 backup SQL                   |
+| `pnpm release:verify:staging`    | Verify staging health + build checks              |
+| `pnpm release:verify:production` | Verify production health + build checks           |
 | `pnpm infra:types`               | Regenerate Worker binding types                   |
 | `pnpm lint`                      | ESLint                                            |
 | `pnpm typecheck`                 | TypeScript check (frontend)                       |

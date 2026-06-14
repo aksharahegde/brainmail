@@ -8,6 +8,7 @@ import {
   withSecuritySystemPrompt,
   wrapUntrustedEmailContent,
 } from '../security/prompt-safety';
+import { recordAiCostEvent } from '../ops/telemetry';
 
 const CLASSIFICATION_MODEL = '@cf/meta/llama-3.1-8b-instruct';
 const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
@@ -199,6 +200,13 @@ export async function classifyEmail(
       EMAIL_CATEGORIES.includes(parsed.category) &&
       typeof parsed.confidence === 'number'
     ) {
+      await recordAiCostEvent(env, {
+        model: CLASSIFICATION_MODEL,
+        source: 'processing.classify',
+        inputTokens: JSON.stringify(input).length / 4,
+        outputTokens: text.length / 4,
+      });
+
       return parsed;
     }
   } catch {
@@ -248,6 +256,13 @@ export async function extractEntities(
 
     const parsed = extractJsonObject<{ entities?: ExtractedEntity[] }>(text);
     if (parsed?.entities?.length) {
+      await recordAiCostEvent(env, {
+        model: CLASSIFICATION_MODEL,
+        source: 'processing.extract_entities',
+        inputTokens: JSON.stringify(input).length / 4,
+        outputTokens: text.length / 4,
+      });
+
       return parsed.entities.filter(
         (entity) =>
           typeof entity.entityType === 'string' &&
