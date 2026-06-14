@@ -64,8 +64,12 @@ async function apiFetch<T>(
   return (await response.json()) as ApiResponse<T>;
 }
 
-export async function listWorkspaces(): Promise<{ workspaces: WorkspaceSummary[] }> {
-  const result = await apiFetch<{ workspaces: WorkspaceSummary[] }>('/workspaces');
+export async function listWorkspaces(): Promise<{
+  workspaces: WorkspaceSummary[];
+}> {
+  const result = await apiFetch<{ workspaces: WorkspaceSummary[] }>(
+    '/workspaces',
+  );
 
   if (!result.success || !result.data) {
     throw new Error(result.error ?? 'Unable to load workspaces');
@@ -91,10 +95,13 @@ export async function createWorkspace(input: {
   description?: string;
   workspaceType?: string;
 }): Promise<{ workspace: WorkspaceSummary }> {
-  const result = await apiFetch<{ workspace: WorkspaceSummary }>('/workspaces', {
-    method: 'POST',
-    body: JSON.stringify(input),
-  });
+  const result = await apiFetch<{ workspace: WorkspaceSummary }>(
+    '/workspaces',
+    {
+      method: 'POST',
+      body: JSON.stringify(input),
+    },
+  );
 
   if (!result.success || !result.data) {
     throw new Error(result.error ?? 'Unable to create workspace');

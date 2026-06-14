@@ -57,7 +57,9 @@ export function WorkspaceSearch({ workspaceId }: { workspaceId: string }) {
           <div>
             <h3 className="mb-2 text-sm font-medium">Emails</h3>
             {data.emails.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No matching emails.</p>
+              <p className="text-sm text-muted-foreground">
+                No matching emails.
+              </p>
             ) : (
               <ul className="space-y-2">
                 {data.emails.map((email) => (
@@ -66,7 +68,9 @@ export function WorkspaceSearch({ workspaceId }: { workspaceId: string }) {
                     data-testid={`workspace-search-email-${email.id}`}
                     className="rounded-lg border p-3 text-sm"
                   >
-                    <p className="font-medium">{email.subject ?? 'No subject'}</p>
+                    <p className="font-medium">
+                      {email.subject ?? 'No subject'}
+                    </p>
                     <p className="text-muted-foreground">{email.sender}</p>
                   </li>
                 ))}
@@ -87,7 +91,9 @@ export function WorkspaceSearch({ workspaceId }: { workspaceId: string }) {
                     data-testid={`workspace-search-artifact-${artifact.id}`}
                     className="rounded-lg border p-3 text-sm"
                   >
-                    <p className="font-medium">{artifact.title ?? 'Untitled'}</p>
+                    <p className="font-medium">
+                      {artifact.title ?? 'Untitled'}
+                    </p>
                     <p className="text-muted-foreground">
                       {artifact.artifactType}
                     </p>

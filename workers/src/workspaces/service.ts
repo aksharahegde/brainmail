@@ -24,7 +24,9 @@ export type WorkspaceRecord = {
   createdAt: string | null;
 };
 
-function serializeWorkspace(row: typeof workspaces.$inferSelect): WorkspaceRecord {
+function serializeWorkspace(
+  row: typeof workspaces.$inferSelect,
+): WorkspaceRecord {
   return {
     id: row.id,
     userId: row.userId,
@@ -107,54 +109,59 @@ export async function getWorkspaceDetail(
     emailFilters.push(inArray(emails.category, categories));
   }
 
-  const [emailCountRow, artifactCountRow, entityCountRow, recentEmails, recentArtifacts] =
-    await Promise.all([
-      db
-        .select({ count: sql<number>`count(*)` })
-        .from(emails)
-        .where(and(...emailFilters)),
-      db
-        .select({ count: sql<number>`count(*)` })
-        .from(artifacts)
-        .where(
-          and(
-            eq(artifacts.userId, userId),
-            eq(artifacts.workspaceId, workspaceId),
-          ),
+  const [
+    emailCountRow,
+    artifactCountRow,
+    entityCountRow,
+    recentEmails,
+    recentArtifacts,
+  ] = await Promise.all([
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(emails)
+      .where(and(...emailFilters)),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(artifacts)
+      .where(
+        and(
+          eq(artifacts.userId, userId),
+          eq(artifacts.workspaceId, workspaceId),
         ),
-      db
-        .select({ count: sql<number>`count(*)` })
-        .from(workspaceEntities)
-        .where(eq(workspaceEntities.workspaceId, workspaceId)),
-      db
-        .select({
-          id: emails.id,
-          subject: emails.subject,
-          sender: emails.sender,
-          category: emails.category,
-          receivedAt: emails.receivedAt,
-        })
-        .from(emails)
-        .where(and(...emailFilters))
-        .orderBy(desc(emails.receivedAt), desc(emails.createdAt))
-        .limit(5),
-      db
-        .select({
-          id: artifacts.id,
-          title: artifacts.title,
-          artifactType: artifacts.artifactType,
-          createdAt: artifacts.createdAt,
-        })
-        .from(artifacts)
-        .where(
-          and(
-            eq(artifacts.userId, userId),
-            eq(artifacts.workspaceId, workspaceId),
-          ),
-        )
-        .orderBy(desc(artifacts.createdAt))
-        .limit(5),
-    ]);
+      ),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(workspaceEntities)
+      .where(eq(workspaceEntities.workspaceId, workspaceId)),
+    db
+      .select({
+        id: emails.id,
+        subject: emails.subject,
+        sender: emails.sender,
+        category: emails.category,
+        receivedAt: emails.receivedAt,
+      })
+      .from(emails)
+      .where(and(...emailFilters))
+      .orderBy(desc(emails.receivedAt), desc(emails.createdAt))
+      .limit(5),
+    db
+      .select({
+        id: artifacts.id,
+        title: artifacts.title,
+        artifactType: artifacts.artifactType,
+        createdAt: artifacts.createdAt,
+      })
+      .from(artifacts)
+      .where(
+        and(
+          eq(artifacts.userId, userId),
+          eq(artifacts.workspaceId, workspaceId),
+        ),
+      )
+      .orderBy(desc(artifacts.createdAt))
+      .limit(5),
+  ]);
 
   const context = getWorkspaceContext(workspaceId);
 
