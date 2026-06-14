@@ -27,7 +27,10 @@ export async function runAgentRuntime(
   env: Env,
   context: AgentContext,
 ): Promise<UIResponse> {
-  const plan = await routeMessage(env, context.message);
+  const plan = await routeMessage(env, context.message, {
+    lastAgent: context.memory?.lastAgent,
+    entities: context.memory?.entities,
+  });
   const agentResult = await dispatchAgent(env, context, plan);
   const { blocks, actions } = planUiResponse(agentResult);
 

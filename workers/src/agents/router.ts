@@ -130,7 +130,24 @@ const AGENT_TYPES: AgentType[] = [
 export async function routeMessage(
   env: Env,
   message: string,
+  memory?: {
+    lastAgent?: AgentType | null;
+    entities?: string[];
+  },
 ): Promise<RouterPlan> {
+  if (
+    memory?.lastAgent &&
+    /\b(that|those|it|same|again|more)\b/i.test(message)
+  ) {
+    const plan = heuristicRoute(message);
+    return {
+      ...plan,
+      agent: memory.lastAgent,
+      entities: memory.entities?.length ? memory.entities : plan.entities,
+      intent: 'follow_up',
+    };
+  }
+
   if (!env.AI) {
     return heuristicRoute(message);
   }

@@ -21,6 +21,7 @@ import {
   handleChatSessionCreate,
   handleChatSessionDetail,
   handleChatSessionsList,
+  handleChatStream,
 } from './chat';
 
 export async function handleApiRequest(
@@ -108,6 +109,10 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/chat') {
     return handleChatMessage(request, env);
+  }
+
+  if (pathname === '/api/v1/chat/stream') {
+    return handleChatStream(request, env);
   }
 
   if (pathname === '/api/v1/chat/sessions') {

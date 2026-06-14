@@ -12,6 +12,7 @@ export const DEFAULT_WORKSPACE_ID: WorkspaceId = 'startup';
 
 export const WORKSPACE_NAV = [
   { slug: 'overview', label: 'Overview', testId: 'workspace-nav-overview' },
+  { slug: 'chat', label: 'Chat', testId: 'workspace-nav-chat' },
   { slug: 'activity', label: 'Activity', testId: 'workspace-nav-activity' },
   {
     slug: 'collections',
