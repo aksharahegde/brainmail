@@ -12,6 +12,7 @@ import {
 import { and, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
 
 import { createId } from '../lib/crypto';
+import { countWorkspaceSubscriptions } from '../subscriptions/service';
 import {
   getWorkspaceContext,
   getWorkspaceEmailCategories,
@@ -121,6 +122,7 @@ export async function getWorkspaceDetail(
     dashboardCountRow,
     reportCountRow,
     insightCountRow,
+    subscriptionCount,
     recentEmails,
     recentArtifacts,
   ] = await Promise.all([
@@ -172,6 +174,7 @@ export async function getWorkspaceDetail(
       .where(
         and(eq(insights.userId, userId), eq(insights.workspaceId, workspaceId)),
       ),
+    countWorkspaceSubscriptions(env, userId, workspaceId),
     db
       .select({
         id: emails.id,
@@ -218,6 +221,7 @@ export async function getWorkspaceDetail(
       dashboards: dashboardCountRow[0]?.count ?? 0,
       reports: reportCountRow[0]?.count ?? 0,
       insights: insightCountRow[0]?.count ?? 0,
+      subscriptions: subscriptionCount,
     },
     recentEmails,
     recentArtifacts,

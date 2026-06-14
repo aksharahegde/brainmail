@@ -167,6 +167,108 @@ VALUES
     datetime('now')
   );
 
+INSERT OR IGNORE INTO sources (id, user_id, source_type, title)
+VALUES ('source_demo_001', 'user_demo_001', 'gmail', 'Demo Gmail');
+
+INSERT OR IGNORE INTO emails (
+  id,
+  source_id,
+  user_id,
+  subject,
+  sender,
+  category,
+  processing_status,
+  received_at
+)
+VALUES
+  (
+    'email_sub_aws_001',
+    'source_demo_001',
+    'user_demo_001',
+    'AWS monthly invoice',
+    'billing@aws.amazon.com',
+    'subscription',
+    'completed',
+    datetime('now', '-20 days')
+  ),
+  (
+    'email_sub_notion_001',
+    'source_demo_001',
+    'user_demo_001',
+    'Notion renewal notice',
+    'billing@notion.so',
+    'subscription',
+    'completed',
+    datetime('now', '-10 days')
+  ),
+  (
+    'email_sub_aws_dup_001',
+    'source_demo_001',
+    'user_demo_001',
+    'AWS duplicate billing',
+    'aws-billing@amazon.com',
+    'subscription',
+    'completed',
+    datetime('now', '-5 days')
+  );
+
+INSERT OR IGNORE INTO subscriptions (
+  id,
+  user_id,
+  source_id,
+  name,
+  amount,
+  currency,
+  billing_period,
+  renewal_date,
+  status
+)
+VALUES
+  (
+    'subscription_aws_001',
+    'user_demo_001',
+    'email_sub_aws_001',
+    'AWS',
+    89.5,
+    'USD',
+    'monthly',
+    datetime('now', '+12 days'),
+    'active'
+  ),
+  (
+    'subscription_notion_001',
+    'user_demo_001',
+    'email_sub_notion_001',
+    'Notion',
+    16.0,
+    'USD',
+    'monthly',
+    datetime('now', '+28 days'),
+    'active'
+  ),
+  (
+    'subscription_aws_dup_001',
+    'user_demo_001',
+    'email_sub_aws_dup_001',
+    'AWS',
+    84.0,
+    'USD',
+    'monthly',
+    datetime('now', '+12 days'),
+    'active'
+  ),
+  (
+    'subscription_github_001',
+    'user_demo_001',
+    'email_sub_aws_001',
+    'GitHub',
+    4.0,
+    'USD',
+    'monthly',
+    datetime('now', '+60 days'),
+    'active'
+  );
+
 INSERT OR IGNORE INTO insights (
   id,
   user_id,
