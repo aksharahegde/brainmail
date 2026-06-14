@@ -12,6 +12,7 @@ import {
   createUserSession,
   revokeSession,
 } from '../lib/session';
+import { writeAuditLog } from '../audit/service';
 
 function getAppUrl(env: Env): string {
   return env.APP_URL ?? 'http://localhost:3000';
@@ -63,6 +64,11 @@ export async function handleAuthCallback(
     const result = await handleGoogleOAuthCallback(env, code, state);
 
     if (result.purpose === 'connect') {
+      await writeAuditLog(env, {
+        userId: result.userId,
+        action: 'auth.account_connected',
+        payload: { provider: 'google' },
+      });
       return Response.redirect(
         `${getAppUrl(env)}/workspaces/startup/settings?connected=true`,
         302,
@@ -70,6 +76,11 @@ export async function handleAuthCallback(
     }
 
     const session = await createUserSession(env, result.userId);
+    await writeAuditLog(env, {
+      userId: result.userId,
+      action: 'auth.login',
+      payload: { provider: 'google' },
+    });
     return new Response(null, {
       status: 302,
       headers: {
@@ -119,7 +130,16 @@ export async function handleAuthLogout(
     return errorResponse('Method not allowed', 405);
   }
 
+  const authResult = await requireAuth(request, env);
+  if (isResponse(authResult)) {
+    return authResult;
+  }
+
   await revokeSession(env, request);
+  await writeAuditLog(env, {
+    userId: authResult.id,
+    action: 'auth.logout',
+  });
 
   return successResponse(
     { loggedOut: true },
@@ -206,6 +226,12 @@ export async function handleAccountsDisconnect(
   if (!removed) {
     return errorResponse('Account not found', 404);
   }
+
+  await writeAuditLog(env, {
+    userId: authResult.id,
+    action: 'auth.account_disconnected',
+    payload: { accountId },
+  });
 
   return successResponse({ disconnected: true });
 }

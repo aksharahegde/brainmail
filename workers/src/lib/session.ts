@@ -155,3 +155,11 @@ export async function revokeSession(
   await db.delete(sessions).where(eq(sessions.tokenHash, tokenHash));
   return true;
 }
+
+export async function revokeAllUserSessions(
+  env: Env,
+  userId: string,
+): Promise<void> {
+  const db = createDb(env.DB);
+  await db.delete(sessions).where(eq(sessions.userId, userId));
+}

@@ -4,6 +4,10 @@ import {
   type EmailCategory,
   type ExtractedEntity,
 } from './types';
+import {
+  withSecuritySystemPrompt,
+  wrapUntrustedEmailContent,
+} from '../security/prompt-safety';
 
 const CLASSIFICATION_MODEL = '@cf/meta/llama-3.1-8b-instruct';
 const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
@@ -168,13 +172,14 @@ export async function classifyEmail(
       messages: [
         {
           role: 'system',
-          content:
+          content: withSecuritySystemPrompt(
             'Classify the email into one category and return JSON only: {"category":"invoice","confidence":0.9}. Allowed categories: ' +
-            EMAIL_CATEGORIES.join(', '),
+              EMAIL_CATEGORIES.join(', '),
+          ),
         },
         {
           role: 'user',
-          content: JSON.stringify(input),
+          content: wrapUntrustedEmailContent(input),
         },
       ],
       max_tokens: 120,
@@ -221,12 +226,13 @@ export async function extractEntities(
       messages: [
         {
           role: 'system',
-          content:
+          content: withSecuritySystemPrompt(
             'Extract structured entities from the email. Return JSON only: {"entities":[{"entityType":"contact","confidence":0.9,"data":{"name":"Jane","email":"jane@example.com"}}]}. Entity types may include contact, company, invoice, receipt, subscription, flight, hotel, meeting, task.',
+          ),
         },
         {
           role: 'user',
-          content: JSON.stringify(input),
+          content: wrapUntrustedEmailContent(input),
         },
       ],
       max_tokens: 500,

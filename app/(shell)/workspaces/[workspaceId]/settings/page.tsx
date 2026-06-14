@@ -2,6 +2,9 @@ import { Suspense } from 'react';
 
 import { ConnectedAccountsPanel } from '@/components/auth/connected-accounts-panel';
 import { GmailSyncStatusPanel } from '@/components/gmail/gmail-sync-status-panel';
+import { AccountDeletionPanel } from '@/components/security/account-deletion-panel';
+import { AuditLogPanel } from '@/components/security/audit-log-panel';
+import { DataExportPanel } from '@/components/security/data-export-panel';
 
 export default function WorkspaceSettingsPage() {
   return (
@@ -9,7 +12,7 @@ export default function WorkspaceSettingsPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
         <p className="text-sm text-muted-foreground">
-          Workspace preferences and connected accounts.
+          Workspace preferences, connected accounts, and security controls.
         </p>
       </div>
       <Suspense
@@ -20,6 +23,9 @@ export default function WorkspaceSettingsPage() {
         <ConnectedAccountsPanel />
       </Suspense>
       <GmailSyncStatusPanel />
+      <DataExportPanel />
+      <AuditLogPanel />
+      <AccountDeletionPanel />
     </div>
   );
 }

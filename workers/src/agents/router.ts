@@ -1,4 +1,9 @@
 import type { AgentType, RouterPlan } from './types';
+import {
+  containsPromptInjectionAttempt,
+  withSecuritySystemPrompt,
+  wrapUntrustedUserMessage,
+} from '../security/prompt-safety';
 
 const ROUTER_MODEL = '@cf/meta/llama-3.1-8b-instruct';
 
@@ -135,6 +140,16 @@ export async function routeMessage(
     entities?: string[];
   },
 ): Promise<RouterPlan> {
+  if (containsPromptInjectionAttempt(message)) {
+    return {
+      intent: 'information_retrieval',
+      agent: 'search',
+      entities: [],
+      tools: ['search_emails', 'search_entities'],
+      expectedArtifact: 'email_list',
+    };
+  }
+
   if (
     memory?.lastAgent &&
     /\b(that|those|it|same|again|more)\b/i.test(message)
@@ -157,12 +172,13 @@ export async function routeMessage(
       messages: [
         {
           role: 'system',
-          content:
+          content: withSecuritySystemPrompt(
             'Route the user query to one agent. Return JSON only: {"intent":"analytics_query","agent":"analytics","entities":["OpenAI"],"tools":["aggregate_spending"],"expectedArtifact":"table"}. Allowed agents: search, analytics, action, automation, insight.',
+          ),
         },
         {
           role: 'user',
-          content: message,
+          content: wrapUntrustedUserMessage(message),
         },
       ],
       max_tokens: 180,
