@@ -104,4 +104,4 @@ scripts/       Infra provision/deploy scripts
 
 ## Phase Docs
 
-Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–5 are complete. Phase 6 adds the knowledge graph entity layer.
+Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–6 are complete. Phase 7 adds global search with keyword, vector, and hybrid retrieval.

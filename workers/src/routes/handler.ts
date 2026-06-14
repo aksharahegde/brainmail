@@ -14,6 +14,7 @@ import { handleEmailDetail, handleEmailsList } from './emails';
 import { handleEntitiesList, handleEntityDetail } from './entities';
 import { handleContactsList, handleContactDetail } from './contacts';
 import { handleGraph } from './graph';
+import { handleGlobalSearch } from './search';
 
 export async function handleApiRequest(
   request: Request,
@@ -92,6 +93,10 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/graph') {
     return handleGraph(request, env);
+  }
+
+  if (pathname === '/api/v1/search') {
+    return handleGlobalSearch(request, env);
   }
 
   return errorResponse('Not found', 404);
