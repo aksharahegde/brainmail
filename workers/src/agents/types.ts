@@ -40,6 +40,13 @@ export type AgentContext = {
   userId: string;
   sessionId: string;
   message: string;
+  memory?: {
+    recentMessages: Array<{ role: string; content: string }>;
+    lastAgent?: AgentType | null;
+    lastArtifactId?: string | null;
+    entities?: string[];
+  };
+  workspaceId?: string | null;
 };
 
 export type AgentRunResult = {
