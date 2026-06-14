@@ -11,7 +11,11 @@ export default function WorkspaceSettingsPage() {
           Workspace preferences and connected accounts.
         </p>
       </div>
-      <Suspense fallback={<p className="text-sm text-muted-foreground">Loading accounts…</p>}>
+      <Suspense
+        fallback={
+          <p className="text-sm text-muted-foreground">Loading accounts…</p>
+        }
+      >
         <ConnectedAccountsPanel />
       </Suspense>
     </div>
