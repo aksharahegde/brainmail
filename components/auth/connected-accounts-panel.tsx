@@ -14,17 +14,18 @@ import {
 export function ConnectedAccountsPanel() {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
+  const connectSuccess = searchParams.get('connected') === 'true';
   const [pendingAccountId, setPendingAccountId] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
-  const [connectSuccess, setConnectSuccess] = useState(false);
 
   useEffect(() => {
-    if (searchParams.get('connected') === 'true') {
-      setConnectSuccess(true);
-      void queryClient.invalidateQueries({ queryKey: ['connected-accounts'] });
+    if (!connectSuccess) {
+      return;
     }
-  }, [queryClient, searchParams]);
+
+    void queryClient.invalidateQueries({ queryKey: ['connected-accounts'] });
+  }, [connectSuccess, queryClient]);
 
   const {
     data: accounts = [],
@@ -84,7 +85,7 @@ export function ConnectedAccountsPanel() {
         <div>
           <h2 className="text-base font-semibold">Connected accounts</h2>
           <p className="text-sm text-muted-foreground">
-            Link Gmail for sync in a later phase.
+            Link Gmail to import and sync messages.
           </p>
         </div>
         <Button

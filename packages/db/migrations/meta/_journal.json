@@ -15,6 +15,13 @@
       "when": 1781382224325,
       "tag": "0001_wandering_slayback",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1781411338658,
+      "tag": "0002_panoramic_spyke",
+      "breakpoints": true
     }
   ]
 }

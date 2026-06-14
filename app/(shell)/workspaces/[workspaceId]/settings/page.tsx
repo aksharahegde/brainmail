@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 
 import { ConnectedAccountsPanel } from '@/components/auth/connected-accounts-panel';
+import { GmailSyncStatusPanel } from '@/components/gmail/gmail-sync-status-panel';
 
 export default function WorkspaceSettingsPage() {
   return (
@@ -14,6 +15,7 @@ export default function WorkspaceSettingsPage() {
       <Suspense fallback={<p className="text-sm text-muted-foreground">Loading accounts…</p>}>
         <ConnectedAccountsPanel />
       </Suspense>
+      <GmailSyncStatusPanel />
     </div>
   );
 }
