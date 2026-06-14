@@ -31,6 +31,7 @@ export type WorkspaceDetail = {
     insights: number;
     subscriptions: number;
     contacts: number;
+    automations: number;
   };
   recentEmails: Array<{
     id: string;

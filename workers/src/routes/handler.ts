@@ -64,6 +64,12 @@ import {
   handleSubscriptionRoutes,
   handleSubscriptionsList,
 } from './subscriptions';
+import {
+  handleAutomationCreate,
+  handleAutomationRoutes,
+  handleAutomationTemplates,
+  handleAutomationsList,
+} from './automations';
 
 export async function handleApiRequest(
   request: Request,
@@ -285,6 +291,39 @@ export async function handleApiRequest(
   );
   if (subscriptionMatch) {
     return handleSubscriptionRoutes(request, env, subscriptionMatch[1]);
+  }
+
+  if (pathname === '/api/v1/automations/templates') {
+    return handleAutomationTemplates(request);
+  }
+
+  if (pathname === '/api/v1/automations') {
+    if (request.method === 'GET') {
+      return handleAutomationsList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleAutomationCreate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const automationRunsMatch = pathname.match(
+    /^\/api\/v1\/automations\/([^/]+)\/runs$/,
+  );
+  if (automationRunsMatch) {
+    return handleAutomationRoutes(request, env, automationRunsMatch[1]);
+  }
+
+  const automationRunMatch = pathname.match(
+    /^\/api\/v1\/automations\/([^/]+)\/run$/,
+  );
+  if (automationRunMatch) {
+    return handleAutomationRoutes(request, env, automationRunMatch[1]);
+  }
+
+  const automationMatch = pathname.match(/^\/api\/v1\/automations\/([^/]+)$/);
+  if (automationMatch) {
+    return handleAutomationRoutes(request, env, automationMatch[1]);
   }
 
   if (pathname === '/api/v1/chat') {

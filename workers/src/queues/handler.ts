@@ -9,6 +9,7 @@ import { processEmailIngestion } from '../processing/ingest';
 import { processEmailAttachments } from '../processing/process-attachments';
 import { updateEmailProcessingState } from '../processing/state';
 import { runScheduledInsightGeneration } from '../insights/service';
+import { runScheduledAutomations } from '../automations/service';
 import type {
   AttachmentPipelineMessage,
   EmailIngestedMessage,
@@ -52,6 +53,17 @@ function isAttachmentPipelineMessage(
     typeof body === 'object' &&
     (body as { type?: string }).type === 'process_attachments' &&
     typeof (body as AttachmentPipelineMessage).emailId === 'string'
+  );
+}
+
+function isAutomationExecutionMessage(body: unknown): body is {
+  type: 'run_scheduled_automations';
+  schedule?: 'daily' | 'weekly';
+} {
+  return (
+    !!body &&
+    typeof body === 'object' &&
+    (body as { type?: string }).type === 'run_scheduled_automations'
   );
 }
 
@@ -137,6 +149,11 @@ export async function handleQueueBatch(
         isInsightGenerationMessage(body)
       ) {
         await runScheduledInsightGeneration(env);
+      } else if (
+        queueIncludes(batch.queue, 'automation-execution') &&
+        isAutomationExecutionMessage(body)
+      ) {
+        await runScheduledAutomations(env, body.schedule ?? 'daily');
       }
     } catch (error) {
       const errorMessage =

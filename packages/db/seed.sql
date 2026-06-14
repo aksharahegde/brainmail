@@ -405,6 +405,54 @@ VALUES
     datetime('now')
   );
 
+  );
+
+INSERT OR IGNORE INTO automations (
+  id,
+  user_id,
+  workspace_id,
+  name,
+  definition,
+  schedule,
+  enabled,
+  created_at,
+  updated_at
+)
+VALUES
+  (
+    'automation_invoice_finance_001',
+    'user_demo_001',
+    'finance',
+    'Route invoices to Finance',
+    '{"description":"Route invoice emails into Finance.","trigger":{"type":"new_email"},"conditions":[{"type":"category","operator":"equals","value":"invoice"},{"type":"workspace","operator":"equals","value":"finance"}],"actions":[{"type":"assign_workspace","value":"finance"},{"type":"add_to_collection","value":"AI Expenses"}]}',
+    'manual',
+    1,
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'automation_travel_tag_001',
+    'user_demo_001',
+    'travel',
+    'Tag travel bookings',
+    '{"description":"Tag travel-related email for Travel workspace.","trigger":{"type":"new_email"},"conditions":[{"type":"workspace","operator":"equals","value":"travel"}],"actions":[{"type":"add_label","value":"travel"},{"type":"assign_workspace","value":"travel"}]}',
+    'manual',
+    1,
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'automation_weekly_digest_001',
+    'user_demo_001',
+    'startup',
+    'Weekly inbox digest',
+    '{"description":"Weekly digest notification for startup inbox.","trigger":{"type":"schedule","schedule":"weekly"},"conditions":[{"type":"workspace","operator":"equals","value":"startup"}],"actions":[{"type":"notify","value":"Weekly inbox digest ready"}]}',
+    'weekly',
+    1,
+    datetime('now'),
+    datetime('now')
+  );
+
 INSERT OR IGNORE INTO chat_sessions (id, user_id, title)
 VALUES ('chat_session_001', 'user_demo_001', 'Welcome');
 
