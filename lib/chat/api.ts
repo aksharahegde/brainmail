@@ -6,11 +6,7 @@ export type ApiResponse<T> = {
   error?: string;
 };
 
-export type UIBlock = {
-  id: string;
-  type: string;
-  data: Record<string, unknown>;
-};
+export type UIBlock = import('@/lib/generative-ui/types').UIBlock;
 
 export type ChatAgentResponse = {
   sessionId: string;

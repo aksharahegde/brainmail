@@ -142,6 +142,49 @@ export function planUiResponse(result: AgentRunResult): {
     }>(invoiceOutput);
 
     if (invoices.length > 0) {
+      const chartPoints = invoices
+        .filter((invoice) => invoice.invoiceDate)
+        .slice(0, 8)
+        .map((invoice) => ({
+          label: invoice.invoiceDate?.slice(0, 10) ?? 'Unknown',
+          value: invoice.amount ?? 0,
+        }));
+
+      if (chartPoints.length > 1) {
+        blocks.push({
+          id: blockId('block'),
+          type: 'line_chart',
+          data: {
+            title: 'Invoice spend trend',
+            points: chartPoints,
+          },
+        });
+      }
+
+      if (spending && typeof spending === 'object') {
+        const vendorData = spending as {
+          vendor?: string;
+          combinedTotal?: number;
+        };
+        if (vendorData.vendor) {
+          blocks.push({
+            id: blockId('block'),
+            type: 'vendor_profile',
+            data: {
+              name: vendorData.vendor,
+              spend: vendorData.combinedTotal ?? 0,
+              invoiceCount: invoices.length,
+              trend: chartPoints.length > 1 ? 'tracked' : 'limited data',
+              recentInvoices: invoices.slice(0, 3).map((invoice) => ({
+                invoiceNumber: invoice.invoiceNumber,
+                amount: invoice.amount,
+                currency: invoice.currency,
+              })),
+            },
+          });
+        }
+      }
+
       blocks.push({
         id: blockId('block'),
         type: 'invoice_table',
@@ -237,6 +280,20 @@ export function planUiResponse(result: AgentRunResult): {
         },
       });
     }
+  }
+
+  if (actions.length > 0) {
+    blocks.push({
+      id: blockId('block'),
+      type: 'action_group',
+      data: {
+        actions: actions.map((action) => ({
+          id: action.id,
+          label: action.label,
+          type: action.type,
+        })),
+      },
+    });
   }
 
   return { blocks, actions };

@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { UiResponseRenderer } from '@/components/generative-ui/ui-response-renderer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -10,76 +11,7 @@ import {
   listChatSessions,
   sendChatMessage,
   type ChatAgentResponse,
-  type UIBlock,
 } from '@/lib/chat/api';
-
-function renderBlock(block: UIBlock) {
-  if (block.type === 'markdown' && typeof block.data.content === 'string') {
-    return <p className="text-sm">{block.data.content}</p>;
-  }
-
-  if (block.type === 'kpi') {
-    return (
-      <div className="rounded-md border px-3 py-2">
-        <p className="text-xs text-muted-foreground">
-          {String(block.data.title)}
-        </p>
-        <p className="text-lg font-semibold">{String(block.data.value)}</p>
-      </div>
-    );
-  }
-
-  if (block.type === 'email_list' && Array.isArray(block.data.emails)) {
-    return (
-      <ul className="space-y-2">
-        {block.data.emails.map((email) => {
-          const item = email as {
-            id: string;
-            subject: string | null;
-            sender: string | null;
-          };
-          return (
-            <li
-              key={item.id}
-              className="rounded-md bg-muted/40 px-3 py-2 text-sm"
-            >
-              <p className="font-medium">{item.subject ?? 'No subject'}</p>
-              <p className="text-xs text-muted-foreground">
-                {item.sender ?? 'Unknown sender'}
-              </p>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
-
-  if (block.type === 'table' && Array.isArray(block.data.rows)) {
-    return (
-      <div className="overflow-x-auto rounded-md border">
-        <table className="min-w-full text-sm">
-          <tbody>
-            {block.data.rows.map((row, index) => (
-              <tr key={index} className="border-t">
-                {(row as string[]).map((cell, cellIndex) => (
-                  <td key={cellIndex} className="px-3 py-2">
-                    {cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-
-  return (
-    <pre className="overflow-x-auto rounded-md bg-muted/40 p-3 text-xs">
-      {JSON.stringify(block.data, null, 2)}
-    </pre>
-  );
-}
 
 export function AgentChatPanel() {
   const [message, setMessage] = useState('');
@@ -167,17 +99,7 @@ export function AgentChatPanel() {
       {latestResponse ? (
         <section className="space-y-3 rounded-lg border p-4">
           <h3 className="text-sm font-medium">Latest agent response</h3>
-          <div className="space-y-3">
-            {latestResponse.blocks.map((block) => (
-              <div key={block.id}>{renderBlock(block)}</div>
-            ))}
-          </div>
-          {latestResponse.artifact ? (
-            <p className="text-xs text-muted-foreground">
-              Artifact {latestResponse.artifact.id} (
-              {latestResponse.artifact.type})
-            </p>
-          ) : null}
+          <UiResponseRenderer response={latestResponse} />
         </section>
       ) : null}
 
