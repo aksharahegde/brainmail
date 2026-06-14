@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 
 import { ConnectedAccountsPanel } from '@/components/auth/connected-accounts-panel';
 import { GmailSyncStatusPanel } from '@/components/gmail/gmail-sync-status-panel';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 import { AccountDeletionPanel } from '@/components/security/account-deletion-panel';
 import { AuditLogPanel } from '@/components/security/audit-log-panel';
 import { DataExportPanel } from '@/components/security/data-export-panel';
@@ -9,16 +11,17 @@ import { SystemStatusPanel } from '@/components/ops/system-status-panel';
 
 export default function WorkspaceSettingsPage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-        <p className="text-sm text-muted-foreground">
-          Workspace preferences, connected accounts, and security controls.
-        </p>
-      </div>
+    <BriefingPage className="space-y-8">
+      <BriefingHeader
+        eyebrow="Preferences"
+        title="Settings"
+        description="Connected accounts, sync, security controls, and system health."
+      />
       <Suspense
         fallback={
-          <p className="text-sm text-muted-foreground">Loading accounts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading accounts…
+          </p>
         }
       >
         <ConnectedAccountsPanel />
@@ -28,6 +31,6 @@ export default function WorkspaceSettingsPage() {
       <DataExportPanel />
       <AuditLogPanel />
       <AccountDeletionPanel />
-    </div>
+    </BriefingPage>
   );
 }

@@ -50,17 +50,17 @@ export function ProcessedEmailActivity({
       </form>
 
       {error instanceof Error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {error.message}
         </p>
       ) : null}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           Loading processed emails…
         </p>
       ) : emails.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           No processed emails yet. Connect Gmail and run a sync to populate
           activity.
         </p>
@@ -70,15 +70,15 @@ export function ProcessedEmailActivity({
             <li
               key={email.id}
               data-testid={`email-row-${email.id}`}
-              className="rounded-lg border p-4"
+              className="briefing-card"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <p className="font-medium">{email.subject ?? 'No subject'}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body-sm text-muted-foreground">
                     {email.sender ?? 'Unknown sender'}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body-sm text-muted-foreground">
                     {email.snippet ?? 'No preview available'}
                   </p>
                 </div>

@@ -27,6 +27,14 @@ const ROUTE_RULES: Array<{ pattern: RegExp; rule: RateLimitRule }> = [
     pattern: /^\/api\/v1\/account\/delete$/,
     rule: { windowSeconds: 3600, maxRequests: 3 },
   },
+  {
+    pattern: /^\/api\/v1\/webhooks\/gmail/,
+    rule: { windowSeconds: 60, maxRequests: 60 },
+  },
+  {
+    pattern: /^\/api\/v1\/artifacts\/shared\//,
+    rule: { windowSeconds: 60, maxRequests: 30 },
+  },
 ];
 
 function resolveRule(pathname: string): RateLimitRule {
@@ -63,27 +71,31 @@ export async function enforceRateLimit(
     now.getTime() - rule.windowSeconds * 1000,
   ).toISOString();
 
+  const incrementResult = await env.DB.prepare(
+    `UPDATE rate_limit_buckets
+     SET request_count = request_count + 1
+     WHERE bucket_key = ?
+       AND window_started_at >= ?
+       AND request_count < ?`,
+  )
+    .bind(bucketKey, windowStart, rule.maxRequests)
+    .run();
+
+  if (incrementResult.meta.changes > 0) {
+    return null;
+  }
+
   const existing = await env.DB.prepare(
     'SELECT request_count, window_started_at FROM rate_limit_buckets WHERE bucket_key = ?',
   )
     .bind(bucketKey)
     .first<{ request_count: number; window_started_at: string }>();
 
-  if (!existing || existing.window_started_at < windowStart) {
-    await env.DB.prepare(
-      `INSERT INTO rate_limit_buckets (bucket_key, request_count, window_started_at)
-       VALUES (?, 1, ?)
-       ON CONFLICT(bucket_key) DO UPDATE SET
-         request_count = 1,
-         window_started_at = excluded.window_started_at`,
-    )
-      .bind(bucketKey, nowIso)
-      .run();
-
-    return null;
-  }
-
-  if (existing.request_count >= rule.maxRequests) {
+  if (
+    existing &&
+    existing.window_started_at >= windowStart &&
+    existing.request_count >= rule.maxRequests
+  ) {
     return errorResponse('Rate limit exceeded', 429, {
       headers: {
         'Retry-After': String(rule.windowSeconds),
@@ -92,11 +104,13 @@ export async function enforceRateLimit(
   }
 
   await env.DB.prepare(
-    `UPDATE rate_limit_buckets
-     SET request_count = request_count + 1
-     WHERE bucket_key = ?`,
+    `INSERT INTO rate_limit_buckets (bucket_key, request_count, window_started_at)
+     VALUES (?, 1, ?)
+     ON CONFLICT(bucket_key) DO UPDATE SET
+       request_count = 1,
+       window_started_at = excluded.window_started_at`,
   )
-    .bind(bucketKey)
+    .bind(bucketKey, nowIso)
     .run();
 
   return null;

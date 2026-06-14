@@ -28,38 +28,30 @@ export function ContactWorkspace({ workspaceId }: { workspaceId: string }) {
   const profile = profileQuery.data;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div className="space-y-6">
       <section className="space-y-4">
         {summary ? (
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">Contacts</p>
-              <p className="text-2xl font-semibold">{summary.totalContacts}</p>
-            </div>
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">Avg. relationship</p>
-              <p className="text-2xl font-semibold">
-                {formatScore(summary.averageRelationshipScore)}
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">Follow-ups due</p>
-              <p className="text-2xl font-semibold">{summary.followUpCount}</p>
-            </div>
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">Active (30 days)</p>
-              <p className="text-2xl font-semibold">
-                {summary.communicationAnalytics.activeContactsLast30Days}
-              </p>
-            </div>
+          <div className="briefing-card ai-accent-bg space-y-2">
+            <p className="briefing-eyebrow ai-accent">Relationship pulse</p>
+            <p className="text-body text-foreground/90">
+              {summary.totalContacts} contacts tracked with an average
+              relationship score of{' '}
+              {formatScore(summary.averageRelationshipScore)}.
+              {summary.followUpCount > 0
+                ? ` ${summary.followUpCount} follow-ups need your attention.`
+                : ' No follow-ups are overdue.'}
+              {` ${summary.communicationAnalytics.activeContactsLast30Days} were active in the last 30 days.`}
+            </p>
           </div>
         ) : null}
 
-        <h2 className="text-lg font-medium">Contacts</h2>
+        <h2 className="briefing-section-title">Contacts</h2>
         {listQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading contacts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading contacts…
+          </p>
         ) : contacts.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No contacts tracked yet for this workspace.
           </p>
         ) : (
@@ -70,14 +62,14 @@ export function ContactWorkspace({ workspaceId }: { workspaceId: string }) {
                   type="button"
                   data-testid={`contact-row-${contact.id}`}
                   onClick={() => setSelectedId(contact.id)}
-                  className="w-full rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent"
+                  className="briefing-list-item w-full text-left transition-colors hover:border-border"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="font-medium">
                         {contact.name ?? contact.email ?? 'Contact'}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-body-sm text-muted-foreground">
                         {contact.email ?? 'No email'}
                         {contact.daysSinceLastContact != null
                           ? ` · ${contact.daysSinceLastContact} days ago`
@@ -102,22 +94,22 @@ export function ContactWorkspace({ workspaceId }: { workspaceId: string }) {
         )}
       </section>
 
-      <section className="space-y-4 rounded-lg border p-4">
-        <h2 className="text-lg font-medium">Contact profile</h2>
+      <section className="briefing-card space-y-4">
+        <h2 className="briefing-section-title">Contact profile</h2>
         {!selectedId ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Select a contact to review relationship score, communication
             analytics, and follow-up reminders.
           </p>
         ) : profileQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading profile…</p>
+          <p className="text-body-sm text-muted-foreground">Loading profile…</p>
         ) : profile ? (
           <div className="space-y-4">
             <div>
               <p className="text-xl font-semibold">
                 {profile.contact.name ?? profile.contact.email ?? 'Contact'}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-sm text-muted-foreground">
                 Relationship score{' '}
                 {formatScore(profile.contact.relationshipScore)}
                 {profile.contact.interactionCount != null

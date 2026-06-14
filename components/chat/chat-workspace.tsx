@@ -156,10 +156,10 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
   const memory = sessionQuery.data?.memory;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-      <aside className="space-y-3 rounded-lg border p-4">
+    <div className="space-y-8">
+      <aside className="briefing-card space-y-4">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-sm font-medium">Sessions</h2>
+          <h2 className="briefing-eyebrow">Sessions</h2>
           <div data-testid="chat-session-create-submit">
             <Button
               type="button"
@@ -178,10 +178,10 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
               <button
                 type="button"
                 data-testid={`chat-session-row-${session.id}`}
-                className={`w-full rounded-md px-3 py-2 text-left text-sm ${
+                className={`w-full rounded-[10px] px-3 py-2 text-left text-body-sm transition-colors ${
                   sessionId === session.id
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted/40 hover:bg-muted'
+                    ? 'bg-secondary text-secondary-foreground'
+                    : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
                 }`}
                 onClick={() => setSessionId(session.id)}
               >
@@ -192,39 +192,38 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
         </ul>
       </aside>
 
-      <section className="flex min-h-[70vh] flex-col rounded-lg border">
-        <div className="border-b px-4 py-3">
-          <h2 className="text-lg font-medium">Chat</h2>
-          <p className="text-sm text-muted-foreground">
-            Streaming agent responses with session memory and artifact
-            references.
+      <section className="briefing-card flex min-h-[70vh] flex-col p-0">
+        <div className="border-b border-border/60 px-6 py-5">
+          <p className="briefing-eyebrow ai-accent">Assistant report</p>
+          <p className="text-body-sm text-muted-foreground">
+            Streaming responses with session memory and inline artifacts.
           </p>
           {memory?.lastArtifactId ? (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-2 text-caption text-muted-foreground">
               Session memory: last artifact {memory.lastArtifactId}
               {memory.lastAgent ? ` · ${memory.lastAgent}` : ''}
             </p>
           ) : null}
         </div>
 
-        <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+        <div className="flex-1 space-y-8 overflow-y-auto px-6 py-8">
           {messages.length === 0 && !streaming ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-body-sm text-muted-foreground">
               Ask about emails, spend, automations, or follow up on a previous
               answer with “show that again”.
             </p>
           ) : (
             messages.map((entry) => (
-              <ChatMessageBubble key={entry.id} message={entry} />
+              <ChatMessageDocument key={entry.id} message={entry} />
             ))
           )}
 
           {streaming ? (
             <div
               data-testid="chat-streaming-response"
-              className="space-y-3 rounded-lg border bg-muted/20 p-4"
+              className="briefing-report ai-accent-bg space-y-4"
             >
-              <p className="text-xs text-muted-foreground">
+              <p className="text-caption ai-accent">
                 {streaming.status}
                 {streaming.agent ? ` · ${streaming.agent}` : ''}
                 {streaming.intent ? ` · ${streaming.intent}` : ''}
@@ -235,7 +234,7 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
                 </div>
               ))}
               {streaming.artifact ? (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-caption text-muted-foreground">
                   Artifact {streaming.artifact.id} ({streaming.artifact.type})
                 </p>
               ) : null}
@@ -243,29 +242,36 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
           ) : null}
         </div>
 
-        <form className="flex gap-2 border-t px-4 py-4" onSubmit={handleSubmit}>
+        <form
+          className="flex gap-3 border-t border-border/60 px-6 py-5"
+          onSubmit={handleSubmit}
+        >
           <div data-testid="chat-message-input" className="flex-1">
             <Input
               value={message}
               onChange={(event) => setMessage(event.target.value)}
-              placeholder="Message BrainMail"
+              placeholder="What should I review or prepare?"
             />
           </div>
           <div data-testid="chat-message-submit">
-            <Button type="submit" disabled={sendMutation.isPending}>
-              {sendMutation.isPending ? 'Streaming…' : 'Send'}
+            <Button
+              type="submit"
+              className="bg-ai text-ai-foreground hover:bg-ai/90"
+              disabled={sendMutation.isPending}
+            >
+              {sendMutation.isPending ? 'Preparing…' : 'Ask'}
             </Button>
           </div>
         </form>
 
         {sendMutation.error instanceof Error ? (
-          <p className="px-4 pb-4 text-sm text-destructive" role="alert">
+          <p className="px-6 pb-5 text-body-sm text-destructive" role="alert">
             {sendMutation.error.message}
           </p>
         ) : null}
 
         {lastResponse ? (
-          <div className="px-4 pb-4">
+          <div className="px-6 pb-5">
             <ArtifactSaveMenu
               workspaceId={workspaceId}
               response={lastResponse}
@@ -277,7 +283,7 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
   );
 }
 
-function ChatMessageBubble({ message }: { message: ChatMessage }) {
+function ChatMessageDocument({ message }: { message: ChatMessage }) {
   const metadata = message.metadata ?? {};
   const blocks = Array.isArray(metadata.blocks)
     ? (metadata.blocks as UIBlock[])
@@ -288,16 +294,18 @@ function ChatMessageBubble({ message }: { message: ChatMessage }) {
       : null;
 
   return (
-    <div
+    <article
       data-testid={`chat-message-row-${message.id}`}
-      className={`rounded-lg px-4 py-3 ${
-        message.role === 'user' ? 'bg-muted/50' : 'border'
-      }`}
+      className={
+        message.role === 'user'
+          ? 'briefing-prompt'
+          : 'briefing-report space-y-3'
+      }
     >
-      <p className="mb-1 text-xs uppercase text-muted-foreground">
-        {message.role}
+      <p className="briefing-eyebrow">
+        {message.role === 'user' ? 'Your prompt' : 'Prepared response'}
       </p>
-      <p className="text-sm">{message.content}</p>
+      <p className="text-body">{message.content}</p>
       {blocks.length > 0 ? (
         <div className="mt-3 space-y-2">
           {blocks.map((block) => (
@@ -310,7 +318,7 @@ function ChatMessageBubble({ message }: { message: ChatMessage }) {
           Artifact {artifact.id} ({artifact.type})
         </p>
       ) : null}
-    </div>
+    </article>
   );
 }
 
@@ -318,7 +326,7 @@ export function ChatWorkspaceLink({ workspaceId }: { workspaceId: string }) {
   return (
     <Link
       href={`/workspaces/${workspaceId}/chat`}
-      className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+      className="text-body-sm font-medium text-foreground underline-offset-4 transition-colors hover:text-ai hover:underline"
     >
       Open full chat
     </Link>

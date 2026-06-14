@@ -1,3 +1,4 @@
+import { BriefingPage } from '@/components/layout/briefing-page';
 import { WorkspaceHome } from '@/components/workspaces/workspace-home';
 
 export default async function WorkspaceOverviewPage({
@@ -7,5 +8,9 @@ export default async function WorkspaceOverviewPage({
 }) {
   const { workspaceId } = await params;
 
-  return <WorkspaceHome workspaceId={workspaceId} />;
+  return (
+    <BriefingPage>
+      <WorkspaceHome workspaceId={workspaceId} />
+    </BriefingPage>
+  );
 }

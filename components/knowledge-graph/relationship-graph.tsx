@@ -19,8 +19,8 @@ export function RelationshipGraphPanel() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-medium">Relationship graph</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="briefing-section-title">Relationship graph</h2>
+          <p className="text-body-sm text-muted-foreground">
             {data?.stats.nodeCount ?? 0} nodes · {data?.stats.edgeCount ?? 0}{' '}
             relationships
           </p>
@@ -39,20 +39,20 @@ export function RelationshipGraphPanel() {
       </div>
 
       {error instanceof Error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {error.message}
         </p>
       ) : null}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading graph…</p>
+        <p className="text-body-sm text-muted-foreground">Loading graph…</p>
       ) : nodes.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           Graph relationships appear once companies, contacts, invoices, and
           subscriptions are materialized from processed email.
         </p>
       ) : (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <section className="space-y-2 rounded-lg border p-4">
             <h3 className="text-sm font-medium">Nodes</h3>
             <ul className="max-h-80 space-y-2 overflow-y-auto">
@@ -75,7 +75,7 @@ export function RelationshipGraphPanel() {
             <h3 className="text-sm font-medium">Relationships</h3>
             <ul className="max-h-80 space-y-2 overflow-y-auto">
               {edges.length === 0 ? (
-                <li className="text-sm text-muted-foreground">
+                <li className="text-body-sm text-muted-foreground">
                   No edges mapped yet.
                 </li>
               ) : (

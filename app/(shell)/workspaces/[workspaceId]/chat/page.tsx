@@ -1,4 +1,6 @@
 import { ChatWorkspace } from '@/components/chat/chat-workspace';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 
 export default async function WorkspaceChatPage({
   params,
@@ -8,15 +10,13 @@ export default async function WorkspaceChatPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Chat</h1>
-        <p className="text-sm text-muted-foreground">
-          AI chat with streaming responses, session history, and artifact-backed
-          answers.
-        </p>
-      </div>
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="AI Conversation"
+        title="Briefing"
+        description="Collaborate with your executive assistant. Responses arrive as structured reports, not chat bubbles."
+      />
       <ChatWorkspace workspaceId={workspaceId} />
-    </div>
+    </BriefingPage>
   );
 }

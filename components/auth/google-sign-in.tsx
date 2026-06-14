@@ -37,7 +37,7 @@ export function GoogleSignIn({ errorMessage }: GoogleSignInProps) {
         type="button"
         onClick={handleSignIn}
         disabled={isLoading}
-        className="w-full"
+        className="w-full bg-foreground text-background hover:bg-foreground/90"
       >
         {isLoading ? 'Redirecting…' : 'Continue with Google'}
       </Button>

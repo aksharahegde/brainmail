@@ -86,13 +86,15 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
   const runs = runsQuery.data?.runs ?? [];
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div className="space-y-6">
       <section className="space-y-4">
-        <h2 className="text-lg font-medium">Automations</h2>
+        <h2 className="briefing-section-title">Automations</h2>
         {automationsQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading automations…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading automations…
+          </p>
         ) : automations.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No automations yet. Create one from a template below.
           </p>
         ) : (
@@ -103,10 +105,10 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
                   type="button"
                   data-testid={`automation-row-${automation.id}`}
                   onClick={() => setSelectedId(automation.id)}
-                  className="w-full rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent"
+                  className="briefing-list-item w-full text-left transition-colors hover:border-border"
                 >
                   <p className="font-medium">{automation.name}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body-sm text-muted-foreground">
                     {automation.schedule ?? 'manual'} ·{' '}
                     {automation.enabled ? 'enabled' : 'disabled'}
                   </p>
@@ -116,7 +118,7 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
           </ul>
         )}
 
-        <div className="space-y-3 rounded-lg border p-4">
+        <div className="briefing-card space-y-3">
           <h3 className="font-medium">Templates</h3>
           <div className="grid gap-2">
             {templates.map((template) => (
@@ -149,10 +151,10 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-lg border p-4">
-        <h2 className="text-lg font-medium">Automation builder</h2>
+      <section className="briefing-card space-y-4">
+        <h2 className="briefing-section-title">Automation builder</h2>
         {!selected ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Select an automation to review triggers, conditions, actions, and
             run history.
           </p>
@@ -160,7 +162,7 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
           <div className="space-y-4">
             <div>
               <p className="text-xl font-semibold">{selected.name}</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-sm text-muted-foreground">
                 {selected.schedule ?? 'manual'} schedule ·{' '}
                 {selected.enabled ? 'enabled' : 'disabled'}
               </p>
@@ -244,7 +246,7 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
                   {runs.map((run) => (
                     <li
                       key={run.id}
-                      className="rounded-md border px-3 py-2"
+                      className="briefing-list-item"
                       data-testid={`automation-run-${run.id}`}
                     >
                       <p className="font-medium">{run.status ?? 'unknown'}</p>

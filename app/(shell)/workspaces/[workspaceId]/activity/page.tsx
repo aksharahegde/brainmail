@@ -1,4 +1,6 @@
 import { ProcessedEmailActivity } from '@/components/email/processed-email-activity';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 
 export default async function WorkspaceActivityPage({
   params,
@@ -8,15 +10,13 @@ export default async function WorkspaceActivityPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Activity</h1>
-        <p className="text-sm text-muted-foreground">
-          Processed emails, categories, and extraction status for this
-          workspace.
-        </p>
-      </div>
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Signal log"
+        title="Activity"
+        description="Processed emails, categories, and extraction status for this workspace."
+      />
       <ProcessedEmailActivity workspaceId={workspaceId} />
-    </div>
+    </BriefingPage>
   );
 }

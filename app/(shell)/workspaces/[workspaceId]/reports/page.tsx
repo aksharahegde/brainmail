@@ -1,4 +1,7 @@
 import { ArtifactLibrary } from '@/components/artifacts/artifact-library';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
+import { BriefingSection } from '@/components/layout/briefing-section';
 import { ReportsDirectory } from '@/components/reports/reports-directory';
 
 export default async function WorkspaceReportsPage({
@@ -9,21 +12,16 @@ export default async function WorkspaceReportsPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-10">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Reports</h1>
-        <p className="text-sm text-muted-foreground">
-          Scheduled and on-demand reports for this workspace, plus saved
-          artifacts from chat.
-        </p>
-      </div>
-
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Artifact workspace"
+        title="Reports"
+        description="Scheduled and on-demand reports, plus saved outputs from prior conversations."
+      />
       <ReportsDirectory workspaceId={workspaceId} />
-
-      <section className="space-y-4">
-        <h2 className="text-lg font-medium">Saved artifacts</h2>
+      <BriefingSection title="Saved artifacts">
         <ArtifactLibrary workspaceId={workspaceId} />
-      </section>
-    </div>
+      </BriefingSection>
+    </BriefingPage>
   );
 }

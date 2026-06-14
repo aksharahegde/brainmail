@@ -80,11 +80,11 @@ export function ConnectedAccountsPanel() {
         : null);
 
   return (
-    <section className="space-y-4 rounded-lg border p-4">
+    <section className="briefing-card space-y-4">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h2 className="text-base font-semibold">Connected accounts</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Link Gmail to import and sync messages.
           </p>
         </div>
@@ -109,15 +109,17 @@ export function ConnectedAccountsPanel() {
       ) : null}
 
       {errorMessage ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {errorMessage}
         </p>
       ) : null}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading accounts…</p>
+        <p className="text-body-sm text-muted-foreground">Loading accounts…</p>
       ) : accounts.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No linked accounts yet.</p>
+        <p className="text-body-sm text-muted-foreground">
+          No linked accounts yet.
+        </p>
       ) : (
         <ul className="space-y-2">
           {accounts.map((account) => (

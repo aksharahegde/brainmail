@@ -7,7 +7,7 @@ import { registeredBlockTypes } from '@/lib/generative-ui';
 export function GenerativeUiPreview() {
   return (
     <div className="space-y-6">
-      <p className="text-sm text-muted-foreground">
+      <p className="text-body-sm text-muted-foreground">
         {registeredBlockTypes.length} registered block types. Backend selects
         blocks; frontend renders via registry lookup.
       </p>

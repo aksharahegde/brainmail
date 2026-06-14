@@ -63,13 +63,15 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
   const collections = collectionsQuery.data?.collections ?? [];
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div className="space-y-6">
       <section className="space-y-4">
-        <h2 className="text-lg font-medium">Collections</h2>
+        <h2 className="briefing-section-title">Collections</h2>
         {collectionsQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading collections…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading collections…
+          </p>
         ) : collections.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No collections yet. Create one or accept an AI suggestion.
           </p>
         ) : (
@@ -80,10 +82,10 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
                   type="button"
                   data-testid={`collection-row-${collection.id}`}
                   onClick={() => setSelectedId(collection.id)}
-                  className="w-full rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent"
+                  className="briefing-list-item w-full text-left transition-colors hover:border-border"
                 >
                   <p className="font-medium">{collection.name}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body-sm text-muted-foreground">
                     {collection.collectionType ?? 'user'} ·{' '}
                     {collection.memberCount} members
                   </p>
@@ -93,10 +95,7 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
           </ul>
         )}
 
-        <form
-          className="space-y-3 rounded-lg border p-4"
-          onSubmit={handleCreate}
-        >
+        <form className="briefing-card space-y-3" onSubmit={handleCreate}>
           <h3 className="font-medium">Create collection</h3>
           <div data-testid="collection-create-name-input">
             <Input
@@ -113,7 +112,7 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
             />
           </div>
           {createMutation.error instanceof Error ? (
-            <p className="text-sm text-destructive" role="alert">
+            <p className="text-body-sm text-destructive" role="alert">
               {createMutation.error.message}
             </p>
           ) : null}
@@ -125,20 +124,20 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
         </form>
       </section>
 
-      <section className="space-y-4 rounded-lg border p-4">
-        <h2 className="text-lg font-medium">Collection detail</h2>
+      <section className="briefing-card space-y-4">
+        <h2 className="briefing-section-title">Collection detail</h2>
         {!selectedId ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Select a collection to view members.
           </p>
         ) : detailQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading detail…</p>
+          <p className="text-body-sm text-muted-foreground">Loading detail…</p>
         ) : detailQuery.data ? (
           <div className="space-y-4">
             <div>
               <p className="font-medium">{detailQuery.data.collection.name}</p>
               {detailQuery.data.collection.description ? (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   {detailQuery.data.collection.description}
                 </p>
               ) : null}
@@ -148,7 +147,9 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
             </div>
 
             {detailQuery.data.members.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No members yet.</p>
+              <p className="text-body-sm text-muted-foreground">
+                No members yet.
+              </p>
             ) : (
               <ul className="space-y-2">
                 {detailQuery.data.members.map((member) => (

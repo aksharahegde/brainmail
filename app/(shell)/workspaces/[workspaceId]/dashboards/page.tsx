@@ -1,4 +1,6 @@
 import { DashboardsDirectory } from '@/components/dashboards/dashboards-directory';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 
 export default async function WorkspaceDashboardsPage({
   params,
@@ -8,14 +10,13 @@ export default async function WorkspaceDashboardsPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboards</h1>
-        <p className="text-sm text-muted-foreground">
-          Visual analytics and KPI dashboards for this workspace.
-        </p>
-      </div>
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Curated views"
+        title="Dashboards"
+        description="Focused narratives on what matters — not metric grids."
+      />
       <DashboardsDirectory workspaceId={workspaceId} />
-    </div>
+    </BriefingPage>
   );
 }

@@ -80,8 +80,8 @@ export function ArtifactLibrary({ workspaceId }: { workspaceId: string }) {
   }, [detailQuery.data?.artifact.payload]);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="space-y-4 rounded-lg border p-4">
+    <div className="space-y-6">
+      <aside className="briefing-card space-y-4">
         <div className="flex flex-wrap gap-2">
           {FILTERS.map((item) => (
             <button
@@ -112,32 +112,36 @@ export function ArtifactLibrary({ workspaceId }: { workspaceId: string }) {
         </ul>
 
         {artifactsQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading artifacts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading artifacts…
+          </p>
         ) : null}
         {!artifactsQuery.isLoading &&
         (artifactsQuery.data?.artifacts.length ?? 0) === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No saved artifacts yet. Save a report, chart, or dashboard from
             chat.
           </p>
         ) : null}
       </aside>
 
-      <section className="rounded-lg border p-4">
+      <section className="briefing-card">
         {!selectedId ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Select an artifact to preview, share, or export.
           </p>
         ) : detailQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading artifact…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading artifact…
+          </p>
         ) : detailQuery.data ? (
           <div className="space-y-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 className="text-lg font-medium">
+                <h2 className="briefing-section-title">
                   {detailQuery.data.artifact.title}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-body-sm text-muted-foreground">
                   {detailQuery.data.artifact.artifactType} ·{' '}
                   {detailQuery.data.artifact.createdAt}
                 </p>

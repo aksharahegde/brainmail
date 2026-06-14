@@ -45,7 +45,7 @@ function BlockShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border bg-card p-4">
+    <div className="rounded-[var(--radius-md)] border border-border/80 bg-card p-4 shadow-[var(--shadow-card)]">
       {title ? <h3 className="mb-3 text-sm font-medium">{title}</h3> : null}
       {children}
     </div>
@@ -410,7 +410,7 @@ export function VendorProfileBlock({ data }: BlockProps) {
 
 export function SubscriptionCardBlock({ data }: BlockProps) {
   return (
-    <div className="rounded-lg border bg-card p-4">
+    <div className="rounded-[var(--radius-md)] border border-border/80 bg-card p-4 shadow-[var(--shadow-card)]">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-medium">{asString(data.name, 'Subscription')}</p>
@@ -436,7 +436,7 @@ export function SubscriptionCardBlock({ data }: BlockProps) {
 
 export function ContactCardBlock({ data }: BlockProps) {
   return (
-    <div className="rounded-lg border bg-card p-4">
+    <div className="rounded-[var(--radius-md)] border border-border/80 bg-card p-4 shadow-[var(--shadow-card)]">
       <p className="font-medium">{asString(data.name, 'Contact')}</p>
       {data.email ? (
         <p className="text-sm text-muted-foreground">{asString(data.email)}</p>

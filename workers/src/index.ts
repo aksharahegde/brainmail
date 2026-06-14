@@ -12,8 +12,10 @@ const worker = {
       const payload = await buildHealthPayload(env);
       return Response.json(
         {
-          ...payload,
+          ok: payload.ok,
+          service: payload.service,
           version: APP_VERSION,
+          timestamp: payload.timestamp,
         },
         {
           status: payload.ok ? 200 : 503,

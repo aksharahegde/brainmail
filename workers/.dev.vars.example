@@ -14,3 +14,7 @@ TOKEN_ENCRYPTION_KEY=
 
 # Optional Gmail push notifications (Google Cloud Pub/Sub topic)
 # GMAIL_PUBSUB_TOPIC=projects/your-project/topics/gmail-push
+# GMAIL_WEBHOOK_AUDIENCE=https://your-worker.example.com/api/v1/webhooks/gmail
+
+# Local-only webhook testing when Pub/Sub is not configured
+# GMAIL_WEBHOOK_SECRET=generate-a-long-random-secret

@@ -1,3 +1,5 @@
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 import { SubscriptionsCenter } from '@/components/subscriptions/subscriptions-center';
 
 export default async function WorkspaceSubscriptionsPage({
@@ -8,17 +10,13 @@ export default async function WorkspaceSubscriptionsPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Subscription center
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Track renewals, detect duplicates, and analyze recurring spend for
-          this workspace.
-        </p>
-      </div>
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Recurring commitments"
+        title="Subscriptions"
+        description="Renewals, duplicates, and recurring spend — surfaced so you can decide what stays."
+      />
       <SubscriptionsCenter workspaceId={workspaceId} />
-    </div>
+    </BriefingPage>
   );
 }

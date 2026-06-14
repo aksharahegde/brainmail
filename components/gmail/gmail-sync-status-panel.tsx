@@ -59,24 +59,26 @@ export function GmailSyncStatusPanel() {
         : null);
 
   return (
-    <section className="space-y-4 rounded-lg border p-4">
+    <section className="briefing-card space-y-4">
       <div>
         <h2 className="text-base font-semibold">Gmail sync</h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           Import recent messages and keep history ready for processing.
         </p>
       </div>
 
       {errorMessage ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {errorMessage}
         </p>
       ) : null}
 
       {isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading sync status…</p>
+        <p className="text-body-sm text-muted-foreground">
+          Loading sync status…
+        </p>
       ) : accounts.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           Connect Gmail to start syncing.
         </p>
       ) : (

@@ -1,4 +1,5 @@
 import { DailyBriefingPage } from '@/components/insights/daily-briefing-page';
+import { BriefingPage } from '@/components/layout/briefing-page';
 
 type WorkspaceInsightsPageProps = {
   params: Promise<{ workspaceId: string }>;
@@ -9,5 +10,9 @@ export default async function WorkspaceInsightsPage({
 }: WorkspaceInsightsPageProps) {
   const { workspaceId } = await params;
 
-  return <DailyBriefingPage workspaceId={workspaceId} />;
+  return (
+    <BriefingPage>
+      <DailyBriefingPage workspaceId={workspaceId} />
+    </BriefingPage>
+  );
 }

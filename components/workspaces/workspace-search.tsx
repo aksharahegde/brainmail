@@ -25,8 +25,8 @@ export function WorkspaceSearch({ workspaceId }: { workspaceId: string }) {
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-lg font-medium">Workspace search</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="briefing-section-title">Workspace search</h2>
+        <p className="text-body-sm text-muted-foreground">
           Search emails and artifacts scoped to this workspace.
         </p>
       </div>
@@ -47,17 +47,17 @@ export function WorkspaceSearch({ workspaceId }: { workspaceId: string }) {
       </form>
 
       {error instanceof Error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {error.message}
         </p>
       ) : null}
 
       {query && data ? (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           <div>
             <h3 className="mb-2 text-sm font-medium">Emails</h3>
             {data.emails.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-sm text-muted-foreground">
                 No matching emails.
               </p>
             ) : (
@@ -80,7 +80,7 @@ export function WorkspaceSearch({ workspaceId }: { workspaceId: string }) {
           <div>
             <h3 className="mb-2 text-sm font-medium">Artifacts</h3>
             {data.artifacts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-sm text-muted-foreground">
                 No matching artifacts.
               </p>
             ) : (

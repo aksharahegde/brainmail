@@ -18,25 +18,27 @@ export function SystemStatusPanel() {
   const metrics = metricsQuery.data?.metrics;
 
   return (
-    <section className="space-y-4 rounded-lg border p-4">
+    <section className="briefing-card space-y-4">
       <div>
-        <h2 className="text-lg font-medium">System status</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="briefing-section-title">System status</h2>
+        <p className="text-body-sm text-muted-foreground">
           Production monitoring, reliability, and estimated AI cost for this
           environment.
         </p>
       </div>
 
       {statusQuery.isLoading || metricsQuery.isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading system status…</p>
+        <p className="text-body-sm text-muted-foreground">
+          Loading system status…
+        </p>
       ) : !status || !metrics ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           System status is unavailable.
         </p>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-4">
           <div
-            className="rounded-md border p-3 text-sm"
+            className="briefing-list-item text-body-sm"
             data-testid="ops-status-summary"
           >
             <p className="font-medium">
@@ -51,7 +53,7 @@ export function SystemStatusPanel() {
           </div>
 
           <div
-            className="rounded-md border p-3 text-sm"
+            className="briefing-list-item text-body-sm"
             data-testid="ops-metrics-summary"
           >
             <p className="font-medium">24h operations</p>
@@ -76,7 +78,7 @@ export function SystemStatusPanel() {
               <li
                 key={event.id}
                 data-testid={`ops-event-row-${event.id}`}
-                className="rounded-md border px-3 py-2"
+                className="briefing-list-item"
               >
                 <p className="font-medium">
                   {event.eventType} · {event.severity}
