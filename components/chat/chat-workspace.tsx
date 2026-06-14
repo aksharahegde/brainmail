@@ -297,7 +297,9 @@ function ChatMessageDocument({ message }: { message: ChatMessage }) {
     <article
       data-testid={`chat-message-row-${message.id}`}
       className={
-        message.role === 'user' ? 'briefing-prompt' : 'briefing-report space-y-3'
+        message.role === 'user'
+          ? 'briefing-prompt'
+          : 'briefing-report space-y-3'
       }
     >
       <p className="briefing-eyebrow">

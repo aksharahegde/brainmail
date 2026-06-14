@@ -115,23 +115,24 @@ motion:
   duration-slow: 350ms
 ---
 
------------------
+---
 
 # Overview
 
-AI Email OS is an operating system for life. 
+AI Email OS is an operating system for life.
 
 The experience should never resemble:
-* Gmail
-* Outlook
-* Superhuman
-* CRM software
-* SaaS dashboards
-* Analytics products
+
+- Gmail
+- Outlook
+- Superhuman
+- CRM software
+- SaaS dashboards
+- Analytics products
 
 The interface should feel like an intelligent chief of staff that has already reviewed everything and prepared a clear plan.
 
-Users should never feel they are managing email. 
+Users should never feel they are managing email.
 Users should feel they are managing life.
 
 ---
@@ -139,12 +140,13 @@ Users should feel they are managing life.
 # Visual Theme
 
 The visual personality is:
-* Calm
-* Intelligent
-* Premium
-* Minimal
-* Personal
-* Thoughtful
+
+- Calm
+- Intelligent
+- Premium
+- Minimal
+- Personal
+- Thoughtful
 
 Imagine:
 Apple simplicity
@@ -159,19 +161,21 @@ The product should feel emotionally closer to a luxury journal than enterprise s
 # Layout Philosophy
 
 Avoid:
-* Complex navigation
-* Dense sidebars
-* Multi-column dashboards
-* Widget grids
-* Tables
-* Email lists
+
+- Complex navigation
+- Dense sidebars
+- Multi-column dashboards
+- Widget grids
+- Tables
+- Email lists
 
 Prefer:
-* Single-column layouts
-* Narrative information flow
-* Large whitespace
-* Clear hierarchy
-* Focused attention
+
+- Single-column layouts
+- Narrative information flow
+- Large whitespace
+- Clear hierarchy
+- Focused attention
 
 Most screens should have a readable content width between 800px and 1100px.
 
@@ -182,11 +186,13 @@ Information should feel curated rather than displayed.
 # Information Architecture
 
 The interface should prioritize:
+
 1. What matters
 2. Why it matters
 3. What to do next
 
 The interface should not prioritize:
+
 1. Data density
 2. Metrics
 3. Unread counts
@@ -198,13 +204,14 @@ The product is driven by decisions rather than information management.
 
 # Cards
 
-Cards are quiet containers. 
+Cards are quiet containers.
 Cards should never feel like dashboard widgets.
 
 Use:
-* Large padding
-* Soft borders
-* Minimal decoration
+
+- Large padding
+- Soft borders
+- Minimal decoration
 
 Cards should resemble briefing sections within a document.
 
@@ -212,27 +219,28 @@ Cards should resemble briefing sections within a document.
 
 # Typography
 
-Typography is the primary design element. 
-Use size and spacing before using color. 
+Typography is the primary design element.
+Use size and spacing before using color.
 
-Headlines should feel confident. 
-Body text should feel calm and readable. 
+Headlines should feel confident.
+Body text should feel calm and readable.
 
-Avoid excessive emphasis. 
+Avoid excessive emphasis.
 Avoid visual noise.
 
 ---
 
 # AI Elements
 
-Purple is reserved for AI actions and AI reasoning. 
-Do not use purple for general decoration. 
+Purple is reserved for AI actions and AI reasoning.
+Do not use purple for general decoration.
 
 Use purple only when:
-* AI generated a recommendation
-* AI is explaining reasoning
-* AI is proposing an action
-* AI is actively helping the user
+
+- AI generated a recommendation
+- AI is explaining reasoning
+- AI is proposing an action
+- AI is actively helping the user
 
 Purple should communicate intelligence and trust.
 
@@ -241,13 +249,13 @@ Purple should communicate intelligence and trust.
 # Conversation Design
 
 Do not use chat bubbles.
-Do not use messaging layouts. 
+Do not use messaging layouts.
 Do not mimic ChatGPT.
 
-AI conversations should resemble living briefing documents. 
+AI conversations should resemble living briefing documents.
 
-Questions appear as prompts. 
-Responses appear as structured reports. 
+Questions appear as prompts.
+Responses appear as structured reports.
 Generated artifacts appear inline as elegant documents.
 
 The experience should feel like collaborating with an executive assistant.
@@ -256,7 +264,7 @@ The experience should feel like collaborating with an executive assistant.
 
 # Navigation
 
-Navigation should be subtle. 
+Navigation should be subtle.
 The product is journey-oriented rather than page-oriented.
 
 Users move through:

@@ -104,9 +104,7 @@ export function AppSidebar() {
                         'data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground',
                         isActive && 'font-medium',
                       )}
-                      render={
-                        <Link href={href} data-testid={item.testId} />
-                      }
+                      render={<Link href={href} data-testid={item.testId} />}
                     >
                       {item.label}
                     </SidebarMenuButton>

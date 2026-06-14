@@ -136,7 +136,7 @@
         "APP_URL": "https://REPLACE_WITH_STAGING_APP_URL",
         "GOOGLE_OAUTH_REDIRECT_PATH": "/api/v1/auth/google/callback",
         "GMAIL_PUBSUB_TOPIC": "",
-    "GMAIL_WEBHOOK_AUDIENCE": "",
+        "GMAIL_WEBHOOK_AUDIENCE": "",
       },
       "d1_databases": [
         {
@@ -256,7 +256,7 @@
         "APP_URL": "https://REPLACE_WITH_PRODUCTION_APP_URL",
         "GOOGLE_OAUTH_REDIRECT_PATH": "/api/v1/auth/google/callback",
         "GMAIL_PUBSUB_TOPIC": "",
-    "GMAIL_WEBHOOK_AUDIENCE": "",
+        "GMAIL_WEBHOOK_AUDIENCE": "",
       },
       "d1_databases": [
         {

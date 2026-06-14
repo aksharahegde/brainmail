@@ -17,7 +17,9 @@ export function WorkspaceHome({ workspaceId }: { workspaceId: string }) {
   });
 
   if (isLoading) {
-    return <p className="text-body-sm text-muted-foreground">Loading workspace…</p>;
+    return (
+      <p className="text-body-sm text-muted-foreground">Loading workspace…</p>
+    );
   }
 
   if (error instanceof Error) {

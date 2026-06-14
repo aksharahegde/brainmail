@@ -72,7 +72,9 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
       <section className="space-y-4">
         <h2 className="briefing-section-title">Dashboards</h2>
         {dashboardsQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading dashboards…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading dashboards…
+          </p>
         ) : dashboards.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             No dashboards yet. Create one from a template below.
@@ -200,7 +202,9 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
             Select a dashboard to preview its blocks.
           </p>
         ) : detailQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading dashboard…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading dashboard…
+          </p>
         ) : blocks.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             No blocks yet. Refresh to populate from workspace data.

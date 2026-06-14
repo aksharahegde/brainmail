@@ -47,7 +47,9 @@ export function ContactWorkspace({ workspaceId }: { workspaceId: string }) {
 
         <h2 className="briefing-section-title">Contacts</h2>
         {listQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading contacts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading contacts…
+          </p>
         ) : contacts.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             No contacts tracked yet for this workspace.

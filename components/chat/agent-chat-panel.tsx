@@ -125,7 +125,9 @@ export function AgentChatPanel() {
         <div className="briefing-card space-y-2">
           <h3 className="text-sm font-medium">Session history</h3>
           {sessionId && sessionQuery.isLoading ? (
-            <p className="text-body-sm text-muted-foreground">Loading history…</p>
+            <p className="text-body-sm text-muted-foreground">
+              Loading history…
+            </p>
           ) : messages.length === 0 ? (
             <p className="text-body-sm text-muted-foreground">
               Send a message to start a routed agent conversation.

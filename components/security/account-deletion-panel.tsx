@@ -29,7 +29,9 @@ export function AccountDeletionPanel() {
   return (
     <section className="briefing-card space-y-4 border-destructive/30">
       <div>
-        <h2 className="briefing-section-title text-destructive">Delete account</h2>
+        <h2 className="briefing-section-title text-destructive">
+          Delete account
+        </h2>
         <p className="text-body-sm text-muted-foreground">
           Permanently delete your account, sessions, emails, files, and
           embeddings. This cannot be undone.

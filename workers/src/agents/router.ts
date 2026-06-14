@@ -136,9 +136,13 @@ const AGENT_TYPES: AgentType[] = [
 
 function sanitizeRouterPlan(plan: RouterPlan): RouterPlan {
   const allowedTools = getToolsForAgent(plan.agent).map((tool) => tool.name);
-  const tools = (plan.tools ?? []).filter((tool) => allowedTools.includes(tool));
+  const tools = (plan.tools ?? []).filter((tool) =>
+    allowedTools.includes(tool),
+  );
   const fallbackTools =
-    tools.length > 0 ? tools : allowedTools.slice(0, Math.min(3, allowedTools.length));
+    tools.length > 0
+      ? tools
+      : allowedTools.slice(0, Math.min(3, allowedTools.length));
 
   return {
     ...plan,

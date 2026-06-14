@@ -90,7 +90,9 @@ export function AutomationBuilder({ workspaceId }: { workspaceId: string }) {
       <section className="space-y-4">
         <h2 className="briefing-section-title">Automations</h2>
         {automationsQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading automations…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading automations…
+          </p>
         ) : automations.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             No automations yet. Create one from a template below.

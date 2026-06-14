@@ -19,7 +19,9 @@ export default function WorkspaceSettingsPage() {
       />
       <Suspense
         fallback={
-          <p className="text-body-sm text-muted-foreground">Loading accounts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading accounts…
+          </p>
         }
       >
         <ConnectedAccountsPanel />

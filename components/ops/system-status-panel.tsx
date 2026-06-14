@@ -28,7 +28,9 @@ export function SystemStatusPanel() {
       </div>
 
       {statusQuery.isLoading || metricsQuery.isLoading ? (
-        <p className="text-body-sm text-muted-foreground">Loading system status…</p>
+        <p className="text-body-sm text-muted-foreground">
+          Loading system status…
+        </p>
       ) : !status || !metrics ? (
         <p className="text-body-sm text-muted-foreground">
           System status is unavailable.

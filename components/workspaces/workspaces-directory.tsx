@@ -49,7 +49,9 @@ export function WorkspacesDirectory() {
     <div className="space-y-10">
       <BriefingSection title="Your workspaces">
         {isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading workspaces…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading workspaces…
+          </p>
         ) : error instanceof Error ? (
           <div className="space-y-4">
             <p className="text-body-sm text-destructive" role="alert">

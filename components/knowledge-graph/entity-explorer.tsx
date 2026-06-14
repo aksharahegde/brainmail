@@ -108,7 +108,9 @@ export function EntityExplorer() {
         ) : null}
 
         {entitiesLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading entities…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading entities…
+          </p>
         ) : entities.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             No entities yet. Processed emails will populate companies, invoices,
@@ -161,7 +163,9 @@ export function EntityExplorer() {
         ) : null}
 
         {contactsLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading contacts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading contacts…
+          </p>
         ) : contacts.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             Contacts appear after senders are extracted from processed email.

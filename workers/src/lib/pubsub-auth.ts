@@ -27,9 +27,10 @@ type PubSubJwtPayload = {
   email_verified?: boolean;
 };
 
-let cachedCerts:
-  | { keys: GoogleCertResponse['keys']; fetchedAt: number }
-  | null = null;
+let cachedCerts: {
+  keys: GoogleCertResponse['keys'];
+  fetchedAt: number;
+} | null = null;
 
 function decodeBase64Url(value: string): Uint8Array {
   const normalized = value.replace(/-/g, '+').replace(/_/g, '/');

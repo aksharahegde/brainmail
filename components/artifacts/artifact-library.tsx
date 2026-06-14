@@ -112,7 +112,9 @@ export function ArtifactLibrary({ workspaceId }: { workspaceId: string }) {
         </ul>
 
         {artifactsQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading artifacts…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading artifacts…
+          </p>
         ) : null}
         {!artifactsQuery.isLoading &&
         (artifactsQuery.data?.artifacts.length ?? 0) === 0 ? (
@@ -129,7 +131,9 @@ export function ArtifactLibrary({ workspaceId }: { workspaceId: string }) {
             Select an artifact to preview, share, or export.
           </p>
         ) : detailQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading artifact…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading artifact…
+          </p>
         ) : detailQuery.data ? (
           <div className="space-y-4">
             <div className="flex flex-wrap items-start justify-between gap-3">

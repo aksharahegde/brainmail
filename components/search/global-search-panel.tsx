@@ -212,7 +212,9 @@ function SearchResultItem({
       {subtitle ? (
         <p className="text-caption text-muted-foreground">{subtitle}</p>
       ) : null}
-      {meta ? <p className="text-caption text-muted-foreground">{meta}</p> : null}
+      {meta ? (
+        <p className="text-caption text-muted-foreground">{meta}</p>
+      ) : null}
     </li>
   );
 }

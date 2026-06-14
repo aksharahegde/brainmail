@@ -67,7 +67,9 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
       <section className="space-y-4">
         <h2 className="briefing-section-title">Collections</h2>
         {collectionsQuery.isLoading ? (
-          <p className="text-body-sm text-muted-foreground">Loading collections…</p>
+          <p className="text-body-sm text-muted-foreground">
+            Loading collections…
+          </p>
         ) : collections.length === 0 ? (
           <p className="text-body-sm text-muted-foreground">
             No collections yet. Create one or accept an AI suggestion.
@@ -93,10 +95,7 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
           </ul>
         )}
 
-        <form
-          className="briefing-card space-y-3"
-          onSubmit={handleCreate}
-        >
+        <form className="briefing-card space-y-3" onSubmit={handleCreate}>
           <h3 className="font-medium">Create collection</h3>
           <div data-testid="collection-create-name-input">
             <Input
@@ -148,7 +147,9 @@ export function CollectionsDirectory({ workspaceId }: { workspaceId: string }) {
             </div>
 
             {detailQuery.data.members.length === 0 ? (
-              <p className="text-body-sm text-muted-foreground">No members yet.</p>
+              <p className="text-body-sm text-muted-foreground">
+                No members yet.
+              </p>
             ) : (
               <ul className="space-y-2">
                 {detailQuery.data.members.map((member) => (

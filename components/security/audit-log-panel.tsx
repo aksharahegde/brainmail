@@ -24,7 +24,9 @@ export function AuditLogPanel() {
       {logsQuery.isLoading ? (
         <p className="text-body-sm text-muted-foreground">Loading audit log…</p>
       ) : logs.length === 0 ? (
-        <p className="text-body-sm text-muted-foreground">No audit events yet.</p>
+        <p className="text-body-sm text-muted-foreground">
+          No audit events yet.
+        </p>
       ) : (
         <ul className="space-y-2">
           {logs.map((log) => (

@@ -117,7 +117,9 @@ export function ConnectedAccountsPanel() {
       {isLoading ? (
         <p className="text-body-sm text-muted-foreground">Loading accounts…</p>
       ) : accounts.length === 0 ? (
-        <p className="text-body-sm text-muted-foreground">No linked accounts yet.</p>
+        <p className="text-body-sm text-muted-foreground">
+          No linked accounts yet.
+        </p>
       ) : (
         <ul className="space-y-2">
           {accounts.map((account) => (

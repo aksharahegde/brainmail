@@ -74,7 +74,9 @@ export function GmailSyncStatusPanel() {
       ) : null}
 
       {isLoading ? (
-        <p className="text-body-sm text-muted-foreground">Loading sync status…</p>
+        <p className="text-body-sm text-muted-foreground">
+          Loading sync status…
+        </p>
       ) : accounts.length === 0 ? (
         <p className="text-body-sm text-muted-foreground">
           Connect Gmail to start syncing.
