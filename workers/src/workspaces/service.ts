@@ -162,10 +162,7 @@ export async function getWorkspaceDetail(
       .select({ count: sql<number>`count(*)` })
       .from(reports)
       .where(
-        and(
-          eq(reports.userId, userId),
-          eq(reports.workspaceId, workspaceId),
-        ),
+        and(eq(reports.userId, userId), eq(reports.workspaceId, workspaceId)),
       ),
     db
       .select({
