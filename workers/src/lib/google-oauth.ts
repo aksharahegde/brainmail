@@ -1,5 +1,5 @@
 import { createDb } from '@brainmail/db';
-import { accounts, oauthStates, users } from '@brainmail/db/schema';
+import { accounts, gmailSyncStates, oauthStates, users } from '@brainmail/db/schema';
 import { and, eq } from 'drizzle-orm';
 
 import {
@@ -10,6 +10,7 @@ import {
   encryptSecret,
   isExpired,
 } from './crypto';
+import { enqueueGmailSync } from './gmail/sync';
 import { getSecretEnv } from './env';
 
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -183,6 +184,7 @@ async function upsertGoogleAccount(
     accessToken?: string;
     refreshToken?: string;
     metadata?: Record<string, unknown>;
+    tokenExpiresIn?: number;
   },
 ) {
   if (!getSecretEnv(env).TOKEN_ENCRYPTION_KEY) {
@@ -211,6 +213,18 @@ async function upsertGoogleAccount(
     : undefined;
 
   if (existing[0]) {
+    const mergedMetadata = {
+      ...(existing[0].metadata ?? {}),
+      ...(input.metadata ?? {}),
+      ...(input.tokenExpiresIn
+        ? {
+            tokenExpiresAt: new Date(
+              Date.now() + input.tokenExpiresIn * 1000,
+            ).toISOString(),
+          }
+        : {}),
+    };
+
     await db
       .update(accounts)
       .set({
@@ -218,7 +232,7 @@ async function upsertGoogleAccount(
           encryptedAccessToken ?? existing[0].encryptedAccessToken,
         encryptedRefreshToken:
           encryptedRefreshToken ?? existing[0].encryptedRefreshToken,
-        metadata: input.metadata ?? existing[0].metadata,
+        metadata: mergedMetadata,
         updatedAt: new Date().toISOString(),
       })
       .where(eq(accounts.id, existing[0].id));
@@ -226,6 +240,17 @@ async function upsertGoogleAccount(
   }
 
   const accountId = createId('account');
+  const mergedMetadata = {
+    ...(input.metadata ?? {}),
+    ...(input.tokenExpiresIn
+      ? {
+          tokenExpiresAt: new Date(
+            Date.now() + input.tokenExpiresIn * 1000,
+          ).toISOString(),
+        }
+      : {}),
+  };
+
   await db.insert(accounts).values({
     id: accountId,
     userId: input.userId,
@@ -233,7 +258,7 @@ async function upsertGoogleAccount(
     providerAccountId: input.providerAccountId,
     encryptedAccessToken: encryptedAccessToken ?? null,
     encryptedRefreshToken: encryptedRefreshToken ?? null,
-    metadata: input.metadata ?? null,
+    metadata: mergedMetadata,
   });
 
   return accountId;
@@ -268,17 +293,22 @@ export async function handleGoogleOAuthCallback(
       throw new Error('OAuth connect requires an authenticated user');
     }
 
-    await upsertGoogleAccount(env, {
+    const accountId = await upsertGoogleAccount(env, {
       userId: oauthState.userId,
       provider: oauthState.provider,
       providerAccountId: profile.sub,
       accessToken: tokenResponse.access_token,
       refreshToken: tokenResponse.refresh_token,
+      tokenExpiresIn: tokenResponse.expires_in,
       metadata: {
         email: profile.email,
         scope: tokenResponse.scope,
       },
     });
+
+    if (oauthState.provider === 'gmail') {
+      await enqueueGmailSync(env, accountId, oauthState.userId, 'initial');
+    }
 
     return { userId: oauthState.userId, purpose: 'connect' };
   }
@@ -312,6 +342,7 @@ export async function handleGoogleOAuthCallback(
     providerAccountId: profile.sub,
     accessToken: tokenResponse.access_token,
     refreshToken: tokenResponse.refresh_token,
+    tokenExpiresIn: tokenResponse.expires_in,
     metadata: {
       email: profile.email,
       scope: tokenResponse.scope,
@@ -366,6 +397,9 @@ export async function disconnectAccount(
   }
 
   await db.delete(accounts).where(eq(accounts.id, accountId));
+  await db
+    .delete(gmailSyncStates)
+    .where(eq(gmailSyncStates.accountId, accountId));
   return true;
 }
 

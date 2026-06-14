@@ -51,6 +51,10 @@ Configure Google OAuth credentials with redirect URI:
 
 Then run `pnpm workers:dev` and `pnpm dev`, and open `/login`.
 
+### Gmail sync (Phase 4)
+
+After connecting Gmail in workspace settings, BrainMail queues an initial import of recent messages. Sync status is visible on the settings page. Optional push notifications require configuring `GMAIL_PUBSUB_TOPIC` in `workers/.dev.vars` and Google Cloud Pub/Sub.
+
 ### Cloudflare setup
 
 ```bash

@@ -8,6 +8,8 @@ import {
   handleAuthLogout,
   handleAuthMe,
 } from './auth';
+import { handleSyncStatus, handleSyncTrigger } from './sync';
+import { handleGmailWebhook } from './webhooks';
 
 export async function handleApiRequest(
   request: Request,
@@ -43,6 +45,18 @@ export async function handleApiRequest(
   const accountMatch = pathname.match(/^\/api\/v1\/accounts\/([^/]+)$/);
   if (accountMatch) {
     return handleAccountsDisconnect(request, env, accountMatch[1]);
+  }
+
+  if (pathname === '/api/v1/sync/status') {
+    return handleSyncStatus(request, env);
+  }
+
+  if (pathname === '/api/v1/sync/trigger') {
+    return handleSyncTrigger(request, env);
+  }
+
+  if (pathname === '/api/v1/webhooks/gmail') {
+    return handleGmailWebhook(request, env);
   }
 
   return errorResponse('Not found', 404);

@@ -17,13 +17,16 @@ export async function handleScheduled(
 
   if (cron === CRON_GMAIL_SYNC) {
     await env.EMAIL_INGESTION_QUEUE.send({
-      type: 'gmail_sync_placeholder',
-      scheduledAt: new Date().toISOString(),
+      type: 'sync_all',
+      mode: 'incremental',
     });
     return;
   }
 
   if (cron === CRON_DAILY_MAINTENANCE) {
+    await env.EMAIL_INGESTION_QUEUE.send({
+      type: 'renew_watches',
+    });
     await env.INSIGHT_GENERATION_QUEUE.send({
       type: 'daily_maintenance_placeholder',
       scheduledAt: new Date().toISOString(),
