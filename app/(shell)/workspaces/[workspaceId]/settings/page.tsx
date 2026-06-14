@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { ConnectedAccountsPanel } from '@/components/auth/connected-accounts-panel';
 
 export default function WorkspaceSettingsPage() {
@@ -9,7 +11,9 @@ export default function WorkspaceSettingsPage() {
           Workspace preferences and connected accounts.
         </p>
       </div>
-      <ConnectedAccountsPanel />
+      <Suspense fallback={<p className="text-sm text-muted-foreground">Loading accounts…</p>}>
+        <ConnectedAccountsPanel />
+      </Suspense>
     </div>
   );
 }

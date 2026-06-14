@@ -64,7 +64,7 @@ export async function handleAuthCallback(
 
     if (result.purpose === 'connect') {
       return Response.redirect(
-        `${getAppUrl(env)}/workspaces?connected=${encodeURIComponent('true')}`,
+        `${getAppUrl(env)}/workspaces/startup/settings?connected=true`,
         302,
       );
     }

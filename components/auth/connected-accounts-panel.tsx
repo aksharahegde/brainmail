@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -12,9 +13,18 @@ import {
 
 export function ConnectedAccountsPanel() {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
   const [pendingAccountId, setPendingAccountId] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [connectSuccess, setConnectSuccess] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('connected') === 'true') {
+      setConnectSuccess(true);
+      void queryClient.invalidateQueries({ queryKey: ['connected-accounts'] });
+    }
+  }, [queryClient, searchParams]);
 
   const {
     data: accounts = [],
@@ -87,6 +97,16 @@ export function ConnectedAccountsPanel() {
         </Button>
       </div>
 
+      {connectSuccess ? (
+        <p
+          data-testid="auth-gmail-connect-success"
+          className="text-sm text-emerald-600"
+          role="status"
+        >
+          Gmail connected successfully.
+        </p>
+      ) : null}
+
       {errorMessage ? (
         <p className="text-sm text-destructive" role="alert">
           {errorMessage}
@@ -113,15 +133,17 @@ export function ConnectedAccountsPanel() {
                   {account.email ?? account.providerAccountId}
                 </p>
               </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => handleDisconnect(account.id)}
-                disabled={pendingAccountId === account.id}
-              >
-                {pendingAccountId === account.id ? 'Removing…' : 'Disconnect'}
-              </Button>
+              <div data-testid="auth-gmail-disconnect-submit">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDisconnect(account.id)}
+                  disabled={pendingAccountId === account.id}
+                >
+                  {pendingAccountId === account.id ? 'Removing…' : 'Disconnect'}
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
