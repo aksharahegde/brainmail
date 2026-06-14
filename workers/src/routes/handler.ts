@@ -70,6 +70,11 @@ import {
   handleAutomationTemplates,
   handleAutomationsList,
 } from './automations';
+import { handleAuditList } from './audit';
+import { handleExportCreate } from './export';
+import { handleAccountDelete, handleAccountDeletePreview } from './account';
+import { enforceRateLimit } from '../lib/rate-limit';
+import { resolveSessionUser } from '../lib/session';
 
 export async function handleApiRequest(
   request: Request,
@@ -77,6 +82,17 @@ export async function handleApiRequest(
 ): Promise<Response> {
   const url = new URL(request.url);
   const { pathname } = url;
+
+  const sessionUser = await resolveSessionUser(env, request);
+  const rateLimitResponse = await enforceRateLimit(
+    request,
+    env,
+    pathname,
+    sessionUser?.id,
+  );
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
 
   if (pathname === '/api/v1/auth/login') {
     return handleAuthLogin(request, env);
@@ -394,6 +410,24 @@ export async function handleApiRequest(
   );
   if (artifactExportMatch) {
     return handleArtifactExport(request, env, artifactExportMatch[1]);
+  }
+
+  if (pathname === '/api/v1/audit') {
+    return handleAuditList(request, env);
+  }
+
+  if (pathname === '/api/v1/export') {
+    return handleExportCreate(request, env);
+  }
+
+  if (pathname === '/api/v1/account/delete') {
+    if (request.method === 'GET') {
+      return handleAccountDeletePreview(request, env);
+    }
+    if (request.method === 'DELETE') {
+      return handleAccountDelete(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
   }
 
   return errorResponse('Not found', 404);

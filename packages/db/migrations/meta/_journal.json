@@ -50,6 +50,13 @@
       "when": 1781420000000,
       "tag": "0010_automations_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1781421000000,
+      "tag": "0011_security_rate_limits",
+      "breakpoints": true
     }
   ]
 }
