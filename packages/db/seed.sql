@@ -167,6 +167,44 @@ VALUES
     datetime('now')
   );
 
+INSERT OR IGNORE INTO insights (
+  id,
+  user_id,
+  workspace_id,
+  insight_type,
+  payload,
+  created_at,
+  updated_at
+)
+VALUES
+  (
+    'insight_daily_briefing_001',
+    'user_demo_001',
+    'startup',
+    'daily_briefing',
+    '{"title":"Daily briefing","date":"2026-06-14","highlights":["3 new emails in the last 24 hours","Inbox health score: 92/100"],"priorities":["No urgent inbox issues"],"summary":"3 new emails · health 92/100"}',
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'insight_inbox_health_001',
+    'user_demo_001',
+    'startup',
+    'inbox_health',
+    '{"title":"Inbox health","score":92,"issues":[],"message":"Inbox is in good shape with no major issues.","failedCount":0,"uncategorizedCount":0,"totalEmails":12}',
+    datetime('now'),
+    datetime('now')
+  ),
+  (
+    'insight_vendor_001',
+    'user_demo_001',
+    'finance',
+    'vendor_insight',
+    '{"title":"Top vendor","message":"AWS accounts for the highest spend in this workspace.","name":"AWS","spend":420.5,"currency":"USD","invoiceCount":3,"trend":"up","recentInvoices":[]}',
+    datetime('now'),
+    datetime('now')
+  );
+
 INSERT OR IGNORE INTO chat_sessions (id, user_id, title)
 VALUES ('chat_session_001', 'user_demo_001', 'Welcome');
 

@@ -14,9 +14,11 @@ export const userRules = sqliteTable('user_rules', {
 export const insights = sqliteTable('insights', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull(),
+  workspaceId: text('workspace_id'),
   insightType: text('insight_type'),
   payload: text('payload', { mode: 'json' }).$type<Record<string, unknown>>(),
   createdAt: text('created_at').default(sql`(datetime('now'))`),
+  updatedAt: text('updated_at').default(sql`(datetime('now'))`),
 });
 
 export const auditLogs = sqliteTable('audit_logs', {

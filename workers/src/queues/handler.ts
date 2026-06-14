@@ -8,6 +8,7 @@ import { processEntityExtraction } from '../processing/extract-entities';
 import { processEmailIngestion } from '../processing/ingest';
 import { processEmailAttachments } from '../processing/process-attachments';
 import { updateEmailProcessingState } from '../processing/state';
+import { runScheduledInsightGeneration } from '../insights/service';
 import type {
   AttachmentPipelineMessage,
   EmailIngestedMessage,
@@ -51,6 +52,16 @@ function isAttachmentPipelineMessage(
     typeof body === 'object' &&
     (body as { type?: string }).type === 'process_attachments' &&
     typeof (body as AttachmentPipelineMessage).emailId === 'string'
+  );
+}
+
+function isInsightGenerationMessage(
+  body: unknown,
+): body is { type: 'generate_daily_insights'; scheduledAt?: string } {
+  return (
+    !!body &&
+    typeof body === 'object' &&
+    (body as { type?: string }).type === 'generate_daily_insights'
   );
 }
 
@@ -121,6 +132,11 @@ export async function handleQueueBatch(
       ) {
         emailId = body.emailId;
         await processEmailEmbedding(env, body);
+      } else if (
+        queueIncludes(batch.queue, 'insight-generation') &&
+        isInsightGenerationMessage(body)
+      ) {
+        await runScheduledInsightGeneration(env);
       }
     } catch (error) {
       const errorMessage =

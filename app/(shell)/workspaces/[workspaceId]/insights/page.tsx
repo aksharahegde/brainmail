@@ -1,10 +1,13 @@
-import { PlaceholderPage } from '@/components/layout/placeholder-page';
+import { DailyBriefingPage } from '@/components/insights/daily-briefing-page';
 
-export default function WorkspaceInsightsPage() {
-  return (
-    <PlaceholderPage
-      title="Insights"
-      description="AI-generated insights and recommendations for this workspace."
-    />
-  );
+type WorkspaceInsightsPageProps = {
+  params: Promise<{ workspaceId: string }>;
+};
+
+export default async function WorkspaceInsightsPage({
+  params,
+}: WorkspaceInsightsPageProps) {
+  const { workspaceId } = await params;
+
+  return <DailyBriefingPage workspaceId={workspaceId} />;
 }
