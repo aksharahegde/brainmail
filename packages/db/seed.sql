@@ -5,13 +5,42 @@ INSERT OR IGNORE INTO users (id, email, name, timezone)
 VALUES ('user_demo_001', 'demo@brainmail.dev', 'Demo User', 'America/Los_Angeles');
 
 INSERT OR IGNORE INTO workspaces (id, user_id, name, description, workspace_type)
-VALUES (
-  'workspace_finance_001',
-  'user_demo_001',
-  'Finance',
-  'Personal finance workspace',
-  'Finance'
-);
+VALUES
+  (
+    'startup',
+    'user_demo_001',
+    'Startup',
+    'Customers, vendors, revenue, and operating spend.',
+    'Startup'
+  ),
+  (
+    'finance',
+    'user_demo_001',
+    'Finance',
+    'Bills, invoices, receipts, and subscriptions.',
+    'Finance'
+  ),
+  (
+    'travel',
+    'user_demo_001',
+    'Travel',
+    'Flights, hotels, tickets, and trip expenses.',
+    'Travel'
+  ),
+  (
+    'personal',
+    'user_demo_001',
+    'Personal',
+    'Contacts, purchases, trips, and important personal mail.',
+    'Personal'
+  ),
+  (
+    'learning',
+    'user_demo_001',
+    'Learning',
+    'Courses, books, newsletters, and training content.',
+    'Learning'
+  );
 
 INSERT OR IGNORE INTO collections (id, user_id, name, description, collection_type)
 VALUES (

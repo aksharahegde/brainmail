@@ -32,6 +32,11 @@ import {
   handleArtifactShared,
   handleArtifactsList,
 } from './artifacts';
+import {
+  handleWorkspaceCreate,
+  handleWorkspaceRoutes,
+  handleWorkspacesList,
+} from './workspaces';
 
 export async function handleApiRequest(
   request: Request,
@@ -114,6 +119,28 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/search') {
     return handleGlobalSearch(request, env);
+  }
+
+  if (pathname === '/api/v1/workspaces') {
+    if (request.method === 'GET') {
+      return handleWorkspacesList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleWorkspaceCreate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const workspaceSearchMatch = pathname.match(
+    /^\/api\/v1\/workspaces\/([^/]+)\/search$/,
+  );
+  if (workspaceSearchMatch) {
+    return handleWorkspaceRoutes(request, env, workspaceSearchMatch[1]);
+  }
+
+  const workspaceMatch = pathname.match(/^\/api\/v1\/workspaces\/([^/]+)$/);
+  if (workspaceMatch) {
+    return handleWorkspaceRoutes(request, env, workspaceMatch[1]);
   }
 
   if (pathname === '/api/v1/chat') {

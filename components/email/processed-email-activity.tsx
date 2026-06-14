@@ -7,13 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { formatProcessingStatus, listProcessedEmails } from '@/lib/emails/api';
 
-export function ProcessedEmailActivity() {
+export function ProcessedEmailActivity({
+  workspaceId,
+}: {
+  workspaceId?: string;
+}) {
   const [search, setSearch] = useState('');
   const [query, setQuery] = useState('');
 
   const { data, isLoading, error, refetch, isFetching } = useQuery({
-    queryKey: ['processed-emails', query],
-    queryFn: () => listProcessedEmails(query || undefined),
+    queryKey: ['processed-emails', workspaceId, query],
+    queryFn: () =>
+      listProcessedEmails({
+        query: query || undefined,
+        workspaceId,
+      }),
     refetchInterval: 5000,
   });
 

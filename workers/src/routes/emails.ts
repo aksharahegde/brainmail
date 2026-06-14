@@ -1,9 +1,10 @@
 import { createDb } from '@brainmail/db';
 import { emails, entities } from '@brainmail/db/schema';
-import { and, desc, eq, like, or, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
 
 import { errorResponse, successResponse } from '../lib/api-response';
 import { isResponse, requireAuth } from '../lib/auth';
+import { getWorkspaceEmailCategories } from '../workspaces/context';
 
 function serializeEmail(row: typeof emails.$inferSelect) {
   return {
@@ -36,12 +37,20 @@ export async function handleEmailsList(
 
   const url = new URL(request.url);
   const query = url.searchParams.get('q')?.trim();
+  const workspaceId = url.searchParams.get('workspaceId')?.trim();
   const page = Math.max(1, Number(url.searchParams.get('page') ?? '1'));
   const pageSize = 25;
   const offset = (page - 1) * pageSize;
 
   const db = createDb(env.DB);
   const filters = [eq(emails.userId, authResult.id)];
+
+  if (workspaceId) {
+    const categories = getWorkspaceEmailCategories(workspaceId);
+    if (categories.length > 0) {
+      filters.push(inArray(emails.category, categories));
+    }
+  }
 
   if (query) {
     const pattern = `%${query}%`;
