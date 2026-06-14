@@ -2,6 +2,7 @@ import { createDb } from '@brainmail/db';
 import { artifacts } from '@brainmail/db/schema';
 
 import { createId } from '../lib/crypto';
+import { inferArtifactType } from '../artifacts/service';
 import { routeMessage } from './router';
 import { dispatchAgent } from './specialists';
 import { planUiResponse } from './ui-planner';
@@ -10,7 +11,7 @@ import type { AgentContext, UIResponse } from './types';
 function artifactTypeForAgent(agent: UIResponse['agent']): string {
   switch (agent) {
     case 'analytics':
-      return 'table';
+      return 'chart';
     case 'automation':
       return 'automation_preview';
     case 'action':
@@ -19,7 +20,7 @@ function artifactTypeForAgent(agent: UIResponse['agent']): string {
       return 'insight_card';
     case 'search':
     default:
-      return 'email_list';
+      return 'report';
   }
 }
 
@@ -33,20 +34,29 @@ export async function runAgentRuntime(
   });
   const agentResult = await dispatchAgent(env, context, plan);
   const { blocks, actions } = planUiResponse(agentResult);
+  const artifactType = inferArtifactType(
+    blocks,
+    artifactTypeForAgent(agentResult.agent),
+  );
 
   const db = createDb(env.DB);
   const artifactId = createId('artifact');
+  const now = new Date().toISOString();
+
   await db.insert(artifacts).values({
     id: artifactId,
     userId: context.userId,
-    artifactType: artifactTypeForAgent(agentResult.agent),
+    workspaceId: context.workspaceId ?? null,
+    artifactType,
     title: `${agentResult.agent} response`,
     payload: {
       plan: agentResult.plan,
       toolCalls: agentResult.toolCalls,
       blocks,
+      actions,
     },
     createdBy: 'agent_runtime',
+    updatedAt: now,
   });
 
   return {
@@ -54,7 +64,7 @@ export async function runAgentRuntime(
     actions,
     artifact: {
       id: artifactId,
-      type: artifactTypeForAgent(agentResult.agent),
+      type: artifactType,
     },
     plan: agentResult.plan,
     agent: agentResult.agent,

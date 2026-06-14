@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { ArtifactSaveMenu } from '@/components/artifacts/artifact-save-menu';
 import { ChatBlockRenderer } from '@/components/chat/chat-block-renderer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +30,9 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
   const [message, setMessage] = useState('');
   const [sessionId, setSessionId] = useState<string | undefined>();
   const [streaming, setStreaming] = useState<StreamingState | null>(null);
+  const [lastResponse, setLastResponse] = useState<ChatAgentResponse | null>(
+    null,
+  );
   const queryClient = useQueryClient();
 
   const sessionsQuery = useQuery({
@@ -111,9 +115,10 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
           }
         },
       }),
-    onSuccess: () => {
+    onSuccess: (response) => {
       setMessage('');
       setStreaming(null);
+      setLastResponse(response);
       void queryClient.invalidateQueries({ queryKey: ['chat-sessions'] });
       if (sessionId) {
         void queryClient.invalidateQueries({
@@ -257,6 +262,15 @@ export function ChatWorkspace({ workspaceId }: { workspaceId: string }) {
           <p className="px-4 pb-4 text-sm text-destructive" role="alert">
             {sendMutation.error.message}
           </p>
+        ) : null}
+
+        {lastResponse ? (
+          <div className="px-4 pb-4">
+            <ArtifactSaveMenu
+              workspaceId={workspaceId}
+              response={lastResponse}
+            />
+          </div>
         ) : null}
       </section>
     </div>

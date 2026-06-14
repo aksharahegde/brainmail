@@ -23,6 +23,15 @@ import {
   handleChatSessionsList,
   handleChatStream,
 } from './chat';
+import {
+  handleArtifactCreate,
+  handleArtifactDelete,
+  handleArtifactDetail,
+  handleArtifactExport,
+  handleArtifactShare,
+  handleArtifactShared,
+  handleArtifactsList,
+} from './artifacts';
 
 export async function handleApiRequest(
   request: Request,
@@ -132,6 +141,49 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/agents/tools') {
     return handleAgentToolsList(request, env);
+  }
+
+  if (pathname === '/api/v1/artifacts') {
+    if (request.method === 'GET') {
+      return handleArtifactsList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleArtifactCreate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const artifactSharedMatch = pathname.match(
+    /^\/api\/v1\/artifacts\/shared\/([^/]+)$/,
+  );
+  if (artifactSharedMatch) {
+    return handleArtifactShared(request, env, artifactSharedMatch[1]);
+  }
+
+  const artifactMatch = pathname.match(/^\/api\/v1\/artifacts\/([^/]+)$/);
+  if (artifactMatch) {
+    const artifactId = artifactMatch[1];
+    if (request.method === 'GET') {
+      return handleArtifactDetail(request, env, artifactId);
+    }
+    if (request.method === 'DELETE') {
+      return handleArtifactDelete(request, env, artifactId);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const artifactShareMatch = pathname.match(
+    /^\/api\/v1\/artifacts\/([^/]+)\/share$/,
+  );
+  if (artifactShareMatch) {
+    return handleArtifactShare(request, env, artifactShareMatch[1]);
+  }
+
+  const artifactExportMatch = pathname.match(
+    /^\/api\/v1\/artifacts\/([^/]+)\/export$/,
+  );
+  if (artifactExportMatch) {
+    return handleArtifactExport(request, env, artifactExportMatch[1]);
   }
 
   return errorResponse('Not found', 404);
