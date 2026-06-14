@@ -1,4 +1,5 @@
 import { buildHealthPayload } from './lib/health';
+import { APP_VERSION } from './lib/version';
 import { handleApiRequest } from './routes/handler';
 import { handleQueueBatch } from './queues/handler';
 import { handleScheduled } from './scheduled/handler';
@@ -9,9 +10,18 @@ const worker = {
 
     if (url.pathname === '/health') {
       const payload = await buildHealthPayload(env);
-      return Response.json(payload, {
-        status: payload.ok ? 200 : 503,
-      });
+      return Response.json(
+        {
+          ...payload,
+          version: APP_VERSION,
+        },
+        {
+          status: payload.ok ? 200 : 503,
+          headers: {
+            'Cache-Control': 'public, max-age=10',
+          },
+        },
+      );
     }
 
     if (url.pathname === '/api/v1' || url.pathname.startsWith('/api/v1/')) {

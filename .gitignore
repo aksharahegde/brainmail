@@ -40,6 +40,7 @@ yarn-error.log*
 # cloudflare
 workers/.wrangler/
 workers/.dev.vars
+/backups/
 
 # typescript
 *.tsbuildinfo

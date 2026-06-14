@@ -10,6 +10,7 @@ import { processEmailAttachments } from '../processing/process-attachments';
 import { updateEmailProcessingState } from '../processing/state';
 import { runScheduledInsightGeneration } from '../insights/service';
 import { runScheduledAutomations } from '../automations/service';
+import { recordErrorEvent } from '../ops/telemetry';
 import type {
   AttachmentPipelineMessage,
   EmailIngestedMessage,
@@ -174,6 +175,20 @@ export async function handleQueueBatch(
           error: errorMessage,
         }),
       );
+
+      try {
+        await recordErrorEvent(env, {
+          source: 'queues.handler',
+          message: errorMessage,
+          details: {
+            queue: batch.queue,
+            emailId: emailId ?? null,
+          },
+        });
+      } catch {
+        // Ignore telemetry failures during queue retries.
+      }
+
       message.retry();
       continue;
     }

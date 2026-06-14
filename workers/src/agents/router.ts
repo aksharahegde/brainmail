@@ -4,6 +4,7 @@ import {
   withSecuritySystemPrompt,
   wrapUntrustedUserMessage,
 } from '../security/prompt-safety';
+import { recordAiCostEvent } from '../ops/telemetry';
 
 const ROUTER_MODEL = '@cf/meta/llama-3.1-8b-instruct';
 
@@ -194,6 +195,13 @@ export async function routeMessage(
 
     const parsed = extractJsonObject<RouterPlan>(text);
     if (parsed && AGENT_TYPES.includes(parsed.agent) && parsed.tools?.length) {
+      await recordAiCostEvent(env, {
+        model: ROUTER_MODEL,
+        source: 'agents.router',
+        inputTokens: message.length / 4,
+        outputTokens: text.length / 4,
+      });
+
       return {
         intent: parsed.intent ?? 'routed',
         agent: parsed.agent,

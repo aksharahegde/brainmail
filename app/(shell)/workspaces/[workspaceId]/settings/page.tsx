@@ -5,6 +5,7 @@ import { GmailSyncStatusPanel } from '@/components/gmail/gmail-sync-status-panel
 import { AccountDeletionPanel } from '@/components/security/account-deletion-panel';
 import { AuditLogPanel } from '@/components/security/audit-log-panel';
 import { DataExportPanel } from '@/components/security/data-export-panel';
+import { SystemStatusPanel } from '@/components/ops/system-status-panel';
 
 export default function WorkspaceSettingsPage() {
   return (
@@ -23,6 +24,7 @@ export default function WorkspaceSettingsPage() {
         <ConnectedAccountsPanel />
       </Suspense>
       <GmailSyncStatusPanel />
+      <SystemStatusPanel />
       <DataExportPanel />
       <AuditLogPanel />
       <AccountDeletionPanel />
