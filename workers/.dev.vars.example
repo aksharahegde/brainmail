@@ -11,3 +11,6 @@ GOOGLE_CLIENT_SECRET=
 # Session + token encryption
 SESSION_SECRET=
 TOKEN_ENCRYPTION_KEY=
+
+# Optional Gmail push notifications (Google Cloud Pub/Sub topic)
+# GMAIL_PUBSUB_TOPIC=projects/your-project/topics/gmail-push

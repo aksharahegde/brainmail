@@ -85,7 +85,7 @@ export function ConnectedAccountsPanel() {
         <div>
           <h2 className="text-base font-semibold">Connected accounts</h2>
           <p className="text-sm text-muted-foreground">
-            Link Gmail for sync in a later phase.
+            Link Gmail to import and sync messages.
           </p>
         </div>
         <Button

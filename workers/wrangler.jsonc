@@ -12,6 +12,7 @@
     "AI_GATEWAY_ID": "default",
     "APP_URL": "http://localhost:3000",
     "GOOGLE_OAUTH_REDIRECT_PATH": "/api/v1/auth/google/callback",
+    "GMAIL_PUBSUB_TOPIC": "",
   },
   "ai": {
     "binding": "AI",
@@ -133,6 +134,7 @@
         "AI_GATEWAY_ID": "default",
         "APP_URL": "http://localhost:3000",
         "GOOGLE_OAUTH_REDIRECT_PATH": "/api/v1/auth/google/callback",
+        "GMAIL_PUBSUB_TOPIC": "",
       },
       "d1_databases": [
         {
@@ -251,6 +253,7 @@
         "AI_GATEWAY_ID": "default",
         "APP_URL": "http://localhost:3000",
         "GOOGLE_OAUTH_REDIRECT_PATH": "/api/v1/auth/google/callback",
+        "GMAIL_PUBSUB_TOPIC": "",
       },
       "d1_databases": [
         {
