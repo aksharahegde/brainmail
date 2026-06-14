@@ -51,7 +51,7 @@ export function WorkspaceHome({ workspaceId }: { workspaceId: string }) {
         </div>
       </div>
 
-      <dl className="grid gap-4 sm:grid-cols-3">
+      <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div
           data-testid="workspace-stat-emails"
           className="rounded-lg border bg-card p-4"
@@ -72,6 +72,13 @@ export function WorkspaceHome({ workspaceId }: { workspaceId: string }) {
         >
           <dt className="text-sm text-muted-foreground">Entities</dt>
           <dd className="mt-1 text-2xl font-semibold">{stats.entities}</dd>
+        </div>
+        <div
+          data-testid="workspace-stat-collections"
+          className="rounded-lg border bg-card p-4"
+        >
+          <dt className="text-sm text-muted-foreground">Collections</dt>
+          <dd className="mt-1 text-2xl font-semibold">{stats.collections}</dd>
         </div>
       </dl>
 

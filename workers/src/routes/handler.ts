@@ -37,6 +37,12 @@ import {
   handleWorkspaceRoutes,
   handleWorkspacesList,
 } from './workspaces';
+import {
+  handleCollectionCreate,
+  handleCollectionRoutes,
+  handleCollectionSuggestions,
+  handleCollectionsList,
+} from './collections';
 
 export async function handleApiRequest(
   request: Request,
@@ -141,6 +147,39 @@ export async function handleApiRequest(
   const workspaceMatch = pathname.match(/^\/api\/v1\/workspaces\/([^/]+)$/);
   if (workspaceMatch) {
     return handleWorkspaceRoutes(request, env, workspaceMatch[1]);
+  }
+
+  if (pathname === '/api/v1/collections/suggestions') {
+    return handleCollectionSuggestions(request, env);
+  }
+
+  if (pathname === '/api/v1/collections') {
+    if (request.method === 'GET') {
+      return handleCollectionsList(request, env);
+    }
+    if (request.method === 'POST') {
+      return handleCollectionCreate(request, env);
+    }
+    return errorResponse('Method not allowed', 405);
+  }
+
+  const collectionMemberMatch = pathname.match(
+    /^\/api\/v1\/collections\/([^/]+)\/members(?:\/([^/]+))?$/,
+  );
+  if (collectionMemberMatch) {
+    return handleCollectionRoutes(request, env, collectionMemberMatch[1]);
+  }
+
+  const collectionSuggestionMatch = pathname.match(
+    /^\/api\/v1\/collections\/([^/]+)\/suggestions\/(accept|dismiss)$/,
+  );
+  if (collectionSuggestionMatch) {
+    return handleCollectionRoutes(request, env, collectionSuggestionMatch[1]);
+  }
+
+  const collectionMatch = pathname.match(/^\/api\/v1\/collections\/([^/]+)$/);
+  if (collectionMatch) {
+    return handleCollectionRoutes(request, env, collectionMatch[1]);
   }
 
   if (pathname === '/api/v1/chat') {

@@ -3,6 +3,7 @@ import { embeddings } from '@brainmail/db/schema';
 import { eq } from 'drizzle-orm';
 
 import { createId } from '../lib/crypto';
+import { evaluateEmailCollections } from '../collections/evaluate';
 import { generateEmbedding } from './ai';
 import { buildEmailEmbeddingInput } from './ingest';
 import { getEmailById, updateEmailProcessingState } from './state';
@@ -70,5 +71,10 @@ export async function processEmailEmbedding(
     processingStatus: 'completed',
     processedAt: new Date().toISOString(),
     processingError: null,
+  });
+
+  await evaluateEmailCollections(env, {
+    userId: message.userId,
+    emailId: message.emailId,
   });
 }
