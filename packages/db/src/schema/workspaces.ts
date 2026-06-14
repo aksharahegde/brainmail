@@ -24,10 +24,13 @@ export const dashboards = sqliteTable('dashboards', {
   userId: text('user_id').notNull(),
   workspaceId: text('workspace_id'),
   name: text('name'),
+  templateKey: text('template_key'),
   definition: text('definition', { mode: 'json' }).$type<
     Record<string, unknown>
   >(),
   createdAt: text('created_at').default(sql`(datetime('now'))`),
+  updatedAt: text('updated_at').default(sql`(datetime('now'))`),
+  refreshedAt: text('refreshed_at'),
 });
 
 export const reports = sqliteTable('reports', {

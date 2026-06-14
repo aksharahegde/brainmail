@@ -2,6 +2,7 @@ import { createDb } from '@brainmail/db';
 import {
   artifacts,
   collections,
+  dashboards,
   emails,
   workspaceEntities,
   workspaces,
@@ -115,6 +116,7 @@ export async function getWorkspaceDetail(
     artifactCountRow,
     entityCountRow,
     collectionCountRow,
+    dashboardCountRow,
     recentEmails,
     recentArtifacts,
   ] = await Promise.all([
@@ -143,6 +145,15 @@ export async function getWorkspaceDetail(
           eq(collections.userId, userId),
           eq(collections.workspaceId, workspaceId),
           eq(collections.status, 'active'),
+        ),
+      ),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(dashboards)
+      .where(
+        and(
+          eq(dashboards.userId, userId),
+          eq(dashboards.workspaceId, workspaceId),
         ),
       ),
     db
@@ -188,6 +199,7 @@ export async function getWorkspaceDetail(
       artifacts: artifactCountRow[0]?.count ?? 0,
       entities: entityCountRow[0]?.count ?? 0,
       collections: collectionCountRow[0]?.count ?? 0,
+      dashboards: dashboardCountRow[0]?.count ?? 0,
     },
     recentEmails,
     recentArtifacts,
