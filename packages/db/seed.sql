@@ -42,14 +42,52 @@ VALUES
     'Learning'
   );
 
-INSERT OR IGNORE INTO collections (id, user_id, name, description, collection_type)
-VALUES (
-  'collection_inbox_001',
-  'user_demo_001',
-  'Inbox',
-  'System inbox collection',
-  'system'
-);
+INSERT OR IGNORE INTO collections (
+  id,
+  user_id,
+  workspace_id,
+  name,
+  description,
+  collection_type,
+  status
+)
+VALUES
+  (
+    'collection_inbox_001',
+    'user_demo_001',
+    NULL,
+    'Inbox',
+    'System inbox collection',
+    'system',
+    'active'
+  ),
+  (
+    'collection_ai_expenses_001',
+    'user_demo_001',
+    'finance',
+    'AI Expenses',
+    'Invoices and receipts grouped by AI.',
+    'ai_generated',
+    'active'
+  ),
+  (
+    'collection_subscriptions_001',
+    'user_demo_001',
+    'finance',
+    'Subscriptions',
+    'Recurring subscription charges and renewals.',
+    'ai_generated',
+    'active'
+  ),
+  (
+    'collection_customers_001',
+    'user_demo_001',
+    'startup',
+    'Customers',
+    'Customer contacts and companies.',
+    'ai_generated',
+    'active'
+  );
 
 INSERT OR IGNORE INTO chat_sessions (id, user_id, title)
 VALUES ('chat_session_001', 'user_demo_001', 'Welcome');

@@ -25,6 +25,7 @@ export type WorkspaceDetail = {
     emails: number;
     artifacts: number;
     entities: number;
+    collections: number;
   };
   recentEmails: Array<{
     id: string;
