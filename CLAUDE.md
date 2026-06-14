@@ -103,4 +103,4 @@ scripts/       Infra provision/deploy scripts
 
 ## Phase Docs
 
-Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–3 are complete. Phase 4 adds Gmail sync and watch.
+Implementation is phased — see [`docs/phases/`](docs/phases/). Phases 0–4 are complete. Phase 5 adds the email processing pipeline.

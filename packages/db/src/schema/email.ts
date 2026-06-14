@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const sources = sqliteTable('sources', {
   id: text('id').primaryKey(),
@@ -30,6 +30,15 @@ export const emails = sqliteTable('emails', {
   sender: text('sender'),
   recipients: text('recipients', { mode: 'json' }).$type<string[]>(),
   snippet: text('snippet'),
+  bodyText: text('body_text'),
+  bodyHtml: text('body_html'),
+  cc: text('cc', { mode: 'json' }).$type<string[]>(),
+  bcc: text('bcc', { mode: 'json' }).$type<string[]>(),
+  category: text('category'),
+  classificationConfidence: real('classification_confidence'),
+  processingStatus: text('processing_status').notNull().default('pending'),
+  processingError: text('processing_error'),
+  processedAt: text('processed_at'),
   receivedAt: text('received_at'),
   rawPath: text('raw_path'),
   createdAt: text('created_at').default(sql`(datetime('now'))`),

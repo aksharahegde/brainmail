@@ -10,6 +10,7 @@ import {
 } from './auth';
 import { handleSyncStatus, handleSyncTrigger } from './sync';
 import { handleGmailWebhook } from './webhooks';
+import { handleEmailDetail, handleEmailsList } from './emails';
 
 export async function handleApiRequest(
   request: Request,
@@ -57,6 +58,15 @@ export async function handleApiRequest(
 
   if (pathname === '/api/v1/webhooks/gmail') {
     return handleGmailWebhook(request, env);
+  }
+
+  if (pathname === '/api/v1/emails') {
+    return handleEmailsList(request, env);
+  }
+
+  const emailMatch = pathname.match(/^\/api\/v1\/emails\/([^/]+)$/);
+  if (emailMatch) {
+    return handleEmailDetail(request, env, emailMatch[1]);
   }
 
   return errorResponse('Not found', 404);
