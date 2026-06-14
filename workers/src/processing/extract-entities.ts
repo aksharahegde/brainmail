@@ -3,6 +3,7 @@ import { entities } from '@brainmail/db/schema';
 import { and, eq } from 'drizzle-orm';
 
 import { createId } from '../lib/crypto';
+import { materializeKnowledgeGraph } from '../knowledge-graph/materialize';
 import { extractEntities } from './ai';
 import { getEmailById, updateEmailProcessingState } from './state';
 import type { EmailCategory, EmailPipelineMessage } from './types';
@@ -43,6 +44,17 @@ export async function processEntityExtraction(
       data: entity.data,
     });
   }
+
+  await materializeKnowledgeGraph(
+    env,
+    {
+      userId: message.userId,
+      emailId: message.emailId,
+      receivedAt: email.receivedAt,
+      category: email.category,
+    },
+    extracted,
+  );
 
   await updateEmailProcessingState(env, message.emailId, {
     processingStatus: 'entities_extracted',

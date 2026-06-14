@@ -11,6 +11,9 @@ import {
 import { handleSyncStatus, handleSyncTrigger } from './sync';
 import { handleGmailWebhook } from './webhooks';
 import { handleEmailDetail, handleEmailsList } from './emails';
+import { handleEntitiesList, handleEntityDetail } from './entities';
+import { handleContactsList, handleContactDetail } from './contacts';
+import { handleGraph } from './graph';
 
 export async function handleApiRequest(
   request: Request,
@@ -67,6 +70,28 @@ export async function handleApiRequest(
   const emailMatch = pathname.match(/^\/api\/v1\/emails\/([^/]+)$/);
   if (emailMatch) {
     return handleEmailDetail(request, env, emailMatch[1]);
+  }
+
+  if (pathname === '/api/v1/entities') {
+    return handleEntitiesList(request, env);
+  }
+
+  const entityMatch = pathname.match(/^\/api\/v1\/entities\/([^/]+)$/);
+  if (entityMatch) {
+    return handleEntityDetail(request, env, entityMatch[1]);
+  }
+
+  if (pathname === '/api/v1/contacts') {
+    return handleContactsList(request, env);
+  }
+
+  const contactMatch = pathname.match(/^\/api\/v1\/contacts\/([^/]+)$/);
+  if (contactMatch) {
+    return handleContactDetail(request, env, contactMatch[1]);
+  }
+
+  if (pathname === '/api/v1/graph') {
+    return handleGraph(request, env);
   }
 
   return errorResponse('Not found', 404);

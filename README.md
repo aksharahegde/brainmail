@@ -59,6 +59,10 @@ After connecting Gmail in workspace settings, BrainMail queues an initial import
 
 Imported emails move through ingestion, classification, entity extraction, attachment processing, and embedding generation via Cloudflare Queues. Processed results appear on the workspace Activity page.
 
+### Knowledge graph (Phase 6)
+
+Extracted entities are materialized into companies, contacts, invoices, receipts, subscriptions, trips, and relationship edges. Browse the entity explorer and relationship graph on the workspace Contacts page. APIs: `GET /api/v1/entities`, `GET /api/v1/contacts`, `GET /api/v1/graph`.
+
 ### Cloudflare setup
 
 ```bash
