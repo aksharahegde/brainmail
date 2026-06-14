@@ -67,6 +67,10 @@ Extracted entities are materialized into companies, contacts, invoices, receipts
 
 Global search combines keyword retrieval across emails, entities, contacts, vendors, workspaces, and artifacts with Vectorize semantic email search. Use `GET /api/v1/search?q=...&mode=hybrid` from the app header search panel.
 
+### AI agents (Phase 8)
+
+Chat requests route through a Router Agent to Search, Analytics, Action, Automation, and Insight agents. Agents operate only via the tool registry and return generative UI blocks from the UI Planner. APIs: `POST /api/v1/chat`, `GET /api/v1/chat/sessions`, `GET /api/v1/agents/tools`.
+
 ### Cloudflare setup
 
 ```bash
