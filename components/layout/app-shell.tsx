@@ -18,11 +18,16 @@ export function AppShell({
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div data-testid="layout-app-shell" className="flex min-h-svh w-full">
+      <div
+        data-testid="layout-app-shell"
+        className="flex min-h-svh w-full bg-background"
+      >
         <AppSidebar />
-        <SidebarInset>
+        <SidebarInset className="bg-background">
           <AppHeader user={user} />
-          <div className="flex flex-1 flex-col p-6">{children}</div>
+          <div className="flex flex-1 flex-col px-6 py-10 md:px-10 lg:px-14">
+            {children}
+          </div>
         </SidebarInset>
       </div>
     </SidebarProvider>

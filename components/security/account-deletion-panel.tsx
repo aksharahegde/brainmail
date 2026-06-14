@@ -27,17 +27,17 @@ export function AccountDeletionPanel() {
   const expectedEmail = preview?.email ?? '';
 
   return (
-    <section className="space-y-4 rounded-lg border border-destructive/30 p-4">
+    <section className="briefing-card space-y-4 border-destructive/30">
       <div>
-        <h2 className="text-lg font-medium text-destructive">Delete account</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="briefing-section-title text-destructive">Delete account</h2>
+        <p className="text-body-sm text-muted-foreground">
           Permanently delete your account, sessions, emails, files, and
           embeddings. This cannot be undone.
         </p>
       </div>
 
       {previewQuery.isLoading ? (
-        <p className="text-sm text-muted-foreground">Loading preview…</p>
+        <p className="text-body-sm text-muted-foreground">Loading preview…</p>
       ) : preview ? (
         <div className="rounded-md bg-muted/40 p-3 text-sm">
           <p>
@@ -79,7 +79,7 @@ export function AccountDeletionPanel() {
       </div>
 
       {deleteMutation.error ? (
-        <p className="text-sm text-destructive">
+        <p className="text-body-sm text-destructive">
           {deleteMutation.error instanceof Error
             ? deleteMutation.error.message
             : 'Deletion failed'}

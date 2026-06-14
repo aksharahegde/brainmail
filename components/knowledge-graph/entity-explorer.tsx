@@ -95,22 +95,22 @@ export function EntityExplorer() {
 
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-medium">Knowledge entities</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="briefing-section-title">Knowledge entities</h2>
+          <p className="text-body-sm text-muted-foreground">
             {entities.length} result{entities.length === 1 ? '' : 's'}
           </p>
         </div>
 
         {entitiesError instanceof Error ? (
-          <p className="text-sm text-destructive" role="alert">
+          <p className="text-body-sm text-destructive" role="alert">
             {entitiesError.message}
           </p>
         ) : null}
 
         {entitiesLoading ? (
-          <p className="text-sm text-muted-foreground">Loading entities…</p>
+          <p className="text-body-sm text-muted-foreground">Loading entities…</p>
         ) : entities.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No entities yet. Processed emails will populate companies, invoices,
             subscriptions, and travel records here.
           </p>
@@ -120,13 +120,13 @@ export function EntityExplorer() {
               <li
                 key={`${entity.type}-${entity.id}`}
                 data-testid={`entity-row-${entity.id}`}
-                className="rounded-lg border p-4"
+                className="briefing-card"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
                     <p className="font-medium">{entity.label}</p>
                     {entity.summary ? (
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-body-sm text-muted-foreground">
                         {entity.summary}
                       </p>
                     ) : null}
@@ -148,22 +148,22 @@ export function EntityExplorer() {
 
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-medium">Contacts</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="briefing-section-title">Contacts</h2>
+          <p className="text-body-sm text-muted-foreground">
             {contacts.length} contact{contacts.length === 1 ? '' : 's'}
           </p>
         </div>
 
         {contactsError instanceof Error ? (
-          <p className="text-sm text-destructive" role="alert">
+          <p className="text-body-sm text-destructive" role="alert">
             {contactsError.message}
           </p>
         ) : null}
 
         {contactsLoading ? (
-          <p className="text-sm text-muted-foreground">Loading contacts…</p>
+          <p className="text-body-sm text-muted-foreground">Loading contacts…</p>
         ) : contacts.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Contacts appear after senders are extracted from processed email.
           </p>
         ) : (
@@ -172,7 +172,7 @@ export function EntityExplorer() {
               <li
                 key={contact.id}
                 data-testid={`contact-row-${contact.id}`}
-                className="rounded-lg border p-4"
+                className="briefing-card"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
@@ -180,7 +180,7 @@ export function EntityExplorer() {
                       {contact.name ?? contact.email ?? 'Unknown contact'}
                     </p>
                     {contact.email ? (
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-body-sm text-muted-foreground">
                         {contact.email}
                       </p>
                     ) : null}

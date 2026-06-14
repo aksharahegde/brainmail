@@ -44,13 +44,13 @@ export function CollectionSuggestions({
 
   if (suggestionsQuery.isLoading) {
     return (
-      <p className="text-sm text-muted-foreground">Loading suggestions…</p>
+      <p className="text-body-sm text-muted-foreground">Loading suggestions…</p>
     );
   }
 
   if (suggestions.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
+      <p className="text-body-sm text-muted-foreground">
         No AI collection suggestions right now.
       </p>
     );
@@ -62,7 +62,7 @@ export function CollectionSuggestions({
         <li
           key={suggestion.id}
           data-testid={`collection-suggestion-row-${suggestion.id}`}
-          className="rounded-lg border p-4"
+          className="briefing-card"
         >
           <p className="font-medium">{suggestion.name}</p>
           {suggestion.description ? (

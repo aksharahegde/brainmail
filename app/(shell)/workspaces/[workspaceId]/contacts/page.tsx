@@ -1,6 +1,9 @@
 import { ContactWorkspace } from '@/components/contacts/contact-workspace';
 import { EntityExplorer } from '@/components/knowledge-graph/entity-explorer';
 import { RelationshipGraphPanel } from '@/components/knowledge-graph/relationship-graph';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
+import { BriefingSection } from '@/components/layout/briefing-section';
 
 export default async function WorkspaceContactsPage({
   params,
@@ -10,29 +13,20 @@ export default async function WorkspaceContactsPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Contact workspace
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Relationship intelligence with profiles, scores, follow-up reminders,
-          and communication analytics.
-        </p>
-      </div>
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Relationship workspace"
+        title="Contacts"
+        description="Profiles, follow-up reminders, and communication context — curated, not catalogued."
+      />
       <ContactWorkspace workspaceId={workspaceId} />
-      <div className="space-y-6 border-t pt-8">
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight">
-            Knowledge graph
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Explore extracted entities and relationships across your email data.
-          </p>
-        </div>
+      <BriefingSection
+        title="Knowledge graph"
+        description="Entities and relationships extracted from your email data."
+      >
         <RelationshipGraphPanel />
         <EntityExplorer />
-      </div>
-    </div>
+      </BriefingSection>
+    </BriefingPage>
   );
 }

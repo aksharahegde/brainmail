@@ -29,8 +29,8 @@ export function UserMenu({ email, name }: UserMenuProps) {
   return (
     <div className="ml-auto flex items-center gap-3">
       <div className="hidden text-right sm:block">
-        <p className="text-sm font-medium">{name ?? 'Signed in'}</p>
-        <p className="text-xs text-muted-foreground">{email}</p>
+        <p className="text-body-sm font-medium">{name ?? 'Signed in'}</p>
+        <p className="text-caption text-muted-foreground">{email}</p>
       </div>
       <Button
         data-testid="auth-logout-submit"

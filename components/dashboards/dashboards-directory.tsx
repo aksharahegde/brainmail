@@ -68,13 +68,13 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
   const blocks = detailQuery.data?.dashboard.definition?.blocks ?? [];
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+    <div className="space-y-6">
       <section className="space-y-4">
-        <h2 className="text-lg font-medium">Dashboards</h2>
+        <h2 className="briefing-section-title">Dashboards</h2>
         {dashboardsQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading dashboards…</p>
+          <p className="text-body-sm text-muted-foreground">Loading dashboards…</p>
         ) : dashboards.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No dashboards yet. Create one from a template below.
           </p>
         ) : (
@@ -85,10 +85,10 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
                   type="button"
                   data-testid={`dashboard-row-${dashboard.id}`}
                   onClick={() => setSelectedId(dashboard.id)}
-                  className="w-full rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent"
+                  className="briefing-list-item w-full text-left transition-colors hover:border-border"
                 >
                   <p className="font-medium">{dashboard.name}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-body-sm text-muted-foreground">
                     {dashboard.templateKey ?? 'custom'}
                     {dashboard.refreshedAt
                       ? ` · refreshed ${new Date(dashboard.refreshedAt).toLocaleString()}`
@@ -100,7 +100,7 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
           </ul>
         )}
 
-        <div className="space-y-3 rounded-lg border p-4">
+        <div className="briefing-card space-y-3">
           <h3 className="font-medium">Create from template</h3>
           <div className="grid gap-2">
             {templates
@@ -164,9 +164,9 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-lg border p-4">
+      <section className="briefing-card space-y-4">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-medium">Dashboard preview</h2>
+          <h2 className="briefing-section-title">Dashboard preview</h2>
           {selectedId ? (
             <div className="flex gap-2">
               <div data-testid="dashboard-refresh-submit">
@@ -196,13 +196,13 @@ export function DashboardsDirectory({ workspaceId }: { workspaceId: string }) {
         </div>
 
         {!selectedId ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Select a dashboard to preview its blocks.
           </p>
         ) : detailQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading dashboard…</p>
+          <p className="text-body-sm text-muted-foreground">Loading dashboard…</p>
         ) : blocks.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No blocks yet. Refresh to populate from workspace data.
           </p>
         ) : (

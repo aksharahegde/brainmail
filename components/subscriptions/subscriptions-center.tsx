@@ -39,54 +39,39 @@ export function SubscriptionsCenter({ workspaceId }: { workspaceId: string }) {
   const selected = detailQuery.data?.subscription;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <div className="space-y-6">
       <section className="space-y-4">
         {summary ? (
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">Monthly total</p>
-              <p className="text-2xl font-semibold">
-                {formatCurrency(summary.monthlyTotal)}
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">
-                Active subscriptions
-              </p>
-              <p className="text-2xl font-semibold">{summary.activeCount}</p>
-            </div>
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">
-                Renewals (45 days)
-              </p>
-              <p className="text-2xl font-semibold">
-                {summary.upcomingRenewals.length}
-              </p>
-            </div>
-            <div className="rounded-lg border bg-card p-4">
-              <p className="text-xs text-muted-foreground">Duplicate groups</p>
-              <p className="text-2xl font-semibold">
-                {summary.duplicateGroups.length}
-              </p>
-            </div>
+          <div className="briefing-card ai-accent-bg space-y-2">
+            <p className="briefing-eyebrow ai-accent">Summary</p>
+            <p className="text-body text-foreground/90">
+              {formatCurrency(summary.monthlyTotal)} recurring monthly across{' '}
+              {summary.activeCount} active subscriptions.
+              {summary.upcomingRenewals.length > 0
+                ? ` ${summary.upcomingRenewals.length} renewals due in the next 45 days.`
+                : ''}
+              {summary.duplicateGroups.length > 0
+                ? ` ${summary.duplicateGroups.length} duplicate groups flagged for review.`
+                : ''}
+            </p>
           </div>
         ) : null}
 
         {summary && summary.costTrend.duplicateSavingsPotential > 0 ? (
-          <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 text-sm">
+          <div className="briefing-list-item border-warning/30 text-body-sm">
             Potential savings of{' '}
             {formatCurrency(summary.costTrend.duplicateSavingsPotential)}/mo by
             consolidating duplicate subscriptions.
           </div>
         ) : null}
 
-        <h2 className="text-lg font-medium">Tracked subscriptions</h2>
+        <h2 className="briefing-section-title">Tracked subscriptions</h2>
         {listQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Loading subscriptions…
           </p>
         ) : subscriptions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             No subscriptions tracked yet for this workspace.
           </p>
         ) : (
@@ -97,14 +82,14 @@ export function SubscriptionsCenter({ workspaceId }: { workspaceId: string }) {
                   type="button"
                   data-testid={`subscription-row-${subscription.id}`}
                   onClick={() => setSelectedId(subscription.id)}
-                  className="w-full rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent"
+                  className="briefing-list-item w-full text-left transition-colors hover:border-border"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="font-medium">
                         {subscription.name ?? 'Subscription'}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-body-sm text-muted-foreground">
                         Renews{' '}
                         {subscription.renewalDate
                           ? new Date(
@@ -138,22 +123,22 @@ export function SubscriptionsCenter({ workspaceId }: { workspaceId: string }) {
         )}
       </section>
 
-      <section className="space-y-4 rounded-lg border p-4">
-        <h2 className="text-lg font-medium">Subscription intelligence</h2>
+      <section className="briefing-card space-y-4">
+        <h2 className="briefing-section-title">Subscription intelligence</h2>
         {!selectedId ? (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-body-sm text-muted-foreground">
             Select a subscription to review renewal timing, billing period, and
             duplicate signals.
           </p>
         ) : detailQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading details…</p>
+          <p className="text-body-sm text-muted-foreground">Loading details…</p>
         ) : selected ? (
           <div className="space-y-4">
             <div>
               <p className="text-xl font-semibold">
                 {selected.name ?? 'Subscription'}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-sm text-muted-foreground">
                 {formatCurrency(
                   selected.monthlyCost,
                   selected.currency ?? 'USD',
@@ -205,7 +190,7 @@ export function SubscriptionsCenter({ workspaceId }: { workspaceId: string }) {
                 {ignoreMutation.isPending ? 'Ignoring…' : 'Ignore subscription'}
               </Button>
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-body-sm text-muted-foreground">
                 This subscription is ignored and hidden from active totals.
               </p>
             )}
@@ -238,7 +223,7 @@ export function SubscriptionsCenter({ workspaceId }: { workspaceId: string }) {
               {summary.duplicateGroups.map((group) => (
                 <li
                   key={group.id}
-                  className="rounded-md border px-3 py-2"
+                  className="briefing-list-item"
                   data-testid={`subscription-duplicate-${group.id}`}
                 >
                   <p className="font-medium">{group.names.join(' · ')}</p>

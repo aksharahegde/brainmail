@@ -12,6 +12,8 @@ import {
   type SaveArtifactInput,
 } from './types';
 
+const SHARE_LINK_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+
 function serializeArtifact(row: typeof artifacts.$inferSelect): ArtifactRecord {
   return {
     id: row.id,
@@ -200,7 +202,11 @@ export async function getSharedArtifact(
     .limit(1);
 
   const row = rows[0];
-  if (!row || !row.shareToken) {
+  if (!row || !row.shareToken || !row.sharedAt) {
+    return null;
+  }
+
+  if (Date.now() - new Date(row.sharedAt).getTime() > SHARE_LINK_TTL_MS) {
     return null;
   }
 

@@ -1,4 +1,6 @@
 import { GenerativeUiPreview } from '@/components/generative-ui/generative-ui-preview';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 
 export default async function WorkspaceGenerativeUiPage({
   params,
@@ -8,15 +10,13 @@ export default async function WorkspaceGenerativeUiPage({
   const { workspaceId } = await params;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Generative UI</h1>
-        <p className="text-sm text-muted-foreground">
-          Block registry preview for workspace {workspaceId}. All presentation
-          decisions come from the backend UI planner.
-        </p>
-      </div>
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Artifact workspace"
+        title="Generative UI"
+        description={`Structured document blocks for workspace ${workspaceId}. Presentation is planned by the backend UI agent.`}
+      />
       <GenerativeUiPreview />
-    </div>
+    </BriefingPage>
   );
 }

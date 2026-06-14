@@ -46,24 +46,31 @@ export function AppSidebar() {
     })) ?? WORKSPACES;
 
   return (
-    <Sidebar data-testid="layout-sidebar" collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
+    <Sidebar
+      data-testid="layout-sidebar"
+      collapsible="icon"
+      className="border-r border-border/60 bg-sidebar"
+    >
+      <SidebarHeader className="border-b border-sidebar-border/60 px-5 py-5">
         <Link
           href="/workspaces"
-          className="font-semibold tracking-tight text-sidebar-foreground"
+          className="text-body-sm font-medium tracking-tight text-sidebar-foreground transition-colors hover:text-foreground"
         >
           BrainMail
         </Link>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="gap-6 px-2 py-4">
         <SidebarGroup>
-          <SidebarGroupLabel>Workspaces</SidebarGroupLabel>
+          <SidebarGroupLabel className="briefing-eyebrow px-3">
+            Workspaces
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {workspaceItems.map((workspace) => (
                 <SidebarMenuItem key={workspace.id}>
                   <SidebarMenuButton
                     isActive={activeWorkspaceId === workspace.id}
+                    className="rounded-[10px] text-body-sm text-sidebar-foreground/80 hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground"
                     render={
                       <Link
                         href={workspacePath(workspace.id)}
@@ -79,7 +86,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+          <SidebarGroupLabel className="briefing-eyebrow px-3">
+            Journey
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {WORKSPACE_NAV.map((item) => {
@@ -90,12 +99,13 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.slug}>
                     <SidebarMenuButton
                       isActive={isActive}
+                      className={cn(
+                        'rounded-[10px] text-body-sm text-sidebar-foreground/70 hover:text-foreground',
+                        'data-[active=true]:bg-sidebar-accent data-[active=true]:text-foreground',
+                        isActive && 'font-medium',
+                      )}
                       render={
-                        <Link
-                          href={href}
-                          data-testid={item.testId}
-                          className={cn(isActive && 'font-medium')}
-                        />
+                        <Link href={href} data-testid={item.testId} />
                       }
                     >
                       {item.label}

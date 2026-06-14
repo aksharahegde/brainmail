@@ -1,4 +1,5 @@
 import type { AgentType, RouterPlan } from './types';
+import { getToolsForAgent } from './tools/registry';
 import {
   containsPromptInjectionAttempt,
   withSecuritySystemPrompt,
@@ -133,6 +134,18 @@ const AGENT_TYPES: AgentType[] = [
   'insight',
 ];
 
+function sanitizeRouterPlan(plan: RouterPlan): RouterPlan {
+  const allowedTools = getToolsForAgent(plan.agent).map((tool) => tool.name);
+  const tools = (plan.tools ?? []).filter((tool) => allowedTools.includes(tool));
+  const fallbackTools =
+    tools.length > 0 ? tools : allowedTools.slice(0, Math.min(3, allowedTools.length));
+
+  return {
+    ...plan,
+    tools: fallbackTools,
+  };
+}
+
 export async function routeMessage(
   env: Env,
   message: string,
@@ -142,13 +155,13 @@ export async function routeMessage(
   },
 ): Promise<RouterPlan> {
   if (containsPromptInjectionAttempt(message)) {
-    return {
+    return sanitizeRouterPlan({
       intent: 'information_retrieval',
       agent: 'search',
       entities: [],
       tools: ['search_emails', 'search_entities'],
       expectedArtifact: 'email_list',
-    };
+    });
   }
 
   if (
@@ -156,16 +169,16 @@ export async function routeMessage(
     /\b(that|those|it|same|again|more)\b/i.test(message)
   ) {
     const plan = heuristicRoute(message);
-    return {
+    return sanitizeRouterPlan({
       ...plan,
       agent: memory.lastAgent,
       entities: memory.entities?.length ? memory.entities : plan.entities,
       intent: 'follow_up',
-    };
+    });
   }
 
   if (!env.AI) {
-    return heuristicRoute(message);
+    return sanitizeRouterPlan(heuristicRoute(message));
   }
 
   try {
@@ -202,17 +215,17 @@ export async function routeMessage(
         outputTokens: text.length / 4,
       });
 
-      return {
+      return sanitizeRouterPlan({
         intent: parsed.intent ?? 'routed',
         agent: parsed.agent,
         entities: parsed.entities ?? [],
         tools: parsed.tools,
         expectedArtifact: parsed.expectedArtifact,
-      };
+      });
     }
   } catch {
     // Fall back to heuristics when Workers AI is unavailable locally.
   }
 
-  return heuristicRoute(message);
+  return sanitizeRouterPlan(heuristicRoute(message));
 }

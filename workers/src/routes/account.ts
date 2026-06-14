@@ -53,7 +53,7 @@ export async function handleAccountDelete(
     const result = await deleteUserAccount(env, authResult.id, confirmation);
     return successResponse(result, {
       headers: {
-        'Set-Cookie': clearSessionCookie(),
+        'Set-Cookie': clearSessionCookie(env.APP_URL),
       },
     });
   } catch (error) {

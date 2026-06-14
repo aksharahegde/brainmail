@@ -63,8 +63,8 @@ export function AgentChatPanel() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-medium">Agent chat</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="briefing-section-title">Agent chat</h2>
+          <p className="text-body-sm text-muted-foreground">
             Router → specialized agent → tools → UI planner
           </p>
         </div>
@@ -91,20 +91,20 @@ export function AgentChatPanel() {
       </form>
 
       {sendMutation.error instanceof Error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {sendMutation.error.message}
         </p>
       ) : null}
 
       {latestResponse ? (
-        <section className="space-y-3 rounded-lg border p-4">
+        <section className="briefing-card space-y-3">
           <h3 className="text-sm font-medium">Latest agent response</h3>
           <UiResponseRenderer response={latestResponse} />
         </section>
       ) : null}
 
-      <section className="grid gap-4 lg:grid-cols-2">
-        <div className="space-y-2 rounded-lg border p-4">
+      <section className="space-y-4">
+        <div className="briefing-card space-y-2">
           <h3 className="text-sm font-medium">Sessions</h3>
           <ul className="space-y-2">
             {(sessionsQuery.data?.sessions ?? []).map((session) => (
@@ -112,7 +112,7 @@ export function AgentChatPanel() {
                 <button
                   type="button"
                   data-testid={`chat-session-row-${session.id}`}
-                  className="w-full rounded-md bg-muted/40 px-3 py-2 text-left text-sm hover:bg-muted"
+                  className="w-full w-full rounded-[10px] px-3 py-2 text-left text-body-sm text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
                   onClick={() => setSessionId(session.id)}
                 >
                   {session.title ?? 'Untitled chat'}
@@ -122,12 +122,12 @@ export function AgentChatPanel() {
           </ul>
         </div>
 
-        <div className="space-y-2 rounded-lg border p-4">
+        <div className="briefing-card space-y-2">
           <h3 className="text-sm font-medium">Session history</h3>
           {sessionId && sessionQuery.isLoading ? (
-            <p className="text-sm text-muted-foreground">Loading history…</p>
+            <p className="text-body-sm text-muted-foreground">Loading history…</p>
           ) : messages.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-body-sm text-muted-foreground">
               Send a message to start a routed agent conversation.
             </p>
           ) : (

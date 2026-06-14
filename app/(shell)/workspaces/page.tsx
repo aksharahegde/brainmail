@@ -1,14 +1,16 @@
-import { PlaceholderPage } from '@/components/layout/placeholder-page';
+import { BriefingHeader } from '@/components/layout/briefing-header';
+import { BriefingPage } from '@/components/layout/briefing-page';
 import { WorkspacesDirectory } from '@/components/workspaces/workspaces-directory';
 
 export default function WorkspacesPage() {
   return (
-    <div className="space-y-6">
-      <PlaceholderPage
+    <BriefingPage>
+      <BriefingHeader
+        eyebrow="Your environments"
         title="Workspaces"
-        description="Choose a workspace to explore your email intelligence environment."
+        description="Choose where you want to focus — each workspace is a curated lens on your life."
       />
       <WorkspacesDirectory />
-    </div>
+    </BriefingPage>
   );
 }

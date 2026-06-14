@@ -10,6 +10,7 @@ import {
   buildSessionCookie,
   clearSessionCookie,
   createUserSession,
+  revokeAllUserSessions,
   revokeSession,
 } from '../lib/session';
 import { writeAuditLog } from '../audit/service';
@@ -75,6 +76,7 @@ export async function handleAuthCallback(
       );
     }
 
+    await revokeAllUserSessions(env, result.userId);
     const session = await createUserSession(env, result.userId);
     await writeAuditLog(env, {
       userId: result.userId,
@@ -145,7 +147,7 @@ export async function handleAuthLogout(
     { loggedOut: true },
     {
       headers: {
-        'Set-Cookie': clearSessionCookie(),
+        'Set-Cookie': clearSessionCookie(getAppUrl(env)),
       },
     },
   );

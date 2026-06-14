@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { BriefingCard } from '@/components/layout/briefing-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { formatSearchMode, globalSearch } from '@/lib/search/api';
@@ -35,13 +36,14 @@ export function GlobalSearchPanel() {
       data.workspaces.length > 0);
 
   return (
-    <div className="flex min-w-0 flex-1 flex-col gap-3">
+    <div className="flex min-w-0 flex-1 flex-col gap-4 lg:max-w-xl">
       <form className="flex flex-col gap-2 sm:flex-row" onSubmit={handleSearch}>
         <div data-testid="search-query-input" className="min-w-0 flex-1">
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search emails, entities, workspaces…"
+            className="border-border/80 bg-card"
           />
         </div>
         <div data-testid="search-query-submit">
@@ -58,6 +60,11 @@ export function GlobalSearchPanel() {
               type="button"
               size="sm"
               variant={mode === option ? 'default' : 'outline'}
+              className={
+                mode === option
+                  ? 'bg-secondary text-secondary-foreground'
+                  : undefined
+              }
               onClick={() => setMode(option)}
             >
               {formatSearchMode(option)}
@@ -67,23 +74,23 @@ export function GlobalSearchPanel() {
       </div>
 
       {error instanceof Error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-body-sm text-destructive" role="alert">
           {error.message}
         </p>
       ) : null}
 
       {query && isLoading ? (
-        <p className="text-sm text-muted-foreground">Searching…</p>
+        <p className="text-body-sm text-muted-foreground">Searching…</p>
       ) : null}
 
       {query && !isLoading && !hasResults ? (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-body-sm text-muted-foreground">
           No results for “{query}”.
         </p>
       ) : null}
 
       {hasResults && data ? (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-4">
           {data.emails.length > 0 ? (
             <SearchSection title="Emails">
               {data.emails.map((email) => (
@@ -181,10 +188,10 @@ function SearchSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-2 rounded-lg border p-3">
-      <h3 className="text-sm font-medium">{title}</h3>
+    <BriefingCard className="space-y-3 p-4">
+      <h3 className="briefing-eyebrow">{title}</h3>
       <ul className="space-y-2">{children}</ul>
-    </section>
+    </BriefingCard>
   );
 }
 
@@ -200,15 +207,12 @@ function SearchResultItem({
   meta: string | null;
 }) {
   return (
-    <li
-      data-testid={testId}
-      className="rounded-md bg-muted/40 px-3 py-2 text-sm"
-    >
+    <li data-testid={testId} className="briefing-list-item text-body-sm">
       <p className="font-medium">{title}</p>
       {subtitle ? (
-        <p className="text-xs text-muted-foreground">{subtitle}</p>
+        <p className="text-caption text-muted-foreground">{subtitle}</p>
       ) : null}
-      {meta ? <p className="text-xs text-muted-foreground">{meta}</p> : null}
+      {meta ? <p className="text-caption text-muted-foreground">{meta}</p> : null}
     </li>
   );
 }

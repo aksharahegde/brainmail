@@ -31,10 +31,10 @@ export function DataExportPanel() {
   }
 
   return (
-    <section className="space-y-4 rounded-lg border p-4">
+    <section className="briefing-card space-y-4">
       <div>
-        <h2 className="text-lg font-medium">Data export</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="briefing-section-title">Data export</h2>
+        <p className="text-body-sm text-muted-foreground">
           Download a portable copy of your workspaces, emails, automations, and
           related records.
         </p>
@@ -63,7 +63,7 @@ export function DataExportPanel() {
         </div>
       </div>
 
-      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+      {error ? <p className="text-body-sm text-destructive">{error}</p> : null}
     </section>
   );
 }

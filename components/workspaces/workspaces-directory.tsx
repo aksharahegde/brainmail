@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { BriefingCard } from '@/components/layout/briefing-card';
+import { BriefingSection } from '@/components/layout/briefing-section';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { WORKSPACES, workspacePath } from '@/lib/navigation';
@@ -44,23 +46,22 @@ export function WorkspacesDirectory() {
   }
 
   return (
-    <div className="space-y-8">
-      <section className="space-y-4">
-        <h2 className="text-lg font-medium">Your workspaces</h2>
+    <div className="space-y-10">
+      <BriefingSection title="Your workspaces">
         {isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading workspaces…</p>
+          <p className="text-body-sm text-muted-foreground">Loading workspaces…</p>
         ) : error instanceof Error ? (
-          <div className="space-y-3">
-            <p className="text-sm text-destructive" role="alert">
+          <div className="space-y-4">
+            <p className="text-body-sm text-destructive" role="alert">
               {error.message}
             </p>
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="space-y-3">
               {WORKSPACES.map((workspace) => (
                 <li key={workspace.id}>
                   <Link
                     href={workspacePath(workspace.id)}
                     data-testid={`workspace-card-${workspace.id}`}
-                    className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent"
+                    className="briefing-list-item block"
                   >
                     <span className="font-medium">{workspace.name}</span>
                   </Link>
@@ -69,19 +70,19 @@ export function WorkspacesDirectory() {
             </ul>
           </div>
         ) : (
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="space-y-3">
             {workspaces.map((workspace) => (
               <li key={workspace.id}>
                 <Link
                   href={workspacePath(workspace.id)}
                   data-testid={`workspace-card-${workspace.id}`}
-                  className="block rounded-lg border bg-card p-4 transition-colors hover:bg-accent"
+                  className="briefing-list-item block"
                 >
                   <span className="font-medium">
                     {workspace.name ?? workspace.id}
                   </span>
                   {workspace.description ? (
-                    <p className="mt-1 text-sm text-muted-foreground">
+                    <p className="mt-1 text-body-sm text-muted-foreground">
                       {workspace.description}
                     </p>
                   ) : null}
@@ -90,11 +91,11 @@ export function WorkspacesDirectory() {
             ))}
           </ul>
         )}
-      </section>
+      </BriefingSection>
 
-      <section className="max-w-lg space-y-4 rounded-lg border p-4">
-        <h2 className="text-lg font-medium">Create workspace</h2>
-        <form className="space-y-3" onSubmit={handleCreate}>
+      <BriefingCard className="max-w-lg">
+        <h2 className="briefing-section-title">Create workspace</h2>
+        <form className="space-y-4" onSubmit={handleCreate}>
           <div data-testid="workspace-create-name-input">
             <Input
               value={name}
@@ -110,7 +111,7 @@ export function WorkspacesDirectory() {
             />
           </div>
           {createMutation.error instanceof Error ? (
-            <p className="text-sm text-destructive" role="alert">
+            <p className="text-body-sm text-destructive" role="alert">
               {createMutation.error.message}
             </p>
           ) : null}
@@ -120,7 +121,7 @@ export function WorkspacesDirectory() {
             </Button>
           </div>
         </form>
-      </section>
+      </BriefingCard>
     </div>
   );
 }

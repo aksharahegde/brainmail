@@ -34,13 +34,14 @@ export async function getOpsMetrics(env: Env, userId: string) {
   const db = createDb(env.DB);
   const since24h = hoursAgoIso(24);
   const since7d = hoursAgoIso(24 * 7);
+  const userFilter = eq(opsEvents.userId, userId);
 
   const [recentEvents, errorRows, timingRows, aiCostRows, analyticsRows] =
     await Promise.all([
       db
         .select()
         .from(opsEvents)
-        .where(gte(opsEvents.createdAt, since24h))
+        .where(and(userFilter, gte(opsEvents.createdAt, since24h)))
         .orderBy(desc(opsEvents.createdAt))
         .limit(20),
       db
@@ -48,6 +49,7 @@ export async function getOpsMetrics(env: Env, userId: string) {
         .from(opsEvents)
         .where(
           and(
+            userFilter,
             eq(opsEvents.eventType, 'error'),
             gte(opsEvents.createdAt, since24h),
           ),
@@ -57,6 +59,7 @@ export async function getOpsMetrics(env: Env, userId: string) {
         .from(opsEvents)
         .where(
           and(
+            userFilter,
             eq(opsEvents.eventType, 'request_timing'),
             gte(opsEvents.createdAt, since24h),
           ),
@@ -66,6 +69,7 @@ export async function getOpsMetrics(env: Env, userId: string) {
         .from(opsEvents)
         .where(
           and(
+            userFilter,
             eq(opsEvents.eventType, 'ai_cost'),
             gte(opsEvents.createdAt, since7d),
           ),
@@ -75,9 +79,9 @@ export async function getOpsMetrics(env: Env, userId: string) {
         .from(opsEvents)
         .where(
           and(
+            userFilter,
             eq(opsEvents.eventType, 'analytics'),
             gte(opsEvents.createdAt, since24h),
-            eq(opsEvents.userId, userId),
           ),
         ),
     ]);

@@ -12,7 +12,7 @@ import {
 import { getSecretEnv } from './env';
 
 export const SESSION_COOKIE_NAME = 'brainmail_session';
-export const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 30;
+export const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
 
 export type SessionUser = {
   id: string;
@@ -68,8 +68,9 @@ export function buildSessionCookie(
   return `${SESSION_COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Expires=${expires}${secure}`;
 }
 
-export function clearSessionCookie(): string {
-  return `${SESSION_COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`;
+export function clearSessionCookie(appUrl?: string): string {
+  const secure = appUrl?.startsWith('https://') ? '; Secure' : '';
+  return `${SESSION_COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
 }
 
 export async function createUserSession(
